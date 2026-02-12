@@ -8,7 +8,6 @@ Site-ul este live pe GitHub Pages:
 
 **https://ale0204.github.io/CyberSecurity/**
 
-Deschide link-ul de mai sus în orice browser, de pe orice laptop/telefon, de oriunde.
 
 ## Ce conține
 
