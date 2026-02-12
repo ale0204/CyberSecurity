@@ -12,11 +12,11 @@ Deschide link-ul de mai sus în orice browser, de pe orice laptop/telefon, de or
 
 ## Ce conține
 
-- **Pagina principală** — 11 scenarii de incidente cu întrebări și răspunsuri
-- **Scenarii detaliate** (1-11) — fiecare scenariu cu întrebări individuale, referințe NIST și răspunsuri ascunse
-- **Exerciții practice** — 7 scenarii practice suplimentare
-- **Simulare examen** — 5 scenarii tip role-play
-- **Rezumate NIST** — Capitolele 2 și 3 din NIST SP 800-61r2
+- **Pagina principală** - 11 scenarii de incidente cu întrebări și răspunsuri
+- **Scenarii detaliate** (1-11) - fiecare scenariu cu întrebări individuale, referințe NIST și răspunsuri ascunse
+- **Exerciții practice** - 7 scenarii practice suplimentare
+- **Simulare examen** - 5 scenarii tip role-play
+- **Rezumate NIST** - Capitolele 2 și 3 din NIST SP 800-61r2
 
 ## Accesare locală (opțional)
 
