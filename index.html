@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Securitate Cibernetică — Pregătire Examen</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+  <h1>🛡️ Securitate Cibernetică — <span>Pregătire Examen</span></h1>
+</header>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <input type="text" class="search-box" placeholder="Caută (Ctrl+F)..." id="searchBox">
+
+  <div class="nav-section">
+    <div class="nav-section-title">Fundamente</div>
+    <a class="nav-link" href="#metodologie">📋 Metodologie Examen</a>
+    <a class="nav-link" href="#ciclul">🔄 Ciclul de Viață</a>
+    <a class="nav-link" href="#roluri">👥 Roluri în Echipă</a>
+    <a class="nav-link" href="#referinta-nist">📖 Referință NIST</a>
+    <a class="nav-link" href="exercitii-incidente.html" target="_blank">📝 Exerciții Incidente</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Cele 11 Scenarii</div>
+    <a class="nav-link" href="#scenariu-1">1. DNS Server DoS</a>
+    <a class="nav-link" href="#scenariu-2">2. Worm & DDoS Agent</a>
+    <a class="nav-link" href="#scenariu-3">3. Documente Furate</a>
+    <a class="nav-link" href="#scenariu-4">4. Server BD Compromis</a>
+    <a class="nav-link" href="#scenariu-5">5. Exfiltrare Necunoscută</a>
+    <a class="nav-link" href="#scenariu-6">6. Acces Neautorizat Payroll</a>
+    <a class="nav-link" href="#scenariu-7">7. Host Dispărut</a>
+    <a class="nav-link" href="#scenariu-8">8. Compromitere Telecommuting</a>
+    <a class="nav-link" href="#scenariu-9">9. Amenințare Anonimă</a>
+    <a class="nav-link" href="#scenariu-10">10. File Sharing P2P</a>
+    <a class="nav-link" href="#scenariu-11">11. Wireless AP Necunoscut</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Materiale</div>
+    <a class="nav-link" href="simulare-examen.html" target="_blank">🎮 Simulare Examen</a>
+    <a class="nav-link" href="#note-curs">📝 Note de Curs</a>
+    <a class="nav-link" href="#checklist">✅ Checklist Handling</a>
+    <a class="nav-link" href="#intrebari-standard">❓ Întrebări Standard</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main>
+
+<!-- ============================================================ -->
+<!-- METODOLOGIE -->
+<!-- ============================================================ -->
+<section id="metodologie">
+  <h2>📋 Metodologie Examen</h2>
+  <div class="card">
+    <p>Examenul constă într-un <strong>scenariu de incident de securitate</strong> pe care echipa trebuie să-l abordeze procedural și organizațional. <strong>Fără materiale de curs</strong> — doar comunicare între membrii echipei.</p>
+
+    <h3>Pattern de răspuns</h3>
+    <p>Pentru fiecare întrebare din scenariu:</p>
+    <ol>
+      <li><strong>Identifică secțiunea NIST relevantă</strong> (referința din paranteze)</li>
+      <li><strong>Citează definiția/principiul cheie</strong> din acea secțiune</li>
+      <li><strong>Aplică pe scenariul concret</strong> — raționament pas cu pas</li>
+      <li><strong>Formulează concluzia</strong> — generalizabilă la alte scenarii similare</li>
+    </ol>
+
+    <h3>Cele 5 faze (cerute de profesor)</h3>
+    <div class="lifecycle">
+      <div class="lifecycle-step s-prep">1. Pregătire</div>
+      <div class="lifecycle-arrow">→</div>
+      <div class="lifecycle-step s-detect">2. Detecție</div>
+      <div class="lifecycle-arrow">→</div>
+      <div class="lifecycle-step s-contain">3. Izolare</div>
+      <div class="lifecycle-arrow">→</div>
+      <div class="lifecycle-step s-recover">4. Recuperare</div>
+      <div class="lifecycle-arrow">→</div>
+      <div class="lifecycle-step s-lessons">5. Lecții Învățate</div>
+    </div>
+
+    <h3>Mapare pe NIST SP 800-61r2</h3>
+    <table>
+      <tr><th>Faza Examen</th><th>Secțiuni NIST</th><th>Conținut cheie</th></tr>
+      <tr><td>1. Pregătire</td><td>§2.1, §3.1</td><td>Ce este un incident, măsuri preventive, echipă, resurse</td></tr>
+      <tr><td>2. Detecție și Analiză</td><td>§3.2</td><td>Vectori atac, precursori/indicatori, surse, analiză, prioritizare, notificare</td></tr>
+      <tr><td>3. Izolare (Containment)</td><td>§3.3.1–3.3.3</td><td>Strategie containment, colectare dovezi, identificare atacator</td></tr>
+      <tr><td>4. Eradicare & Recuperare</td><td>§3.3.4</td><td>Eliminare malware, patch vulnerabilități, restaurare sisteme</td></tr>
+      <tr><td>5. Lecții Învățate</td><td>§3.4</td><td>Ședință post-incident, metrici, retenție dovezi, îmbunătățiri</td></tr>
+    </table>
+
+    <h3>Element surpriză</h3>
+    <p>Profesorul poate introduce un <strong>element surpriză</strong> pe parcurs. Abordare: revino la ciclul de viață — detecție nouă → analiză → containment adaptat → recuperare ajustată.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CICLUL DE VIAȚĂ -->
+<!-- ============================================================ -->
+<section id="ciclul">
+  <h2>🔄 Ciclul de Viață al Răspunsului la Incident</h2>
+  <div class="card">
+    <p><em>Sursa: NIST SP 800-61r2, Figure 3-1</em></p>
+    <div class="lifecycle">
+      <div class="lifecycle-step s-prep">Preparation<br><small>§3.1</small></div>
+      <div class="lifecycle-arrow">→</div>
+      <div class="lifecycle-step s-detect">Detection &<br>Analysis<br><small>§3.2</small></div>
+      <div class="lifecycle-arrow">→</div>
+      <div class="lifecycle-step s-contain">Containment,<br>Eradication &<br>Recovery<br><small>§3.3</small></div>
+      <div class="lifecycle-arrow">→</div>
+      <div class="lifecycle-step s-lessons">Post-Incident<br>Activity<br><small>§3.4</small></div>
+    </div>
+    <p class="mt-16"><strong>Important:</strong> Ciclul nu este liniar. Din faza de Containment se poate reveni la Detection & Analysis (ex.: se descoperă alte hosturi infectate).</p>
+
+    <h3>Categorii Impact (Prioritizare – §3.2.6)</h3>
+    <table>
+      <tr><th>Categorie</th><th>None</th><th>Low</th><th>Medium</th><th>High</th></tr>
+      <tr><td><strong>Functional Impact</strong></td><td>Niciun efect</td><td>Efect minim, toate serviciile critice disponibile</td><td>Serviciu critic indisponibil pt un subset de utilizatori</td><td>Servicii critice indisponibile pt toți utilizatorii</td></tr>
+    </table>
+    <table>
+      <tr><th>Categorie</th><th>None</th><th>Privacy Breach</th><th>Proprietary Breach</th><th>Integrity Loss</th></tr>
+      <tr><td><strong>Information Impact</strong></td><td>Nicio informație compromisă</td><td>PII accesat/exfiltrat</td><td>Info proprietară accesată</td><td>Info modificată/ștearsă</td></tr>
+    </table>
+    <table>
+      <tr><th>Categorie</th><th>Regular</th><th>Supplemented</th><th>Extended</th><th>Not Recoverable</th></tr>
+      <tr><td><strong>Recoverability</strong></td><td>Predictibil, resurse existente</td><td>Predictibil, resurse suplimentare</td><td>Impredictibil, ajutor extern</td><td>Imposibil (ex: date publicate)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ROLURI -->
+<!-- ============================================================ -->
+<section id="roluri">
+  <h2>👥 Roluri în Echipă (Examen)</h2>
+  <div class="role-grid">
+    <div class="role-card">
+      <div class="role-icon">👔</div>
+      <h4>Manager / Decident</h4>
+      <p>Coordonează echipa, ia decizii strategice, comunică cu managementul superior, aprobă acțiuni majore (deconectare sisteme, notificare externă).</p>
+    </div>
+    <div class="role-card">
+      <div class="role-icon">🎯</div>
+      <h4>Manager de Incident</h4>
+      <p>Coordonează procesul de răspuns, asigură respectarea procedurilor, menține cronologia evenimentelor, escaladează după necesitate.</p>
+    </div>
+    <div class="role-card">
+      <div class="role-icon">🖥️</div>
+      <h4>Coordonator IT / Admin Sistem</h4>
+      <p>Implementează acțiuni tehnice: izolarea sistemelor, backup-uri, restaurare, modificarea configurațiilor de rețea/firewall.</p>
+    </div>
+    <div class="role-card">
+      <div class="role-icon">🔐</div>
+      <h4>Responsabil Securitate Cibernetică</h4>
+      <p>Evaluează impactul asupra securității, verifică politicile încălcate, coordonează măsurile de securizare, raportează către CSIRT.</p>
+    </div>
+    <div class="role-card">
+      <div class="role-icon">🔍</div>
+      <h4>Analist SOC / Securitate</h4>
+      <p>Analizează loguri, alerte IDS/SIEM, trafic rețea. Identifică precursori și indicatori. Efectuează analiză forensic.</p>
+    </div>
+    <div class="role-card">
+      <div class="role-icon">📢</div>
+      <h4>Responsabil Comunicare & Conformitate</h4>
+      <p>Gestionează comunicarea cu media, organizații externe, autorități. Asigură conformitatea cu cerințele legale (GDPR, notificare breach).</p>
+    </div>
+  </div>
+  <div class="card mt-16">
+    <h3>Dependențe organizaționale (§2.4.4)</h3>
+    <p>Echipa de răspuns la incidente depinde de: <strong>Management</strong> (politici, buget), <strong>Information Assurance</strong> (modificări firewall), <strong>IT Support</strong> (cunoașterea sistemelor), <strong>Legal</strong> (conformitate, dovezi), <strong>Public Affairs</strong> (media), <strong>HR</strong> (angajați implicați), <strong>Business Continuity</strong> (continuitatea operațiunilor), <strong>Physical Security</strong> (acces fizic).</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- REFERINȚĂ NIST -->
+<!-- ============================================================ -->
+<section id="referinta-nist">
+  <h2>📖 Referință Rapidă NIST SP 800-61r2</h2>
+
+  <div class="card">
+    <p>Rezumatele detaliate ale secțiunilor NIST sunt organizate pe pagini separate. Click pe un capitol pentru a vedea toate secțiunile cu explicații detaliate:</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem;">
+      <a href="nist-chapter2.html" target="_blank" style="display:block; text-decoration:none; padding:1.5rem; background:linear-gradient(135deg, rgba(74,70,200,0.1), rgba(74,70,200,0.02)); border:2px solid var(--primary); border-radius:12px; transition:all 0.3s;">
+        <h3 style="color:var(--primary); margin:0 0 0.5rem;">📘 Capitol 2: Organizare</h3>
+        <p style="color:var(--text-secondary); margin:0; font-size:0.9rem;">Organizing a Computer Security Incident Response Capability</p>
+        <ul style="color:var(--text-secondary); font-size:0.85rem; margin:0.5rem 0 0 1rem;">
+          <li>§2.1 Events and Incidents</li>
+          <li>§2.3 Policy, Plan, Procedure</li>
+          <li>§2.3.4 Sharing with Outside Parties</li>
+          <li>§2.4 Team Structure & Models</li>
+        </ul>
+      </a>
+      <a href="nist-chapter3.html" target="_blank" style="display:block; text-decoration:none; padding:1.5rem; background:linear-gradient(135deg, rgba(230,126,34,0.1), rgba(230,126,34,0.02)); border:2px solid var(--phase-detect); border-radius:12px; transition:all 0.3s;">
+        <h3 style="color:var(--phase-detect); margin:0 0 0.5rem;">📗 Capitol 3: Handling ⭐</h3>
+        <p style="color:var(--text-secondary); margin:0; font-size:0.9rem;">Handling an Incident — CEL MAI IMPORTANT</p>
+        <ul style="color:var(--text-secondary); font-size:0.85rem; margin:0.5rem 0 0 1rem;">
+          <li>§3.1 Preparation</li>
+          <li>§3.2 Detection & Analysis</li>
+          <li>§3.3 Containment, Eradication, Recovery</li>
+          <li>§3.4 Post-Incident Activity</li>
+          <li>§3.5 Incident Handling Checklist</li>
+        </ul>
+      </a>
+    </div>
+
+    <a href="exercitii-incidente.html" target="_blank" style="display:block; text-decoration:none; padding:1.2rem 1.5rem; margin-top:1rem; background:linear-gradient(135deg, rgba(39,174,96,0.1), rgba(39,174,96,0.02)); border:2px solid var(--phase-recover); border-radius:12px; transition:all 0.3s;">
+      <h3 style="color:var(--phase-recover); margin:0 0 0.3rem;">📝 Exerciții Incidente</h3>
+      <p style="color:var(--text-secondary); margin:0; font-size:0.9rem;">7 scenarii practice cu întrebări și răspunsuri + referințe NIST. Include întrebările standard aplicabile la orice scenariu (Appendix A).</p>
+    </a>
+
+    <a href="simulare-examen.html" target="_blank" style="display:block; text-decoration:none; padding:1.2rem 1.5rem; margin-top:1rem; background:linear-gradient(135deg, rgba(74,70,200,0.1), rgba(74,70,200,0.02)); border:2px solid var(--primary); border-radius:12px; transition:all 0.3s;">
+      <h3 style="color:var(--primary); margin:0 0 0.3rem;">🎮 Simulare Examen — Daniel & Alexandra</h3>
+      <p style="color:var(--text-secondary); margin:0; font-size:0.9rem;">5 scenarii noi de simulare cu joc de roluri pentru 2 persoane. Include elemente surpriză, score tracker și ghid pas cu pas pe fiecare fază NIST.</p>
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 1 -->
+<!-- ============================================================ -->
+<section id="scenariu-1" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 1: DNS Server Denial of Service (DoS)</h3></div>
+  <a href="scenariu-1-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Sâmbătă după-amiază, utilizatorii externi încep să aibă probleme la accesarea site-urilor publice ale organizației. În decurs de o oră, problema se agravează până când aproape fiecare încercare de accesare eșuează. Un membru al echipei de rețea răspunde alertelor de la un router de frontieră și determină că lățimea de bandă este consumată de un volum neobișnuit de mare de pachete UDP către și de la ambele servere DNS publice. Analiza traficului arată că serverele DNS primesc un volum mare de cereri de la o singură adresă IP externă, toate de pe același port sursă.
+  </div>
+
+  <details class="phase phase-prep" open>
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="question-block">
+        <div class="q-text">Organizația ar considera această activitate un incident? Ce politici sunt încălcate?</div>
+        <div class="reference">Referință: §2.1 — Events and Incidents</div>
+        <div class="quote">A computer security incident is a violation or imminent threat of violation of computer security policies, acceptable use policies, or standard security practices.</div>
+        <div class="analysis">
+          <p>Traficul UDP masiv de la o singură IP, pe un singur port sursă, direcționat către serverele DNS publice, cauzând indisponibilitatea site-urilor publice, constituie o amenințare directă la adresa <strong>disponibilității</strong> serviciilor IT.</p>
+          <ul>
+            <li>Impactul este real și măsurabil (site-uri indisponibile)</li>
+            <li>Persistă și se agravează în timp</li>
+            <li>Comportament intenționat, specific atacului DoS</li>
+          </ul>
+        </div>
+        <div class="conclusion"><strong>Concluzie:</strong> Da, este un incident de securitate. Încalcă politica de securitate a informațiilor (disponibilitate servicii critice) și practicile standard de securitate (protecție infrastructură rețea împotriva utilizării abuzive).</div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-text">Ce măsuri preventive ar fi putut limita impactul?</div>
+        <div class="reference">Referință: §3.1.2 — Preventing Incidents</div>
+        <div class="analysis">
+          <ul>
+            <li><strong>Network Security:</strong> Configurare rate limiting pe routerele de frontieră, filtrare trafic UDP suspect</li>
+            <li><strong>Risk Assessment:</strong> Evaluare risc pentru serverele DNS publice — identificarea ca resursă critică</li>
+            <li><strong>Infrastructură redundantă:</strong> Servere DNS distribuite geographic, servicii DNS anycast</li>
+            <li><strong>Relații pre-stabilite cu ISP:</strong> Acorduri pentru filtrare upstream în caz de DDoS</li>
+            <li><strong>Monitorizare:</strong> Alerte automate pentru trafic anormal pe porturi DNS</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="question-block">
+        <div class="q-text">Ce precursori ar putea fi detectați? Ar determina acțiuni preventive?</div>
+        <div class="reference">Referință: §3.2.2, §3.2.3</div>
+        <div class="quote">A precursor is a sign that an attacker may be preparing to cause an incident.</div>
+        <div class="analysis">
+          <p>Precursori posibili:</p>
+          <ul>
+            <li>Creșteri graduale ale traficului UDP către serverele DNS</li>
+            <li>Pattern-uri repetitive de la aceeași adresă IP externă</li>
+            <li>Utilizarea aceluiași port sursă (anomalie clară)</li>
+            <li>Scanare de porturi sau reconnaissance anterioare</li>
+          </ul>
+          <p>Surse de detecție: routere de margine, sisteme de monitorizare trafic, network flow analysis.</p>
+          <p>Dacă detectați devreme → filtrare trafic, notificare ISP, activare rate limiting.</p>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-text">Ce indicatori ar detecta organizația?</div>
+        <div class="reference">Referință: §3.2.2, §3.2.3</div>
+        <div class="analysis">
+          <ul>
+            <li>Alerte router de frontieră (volum anormal de trafic UDP)</li>
+            <li>Indisponibilitatea site-urilor publice (rapoarte utilizatori)</li>
+            <li>Log-uri DNS cu volum mare de cereri de la o singură IP</li>
+            <li>Consum complet al lățimii de bandă Internet</li>
+            <li>Alertele IDPS pentru pattern de atac DoS</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-text">Cum se prioritizează incidentul?</div>
+        <div class="reference">Referință: §3.2.6</div>
+        <div class="analysis">
+          <table>
+            <tr><th>Criteriu</th><th>Evaluare</th></tr>
+            <tr><td>Functional Impact</td><td><strong>High</strong> — servicii critice (website-uri publice) indisponibile pentru toți utilizatorii</td></tr>
+            <tr><td>Information Impact</td><td><strong>None</strong> — nu s-a compromis informație (doar disponibilitate)</td></tr>
+            <tr><td>Recoverability</td><td><strong>Regular</strong> — recuperare predictibilă odată ce traficul e filtrat</td></tr>
+          </table>
+          <p><strong>Prioritate: RIDICATĂ</strong> — impact funcțional major, dar recuperare fezabilă → acțiune imediată.</p>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-text">Cine trebuie notificat?</div>
+        <div class="reference">Referință: §3.2.7</div>
+        <div class="analysis">
+          <ul>
+            <li>CIO, Head of Information Security</li>
+            <li>Echipa de incident response</li>
+            <li>Administratori rețea/sistem</li>
+            <li>ISP-ul organizației (pentru asistență filtrare upstream)</li>
+            <li>US-CERT / CSIRT național (dacă agenție federală)</li>
+            <li>Management (dacă impact prelungit asupra afacerii)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="question-block">
+        <div class="q-text">Ce strategie de containment ar trebui adoptată?</div>
+        <div class="reference">Referință: §3.3.1</div>
+        <div class="quote">Containment strategies vary based on the type of incident. Organizations should create separate containment strategies for each major incident type.</div>
+        <div class="analysis">
+          <p>Strategie recomandată:</p>
+          <ul>
+            <li><strong>Filtrare imediată</strong> la nivel de router de frontieră — blocare trafic de la IP-ul atacatorului</li>
+            <li><strong>Rate limiting</strong> pe traficul UDP către serverele DNS</li>
+            <li><strong>Contact ISP</strong> pentru filtrare upstream (null routing pentru IP atacator)</li>
+            <li><strong>Activare DNS anycast</strong> sau redirecționare către servere DNS backup</li>
+          </ul>
+          <p>Această strategie e preferabilă deoarece: implementare rapidă, eficacitate ridicată, nu afectează traficul legitim, serviciile se pot restaura rapid.</p>
+        </div>
+        <div class="conclusion">Dacă incidentul nu este conținut: indisponibilitate completă a prezenței online, pierderi financiare, afectarea reputației, imposibilitatea comunicării prin email (dacă DNS-ul e afectat).</div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-text">Ce dovezi trebuie colectate?</div>
+        <div class="reference">Referință: §3.3.2</div>
+        <div class="analysis">
+          <ul>
+            <li>Log-uri router de frontieră (timestamp, IP sursă, volum trafic)</li>
+            <li>Capturi de pachete (pcap) ale traficului atacului</li>
+            <li>Log-uri servere DNS (cereri de la IP-ul atacatorului)</li>
+            <li>Network flow data (NetFlow/sFlow)</li>
+            <li>Alerte IDPS</li>
+            <li>Documentare timestamp-uri, acțiuni luate, persoane implicate</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <p><strong>Eradicare:</strong></p>
+        <ul>
+          <li>Confirmarea că filtrele blochează complet traficul malițios</li>
+          <li>Verificare că nu există hosturi interne compromise care participă la atac</li>
+          <li>Verificare integritatea serverelor DNS (nu au fost compromise)</li>
+        </ul>
+        <p><strong>Recuperare:</strong></p>
+        <ul>
+          <li>Restaurarea serviciului DNS normal</li>
+          <li>Verificare că site-urile publice sunt accesibile</li>
+          <li>Implementare rate limiting permanent pe trafic DNS</li>
+          <li>Implementare monitoring suplimentar pentru detectarea atacurilor viitoare</li>
+          <li>Considerare servicii de protecție DDoS (Cloudflare, Akamai etc.)</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <p><strong>Participanți ședință:</strong> echipa incident response, administratori rețea, management IT, responsabil securitate, reprezentanți ISP (opțional).</p>
+        <p><strong>Întrebări cheie:</strong></p>
+        <ul>
+          <li>De ce routerele de frontieră nu au detectat atacul mai devreme?</li>
+          <li>Sunt necesare servicii DDoS mitigation?</li>
+          <li>Monitorizarea traficului DNS este suficientă?</li>
+          <li>Procedurile de escaladare au funcționat în weekend?</li>
+        </ul>
+        <p><strong>Îmbunătățiri:</strong> Implementare servici anti-DDoS, redundanță DNS, alerte automate, proceduri actualizate pentru weekend/off-hours.</p>
+      </div>
+    </div>
+  </details>
+
+  <h3>Întrebări Specifice Scenariului</h3>
+  <details class="specific-q">
+    <summary>Pe cine contactează organizația referitor la IP-ul extern?</summary>
+    <div class="sq-content">
+      <div class="reference">Referință: §2.3.4</div>
+      <p>Organizația contactează <strong>proprietarul adresei IP</strong> (identificat prin WHOIS) pentru a-l alerta asupra activității și cere cooperare. Se coordonează prin <strong>ISP-ul propriu</strong> pentru filtrare upstream. Dacă e agenție federală, se raportează la <strong>US-CERT</strong>. Se poate contacta <strong>ISAC-ul</strong> sectorial pentru informare comunitate. <strong>Nu</strong> se contactează multiple agenții de aplicare a legii simultan (risc jurisdicțional).</p>
+    </div>
+  </details>
+  <details class="specific-q">
+    <summary>Ce se întâmplă dacă 9 hosturi interne fac aceleași cereri?</summary>
+    <div class="sq-content">
+      <div class="reference">Referință: §3.3.1, §3.2.4</div>
+      <p>Incidentul se transformă din <strong>atac extern DoS</strong> în <strong>compromitere internă + DDoS</strong>. Se revine la faza de Detection & Analysis (conform ciclului iterativ din §3): se identifică toate gazdele interne infectate, se verifică dacă au fost compromise prin malware. Se izolează cele 9 hosturi de rețea, se scanează pentru malware/bot, se verifică dacă există și alte hosturi infectate. Prioritatea crește — acum este și compromitere internă.</p>
+    </div>
+  </details>
+  <details class="specific-q">
+    <summary>Cum se identifică proprietarii celor 2 hosturi deconectate?</summary>
+    <div class="sq-content">
+      <div class="reference">⚠️ Întrebare practică — nu are secțiune NIST dedicată (cel mai aproape: §3.1.1 critical assets, §3.2.5 documentare). NU e §3.3.3 (care e despre identificarea atacatorilor externi).</div>
+      <p>Se verifică: <strong>DHCP logs</strong> (ce MAC address avea acel IP), <strong>asset management database</strong>, <strong>switch port mappings</strong> (ce port fizic era conectat), <strong>network access control logs</strong>, <strong>Active Directory logs</strong> (ce user era logat). Se colaborează cu echipa de administrare IT pentru identificarea locației fizice. Se verifică dacă dispozitivele sunt laptopuri ale angajaților plecați din birou (incidentul e sâmbătă!). Atenție: aici identificăm <em>cine deține</em> mașinile, nu cine le-a atacat.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 2 -->
+<!-- ============================================================ -->
+<section id="scenariu-2" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 2: Worm și DDoS Agent Infestation</h3></div>
+  <a href="scenariu-2-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Marți dimineață, un nou worm se răspândește prin media removabilă și prin share-uri Windows deschise. Când infectează un host, instalează un agent DDoS. Organizația a suferit deja infecții pe scară largă înainte ca semnăturile antivirus să devină disponibile, la câteva ore după ce worm-ul a început să se răspândească.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="question-block">
+        <div class="q-text">Este un incident? Ce politici sunt încălcate?</div>
+        <div class="reference">Referință: §2.1</div>
+        <div class="analysis">
+          <p>Da. Infectarea cu malware (worm) și instalarea de agenți DDoS constituie o <strong>încălcare directă a politicilor de securitate</strong>: compromiterea integrității sistemelor, utilizarea neautorizată a resurselor, amenințare la adresa disponibilității (DDoS pregătit).</p>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text">Măsuri preventive care ar fi limitat impactul?</div>
+        <div class="reference">Referință: §3.1.2</div>
+        <div class="analysis">
+          <ul>
+            <li><strong>Malware Prevention:</strong> Dezactivare autorun pe removable media, restricționare share-uri Windows deschise</li>
+            <li><strong>Host Security:</strong> Patch-uri la zi, least privilege, dezactivare servicii nenecesare</li>
+            <li><strong>Network Security:</strong> Segmentare rețea pentru limitarea răspândirii laterale</li>
+            <li><strong>User Awareness:</strong> Training despre pericolele media removabilă</li>
+            <li><strong>Group Policy:</strong> Blocare executare automată pe USB, restricții pe share-urile de rețea</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="question-block">
+        <div class="q-text">Precursori și indicatori</div>
+        <div class="reference">Referință: §3.2.2, §3.2.3</div>
+        <div class="analysis">
+          <p><strong>Precursori:</strong> Buletine de securitate despre noul worm, alerte de la US-CERT/CERT, rapoarte de la alte organizații deja afectate.</p>
+          <p><strong>Indicatori:</strong></p>
+          <ul>
+            <li>Alerte AV (chiar și fără semnături — detecție euristică/comportamentală)</li>
+            <li>Trafic de rețea anormal între hosturi interne (propagare laterală)</li>
+            <li>Încercări de acces la share-uri Windows multiple</li>
+            <li>Procese necunoscute care rulează pe hosturi</li>
+            <li>Conexiuni de rețea către servere C&C (command and control)</li>
+            <li>File integrity checking detectează modificări</li>
+          </ul>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text">Prioritizare</div>
+        <div class="reference">Referință: §3.2.6</div>
+        <div class="analysis">
+          <table>
+            <tr><th>Criteriu</th><th>Evaluare</th></tr>
+            <tr><td>Functional Impact</td><td><strong>High</strong> — infecție pe scară largă, sisteme compromise</td></tr>
+            <tr><td>Information Impact</td><td><strong>Potential Integrity Loss</strong> — worm poate modifica fișiere sistem</td></tr>
+            <tr><td>Recoverability</td><td><strong>Extended</strong> — necesită resurse suplimentare, curățare la scară largă</td></tr>
+          </table>
+          <p><strong>Prioritate: CRITICĂ</strong> — impact funcțional major, recuperare complexă, risc de DDoS iminent.</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1</div>
+      <div class="analysis">
+        <ul>
+          <li><strong>Segmentare rețea:</strong> Izolarea segmentelor afectate prin modificarea regulilor firewall/switch</li>
+          <li><strong>Blocare removable media:</strong> Dezactivare porturi USB via Group Policy</li>
+          <li><strong>Blocare share-uri:</strong> Restricționare acces la share-urile Windows deschise</li>
+          <li><strong>Înaintea semnăturilor AV:</strong> Blocare hash-uri cunoscute ale worm-ului, blocare trafic către IP-uri C&C</li>
+          <li><strong>Izolarea hosturilor infectate:</strong> Deconectare de la rețea</li>
+          <li><strong>Blocare comunicare DDoS agent:</strong> Filtrare trafic outbound suspect</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <p><strong>Eradicare:</strong></p>
+        <ul>
+          <li>Actualizare semnături AV pe toate hosturile imediat ce sunt disponibile</li>
+          <li>Scanare completă a tuturor sistemelor din organizație</li>
+          <li>Ștergere worm și agent DDoS de pe hosturile infectate</li>
+          <li>Rebuild sisteme grav compromise din imagini curate</li>
+          <li>Patch vulnerabilitățile exploatate</li>
+        </ul>
+        <p><strong>Recuperare:</strong></p>
+        <ul>
+          <li>Restaurare sisteme din backup-uri curate</li>
+          <li>Verificare funcționare normală</li>
+          <li>Reconectare graduală la rețea cu monitorizare</li>
+          <li>Monitoring suplimentar pentru reinfecție</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>De ce autorun pe USB nu era dezactivat?</li>
+          <li>Segmentarea rețelei a fost suficientă?</li>
+          <li>Cât de repede s-a răspuns? A existat întârziere?</li>
+          <li>Sunt necesare soluții EDR (Endpoint Detection and Response)?</li>
+          <li>Politica de removable media trebuie actualizată?</li>
+          <li>Plan de comunicare pentru utilizatori în caz de infecție masivă</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <h3>Întrebări Specifice Scenariului</h3>
+  <details class="specific-q">
+    <summary>Cum ar preveni organizația worm-ul înainte de semnăturile AV?</summary>
+    <div class="sq-content">
+      <p>Blocare executare automată pe removable media (Group Policy), restricționare share-uri Windows, segmentare rețea, blocare hash-uri binare dacă sunt disponibile (IOC sharing), application whitelisting, restricționare trafic outbound suspect.</p>
+    </div>
+  </details>
+  <details class="specific-q">
+    <summary>Ce se schimbă dacă hosturile infectate sunt programate să atace altă organizație dimineață?</summary>
+    <div class="sq-content">
+      <p>Urgența crește dramatic. Se adaugă: <strong>notificare organizația țintă</strong> (conform §2.3.4.4), raportare US-CERT, izolarea imediată a tuturor hosturilor infectate (chiar dacă afectează productivitatea), blocare trafic outbound către IP-urile țintă. Responsabilitatea legală crește — dacă organizația știe de compromis și permite atacul, poate fi responsabilă.</p>
+    </div>
+  </details>
+  <details class="specific-q">
+    <summary>Ce se schimbă dacă hosturile conțin PII (date personale angajați)?</summary>
+    <div class="sq-content">
+      <div class="reference">Referință: §2.3.4.4 (OMB M-07-16)</div>
+      <p>Se activează procedura de <strong>breach notification</strong>: notificare persoane afectate, autorități de protecție date, legal department. Information Impact devine <strong>Privacy Breach</strong>. Se verifică dacă worm-ul a exfiltrat date. Se face analiză forensic suplimentară pe hosturile cu PII. Prioritatea rămâne critică dar se adaugă componenta legală/compliance.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 3 -->
+<!-- ============================================================ -->
+<section id="scenariu-3" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 3: Documente Furate (Stolen Documents)</h3></div>
+  <a href="scenariu-3-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Luni dimineață, departamentul juridic primește un apel de la FBI referitor la activitatea suspectă ce implică sistemele organizației. FBI investighează postarea publică a unor documente guvernamentale sensibile, iar unele aparțin organizației. FBI cere asistența organizației, iar managementul cere echipei de incident response să obțină dovezile necesare pentru a determina dacă documentele sunt legitime și cum au fost scurse.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="question-block">
+        <div class="reference">Referință: §2.1</div>
+        <div class="analysis">
+          <p>Scurgerea de documente sensibile guvernamentale = <strong>încălcare gravă</strong>: compromiterea confidențialității, posibil acces neautorizat la sisteme, încălcare politici de clasificare informații.</p>
+          <p><strong>Important:</strong> FBI este deja implicat — coordonarea cu law enforcement este critică (§2.3.4.2).</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="question-block">
+        <div class="reference">Referință: §3.2.4</div>
+        <div class="analysis">
+          <p>Detecția vine <strong>extern</strong> (FBI), nu intern — semn că organizația nu avea mecanisme adecvate de detecție a exfiltrării.</p>
+          <p><strong>Analiză necesară:</strong></p>
+          <ul>
+            <li>Verificare autenticitate documente (sunt reale?)</li>
+            <li>Identificare sursa scurgerii: insider, hack extern, compromitere cont</li>
+            <li>Audit log-uri acces pentru documentele respective</li>
+            <li>Verificare log-uri email, transfer fișiere, acces VPN</li>
+            <li>Data Loss Prevention logs (dacă există)</li>
+            <li>Verificare conturi cu acces la documentele respective</li>
+          </ul>
+          <p><strong>Prioritizare:</strong> Functional Impact = Low (sisteme funcționale), Information Impact = <strong>Proprietary Breach</strong> (documente sensibile publicate), Recoverability = <strong>Not Recoverable</strong> (datele sunt deja publice).</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1, §3.3.2</div>
+      <div class="analysis">
+        <ul>
+          <li>Restricționare acces la documentele sensibile rămase</li>
+          <li>Preservare <strong>imediată</strong> a tuturor log-urilor relevante (înainte de rotație/ștergere)</li>
+          <li>Disk image pe sistemele suspecte (nu file backup — §3.3.2)</li>
+          <li>Menținere <strong>confidențialitate</strong> investigație (cercul de persoane informate cât mai mic)</li>
+          <li>Chain of custody riguros pentru toate dovezile (FBI implicat → cerințe legale stricte)</li>
+        </ul>
+        <div class="conclusion">Dovezile trebuie colectate conform procedurilor care permit admisibilitatea în instanță. Colaborare strânsă cu FBI și legal department.</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li>Dacă se identifică un host intern compromis → eradicare malware, rebuild sistem</li>
+          <li>Dacă e rootkit → rebuild complet din imagine curată</li>
+          <li>Dacă e insider → HR implicat, schimbare acces, proceduri disciplinare</li>
+          <li>Schimbare parole pentru conturile cu acces la documentele afectate</li>
+          <li>Implementare DLP (Data Loss Prevention) dacă nu exista</li>
+          <li>Întărire controale acces la documente sensibile</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>De ce organizația nu a detectat scurgerea intern?</li>
+          <li>Sunt necesare soluții DLP?</li>
+          <li>Clasificarea documentelor și controlul accesului sunt adecvate?</li>
+          <li>Audit-urile de acces la documente sensibile sunt suficient de frecvente?</li>
+          <li>Relația cu law enforcement — a funcționat bine? Cum se îmbunătățește?</li>
+          <li>Follow-up report detaliat (obligatoriu dată fiind implicarea FBI)</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 4 -->
+<!-- ============================================================ -->
+<section id="scenariu-4" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 4: Server Bază de Date Compromis</h3></div>
+  <a href="scenariu-4-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Marți seara, un administrator de baze de date efectuează mentenanță pe servere de producție. Observă directoare necunoscute și neobișnuite pe un server. După examinare, concluzionează că serverul a fost atacat și alertează echipa de incident response. Investigația determină că atacatorul a obținut acces root cu 6 săptămâni în urmă.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1</div>
+      <div class="analysis">
+        <p>Acces root neautorizat pe un server de producție = <strong>incident critic</strong>. Încălcări: acces neautorizat la sisteme, compromiterea integrității și potențial a confidențialității, violare practici standard de securitate. Faptul că compromisul durează de <strong>6 săptămâni</strong> agravează situația — atacatorul a avut timp suficient pentru exfiltrare, persistență și mișcare laterală.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.2, §3.2.4</div>
+      <div class="analysis">
+        <p>Detecția a fost <strong>accidentală</strong> (mentenanță de rutină), nu prin mecanisme de securitate — un semnal de alarmă.</p>
+        <p><strong>Analiză necesară:</strong></p>
+        <ul>
+          <li>Ce s-a întâmplat în cele 6 săptămâni? Revizuire log-uri din ultima perioadă</li>
+          <li>Ce date conținea serverul? Au fost accesate/copiate?</li>
+          <li>Cum a obținut atacatorul acces root? Ce vulnerabilitate?</li>
+          <li>Există persistență (backdoor, cont ascuns, proces)?</li>
+          <li>A fost folosit serverul ca pivot pentru alte sisteme?</li>
+          <li>Verificare integritate date din baza de date</li>
+        </ul>
+        <p><strong>Prioritizare:</strong> Functional = Medium/High, Information = <strong>Potențial Privacy + Integrity Loss</strong>, Recoverability = <strong>Extended</strong> (6 săptămâni de activitate malițioasă de investigat).</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1, §3.3.2</div>
+      <div class="analysis">
+        <ul>
+          <li>Izolarea serverului compromis (nu oprirea imediată — se pierd date volatile)</li>
+          <li>Captură memorie RAM înainte de orice altceva</li>
+          <li>Full disk image (pe media write-once)</li>
+          <li>Verificare alte servere din aceeași rețea pentru semne de compromitere</li>
+          <li>Blocare acces atacator: schimbare parole root, verificare chei SSH, blocare IP-uri suspecte</li>
+          <li>Restricționare acces la baza de date</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li><strong>Rebuild complet</strong> din imagine curată (acces root = nu mai poți avea încredere în nimic)</li>
+          <li>Restaurare bază de date din backup verificat (de dinainte de compromis, dacă posibil)</li>
+          <li>Verificare integritate date restaurate</li>
+          <li>Patch vulnerabilitatea exploatată</li>
+          <li>Schimbare TOATE parolele asociate serverului</li>
+          <li>Implementare monitoring suplimentar pe serverul refăcut</li>
+          <li>Hardening configurare: dezactivare servicii nenecesare, restricționare acces rețea</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>De ce compromisul a rămas nedetectat 6 săptămâni?</li>
+          <li>File integrity checking era activ pe server?</li>
+          <li>Log-urile erau monitorizate? SIEM configurat corect?</li>
+          <li>Sunt necesare soluții de detecție comportamentală?</li>
+          <li>Politica de audit și monitorizare a serverelor critice necesită revizuire</li>
+          <li>Procedurile de hardening pentru serverele de baze de date sunt adecvate?</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <h3>Întrebări Specifice</h3>
+  <details class="specific-q">
+    <summary>Ce se schimbă dacă serverul rula un packet sniffer și captura parole?</summary>
+    <div class="sq-content">
+      <p>Incidentul se extinde dramatic: <strong>toate parolele capturate pe rețea</strong> sunt compromise. Se schimbă TOATE credențialele din organizație. Se verifică toate conturile pentru acces neautorizat. Information Impact = <strong>Privacy Breach + Integrity Loss</strong>. Se implementează comunicare criptată (SSH în loc de telnet, HTTPS etc.).</p>
+    </div>
+  </details>
+  <details class="specific-q">
+    <summary>Ce se schimbă dacă serverul copia noapte de noapte o bază de date cu PII și o transmitea extern?</summary>
+    <div class="sq-content">
+      <p>Se activează <strong>breach notification</strong> conform legislației. Se determină exact ce date au fost exfiltrate și pe ce perioadă (până la 6 săpt.). Se notifică toate persoanele afectate. Se contactează autoritatea de protecție date. Legal department implicat imediat. Recoverability = <strong>Not Recoverable</strong> (datele au fost deja exfiltrate). Se analizează traficul de rețea pe ultimele 6 săptămâni pentru a determina volumul datelor exfiltrate.</p>
+    </div>
+  </details>
+  <details class="specific-q">
+    <summary>Ce se schimbă dacă se descoperă un rootkit?</summary>
+    <div class="sq-content">
+      <p>Rootkit = compromiterea totală a OS-ului. <strong>Nu se mai poate avea încredere în nimic</strong> de pe acel sistem (nici log-uri, nici fișiere, nici procese vizibile). Obligatoriu: rebuild complet din scratch. Log-urile locale sunt nefiabile — se caută dovezi în log-urile de rețea, SIEM, alte sisteme. Analiză forensic avansată pe disk image (offline). Se verifică dacă rootkit-ul s-a răspândit pe alte sisteme.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 5 -->
+<!-- ============================================================ -->
+<section id="scenariu-5" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 5: Exfiltrare Necunoscută (Unknown Exfiltration)</h3></div>
+  <a href="scenariu-5-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Duminică seara, un senzor IDS de rețea alertează asupra activității de rețea outbound anormale care implică transferuri mari de fișiere. Analistul observă că mii de fișiere .RAR sunt copiate de pe un host intern către un host extern, localizat în altă țară. Conținutul fișierelor .RAR este criptat. Analiza hostului intern arată semne de instalare a unui bot.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1</div>
+      <div class="analysis">
+        <p>Exfiltrarea de date criptate către o țară externă prin intermediul unui bot = <strong>incident critic</strong>. Încălcări majore: acces neautorizat, exfiltrare de date, instalare malware, compromiterea confidențialității.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.2, §3.2.3, §3.2.4</div>
+      <div class="analysis">
+        <p><strong>Indicatori:</strong> Alerte IDS pe trafic outbound anormal, volum mare de date transferate, fișiere .RAR criptate (tentativă de ascundere), conexiune persistentă cu host extern, instalare bot.</p>
+        <p><strong>Analiză:</strong></p>
+        <ul>
+          <li>Ce conțineau fișierele .RAR? Verificare directoare sursă de pe host</li>
+          <li>Cât de mult s-a exfiltrat? Pe ce perioadă?</li>
+          <li>Cum a fost compromis hostul intern? (se descoperă: card wireless!)</li>
+          <li>Este hostul un staging point pentru date de pe alte sisteme?</li>
+          <li>Cine e proprietarul hostului extern? (WHOIS, corelare cu threat intelligence)</li>
+        </ul>
+        <p><strong>Prioritizare:</strong> Functional = Medium, Information = <strong>Probabil Proprietary/Privacy Breach</strong>, Recoverability = <strong>Potentially Not Recoverable</strong>. Prioritate CRITICĂ.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Deconectare host intern de la rețea (oprire exfiltrare imediată)</li>
+          <li>Blocare IP extern la firewall/router de frontieră</li>
+          <li>Captură memorie RAM și disk image ÎNAINTE de oprire (dovezi volatile)</li>
+          <li>Verificare alte hosturi pentru semne similare de compromitere</li>
+          <li>Blocare comunicare cu IP-uri asociate botnet-ului</li>
+          <li>Dacă compromis prin wireless → verificare securitatea rețelei wireless</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li>Ștergere bot de pe hostul compromis, rebuild sistem</li>
+          <li>Patch vulnerabilitate wireless exploatată</li>
+          <li>Schimbare tot parole pe conturile accesate de pe hostul compromis</li>
+          <li>Implementare monitorizare suplimentară pe trafic outbound</li>
+          <li>DLP pentru detectare transferuri masive de date</li>
+          <li>Restricționare acces wireless, WPA3, segmentare rețea wireless</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Securitatea wireless era adecvată?</li>
+          <li>DLP era implementat? Ar fi detectat exfiltrarea?</li>
+          <li>Monitorizarea traficului outbound era suficientă (volumul de date transferat)?</li>
+          <li>Threat intelligence - era cunoscut IP-ul extern?</li>
+          <li>Proceduri de verificare a dispozitivelor wireless ale angajaților?</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 6 -->
+<!-- ============================================================ -->
+<section id="scenariu-6" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 6: Acces Neautorizat la Înregistrări Salarizare</h3></div>
+  <a href="scenariu-6-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Miercuri seara, echipa de securitate fizică primește un apel de la un administrator de salarizare care a văzut o persoană necunoscută ieșind din biroul ei, alergând pe hol și ieșind din clădire. Workstation-ul era deblocat și nesupravegheat doar câteva minute. Aplicația de salarizare este încă logată pe meniul principal, dar administratorul observă că mouse-ul pare să fi fost mișcat.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1</div>
+      <div class="analysis">
+        <p>Acces fizic neautorizat + potențial acces la date de salarizare (PII: numere de identificare, salarii, conturi bancare) = <strong>incident</strong>. Încălcări: acces neautorizat la sisteme și date sensibile, breșă de securitate fizică.</p>
+        <p>Măsuri preventive care ar fi limitat impactul: <strong>screensaver cu parolă la blocare automată</strong>, badge access pe uși, sesiuni cu timeout, training angajați despre blocarea stațiilor.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.4</div>
+      <div class="analysis">
+        <p>Detecția vine de la <strong>observație umană</strong> (administratorul), nu de la sisteme tehnice.</p>
+        <p><strong>Analiză necesară:</strong></p>
+        <ul>
+          <li>Examinare audit log-uri aplicație salarizare (ce ecrane au fost accesate, ce acțiuni)</li>
+          <li>Verificare log-uri OS (aplicații lansate, fișiere accesate, USB conectat?)</li>
+          <li>Camerele de supraveghere — identificare persoană</li>
+          <li>Verificare dacă s-au copiat date (clipboard history, fișiere temporare, email trimis)</li>
+          <li>Verificare browser history, recente fișiere</li>
+        </ul>
+        <p><strong>Prioritizare:</strong> Functional = None/Low, Information = <strong>Potențial Privacy Breach</strong> (date salarizare = PII), Recoverability = <strong>Depinde</strong> (dacă datele au fost copiate, nu se poate recupera).</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1, §3.3.2</div>
+      <div class="analysis">
+        <ul>
+          <li>Nu închide/reporni workstation-ul! (se pierd dovezi volatile)</li>
+          <li>Captură memorie RAM, screenshot-uri session-uri active</li>
+          <li>Disk image complet</li>
+          <li>Securizare fizică: blocare birou, restricționare acces</li>
+          <li>Schimbare parola contului de salarizare imediat</li>
+          <li>Verificare log-uri acces fizic (badge readers) pentru identificare persoană</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li>Dacă se găsește keystroke logger → rebuild complet, schimbare TOATE parolele folosite pe acel sistem</li>
+          <li>Implementare screensaver cu blocare automată</li>
+          <li>Implementare session timeout pe aplicația de salarizare</li>
+          <li>Verificare integritate date salarizare</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Politica de blocare stații de lucru → training obligatoriu</li>
+          <li>Controale fizice de acces → badge pe fiecare ușă, nu doar la intrare</li>
+          <li>Session timeout pe aplicații sensibile</li>
+          <li>Dacă fost angajat → proceduri de revocare acces (offboarding) adecvate?</li>
+          <li>Dacă social engineering → training awareness angajați</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 7 -->
+<!-- ============================================================ -->
+<section id="scenariu-7" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 7: Host Dispărut (Disappearing Host)</h3></div>
+  <a href="scenariu-7-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Joi după-amiază, un senzor IDS detectează activitate de scanare a vulnerabilităților direcționată către hosturi interne, generată de o adresă IP internă. Analistul nu are cunoștință despre nicio scanare autorizată programată. Când echipa începe analiza, activitatea s-a oprit și nu mai există un host la acea adresă IP.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1</div>
+      <div class="analysis">
+        <p>Scanarea neautorizată de vulnerabilități = <strong>incident</strong> (potențial precursor al unui atac mai grav). Chiar dacă scanarea în sine poate părea minoră, faptul că hostul a „dispărut" sugerează acțiune deliberată de evitare a detecției.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.3, §3.2.4</div>
+      <div class="analysis">
+        <p><strong>Surse pentru identificarea hostului:</strong></p>
+        <ul>
+          <li>Log-uri DHCP (ce MAC address a primit acel IP)</li>
+          <li>ARP cache pe switch-uri și routere</li>
+          <li>Switch port logs (pe ce port fizic era conectat)</li>
+          <li>Log-uri NAC (Network Access Control)</li>
+          <li>Log-uri WiFi (dacă era conectat wireless)</li>
+          <li>Asset management / inventar dispozitive</li>
+          <li>Camere de supraveghere în zona switch-ului/prizei de rețea</li>
+        </ul>
+        <p><strong>Prioritizare:</strong> Depinde de țintă. Dacă scanarea era către hosturi critice → prioritate ridicată. Dacă era gateway wireless guest → posibil vizitator/contractor.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Blocare adresa MAC a dispozitivului pe switch/NAC</li>
+          <li>Monitorizare porturi de rețea din zona identificată</li>
+          <li>Alertare echipa de securitate fizică pentru supraveghere</li>
+          <li>Dacă era pe wireless guest → restricționare/monitorizare rețea guest</li>
+          <li>Verificare rezultatele scanării — au fost exploatate vulnerabilități?</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li>Patch vulnerabilitățile descoperite prin scanare (chiar dacă nu au fost exploatate)</li>
+          <li>Verificare hosturi scanate pentru semne de compromitere</li>
+          <li>Implementare NAC dacă nu exista</li>
+          <li>Restricționare acces rețea pentru dispozitive necunoscute</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>NAC implementat? Dispozitivele necunoscute pot accesa rețeaua?</li>
+          <li>Segmentarea rețelei este adecvată?</li>
+          <li>Securitatea fizică — cine are acces la prizele de rețea?</li>
+          <li>Proceduri de autorizare a scanărilor de vulnerabilități</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 8 -->
+<!-- ============================================================ -->
+<section id="scenariu-8" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 8: Compromitere Telecommuting</h3></div>
+  <a href="scenariu-8-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Sâmbătă noaptea, software-ul IDS detectează o conexiune inbound de la o adresă IP aflată pe un watchlist. Conexiunea este către serverul VPN al organizației. Echipa revizuiește log-urile IDS, firewall și VPN și identifică user ID-ul autentificat pentru sesiune și numele utilizatorului asociat.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1</div>
+      <div class="analysis">
+        <p>Conexiune VPN de la o adresă IP pe watchlist + autentificare cu credențiale ale unui angajat = <strong>incident</strong>. Posibilă compromitere cont utilizator, acces neautorizat prin VPN. Gravitate dependentă de: utilizatorul este complice sau victimă?</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.2, §3.2.4</div>
+      <div class="analysis">
+        <p><strong>Indicatori:</strong> IP pe watchlist, conexiune sâmbătă noaptea (neobișnuit?), activitate pe VPN.</p>
+        <p><strong>Pași următori:</strong></p>
+        <ul>
+          <li><strong>Pasul 1:</strong> Contactare utilizator acasă — verificare dacă este el/ea conectat. Acest pas e primul deoarece determină direcția investigației.</li>
+          <li><strong>Pasul 2:</strong> Dacă utilizatorul nu este conectat → dezactivare cont + deconectare sesiune VPN imediat</li>
+          <li>Verificare ce resurse au fost accesate în timpul sesiunii</li>
+          <li>Verificare log-uri pentru conexiuni anterioare de la aceeași IP sau alte IP-uri suspecte</li>
+          <li>Verificare dacă contul a fost folosit de la mai multe IP-uri simultan</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Deconectare sesiune VPN</li>
+          <li>Dezactivare temporară cont utilizator</li>
+          <li>Blocare IP watchlist la firewall</li>
+          <li>Verificare acces la resurse sensibile în timpul sesiunii</li>
+          <li>Dacă computerul utilizatorului e compromis (Trojan) → izolarea computerului</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li>Dacă Trojan pe computerul home → curățare/rebuild computer utilizator</li>
+          <li>Dacă keystroke logger → schimbare TOATE parolele utilizatorului (impact mai mare dacă e admin sau executiv)</li>
+          <li>Resetare parola și activare 2FA pe contul VPN</li>
+          <li>Schimbare parole pentru toate resursele accesate</li>
+          <li>Verificare integritate sisteme accesate prin VPN</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>2FA era implementat pe VPN? (dacă nu, de implementat urgent)</li>
+          <li>Politica de utilizare a computerelor personale pentru VPN</li>
+          <li>Watchlist IP integration cu SIEM — alertare automată</li>
+          <li>Training utilizatori despre securitatea echipamentelor de acasă</li>
+          <li>Dacă familia folosește computerul → risc de Trojan prin jocuri/downloads</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 9 -->
+<!-- ============================================================ -->
+<section id="scenariu-9" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 9: Amenințare Anonimă</h3></div>
+  <a href="scenariu-9-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Joi după-amiază, echipa de securitate fizică primește un apel de la un manager IT, raportând că doi angajați au primit amenințări anonime direcționate către sistemele organizației. Pe baza investigației, echipa de securitate fizică consideră că amenințările ar trebui luate în serios și notifică echipele interne, inclusiv echipa de incident response.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1, §3.1</div>
+      <div class="analysis">
+        <p>Amenințarea este un <strong>precursor</strong> (§3.2.2) = semn că un incident ar putea avea loc. Echipa trebuie să ridice nivelul de alertă și pregătire.</p>
+        <p>Diferență față de alte scenarii: <strong>incidentul nu s-a produs încă</strong>. Echipa are oportunitatea de prevenire.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.2, §3.2.3</div>
+      <div class="analysis">
+        <ul>
+          <li>Monitorizare intensificată a tuturor sistemelor critice</li>
+          <li>Verificare log-uri pentru orice activitate suspectă recentă</li>
+          <li>Creșterea sensibilității alertelor IDS/SIEM</li>
+          <li>Scanare vulnerabilități pentru identificarea punctelor slabe</li>
+          <li>Analiza amenințării: sursa, credibilitate, țintă specifică?</li>
+          <li>Coordinare cu securitatea fizică — controale suplimentare de acces</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Containment preemptiv: aplicare patch-uri urgente, tightening firewall rules</li>
+          <li>Backup-uri de urgență pentru sisteme critice</li>
+          <li>Verificare și actualizare planul de continuity</li>
+          <li>Restricționare temporară a accesului extern/remote</li>
+          <li>Alertare ISP pentru potențial atac</li>
+        </ul>
+        <p><strong>Impact securitate fizică crescută:</strong> Poate afecta accesul legitim al angajaților, cauza întârzieri, necesita ajustarea procedurilor IT (ex: VPN restricționat → angajații remote afectați).</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <p>Dacă amenințarea se materializează → proceduri standard de eradicare și recuperare în funcție de tipul atacului. Dacă nu → revenire graduală la nivelul normal de securitate, dar cu măsurile suplimentare menținute o perioadă.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Procedura de répondre la amenințări a funcționat?</li>
+          <li>Comunicarea între securitate fizică și IT a fost eficientă?</li>
+          <li>A fost corectă evaluarea credibilității amenințării?</li>
+          <li>Sunt necesare proceduri mai clare pentru amenințări?</li>
+          <li>Contactarea law enforcement — a fost necesară/efectuată?</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 10 -->
+<!-- ============================================================ -->
+<section id="scenariu-10" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 10: File Sharing Peer-to-Peer</h3></div>
+  <a href="scenariu-10-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Organizația interzice utilizarea serviciilor P2P. Senzorii IDS au semnături activate. Luni seara, un analist observă mai multe alerte P2P în ultimele 3 ore, toate implicând aceeași adresă IP internă.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1</div>
+      <div class="analysis">
+        <p>Utilizarea P2P încalcă explicit <strong>politica de utilizare acceptabilă</strong>. Vector de atac: <strong>Improper Usage</strong> (§3.2.1). E incident conform definiției: încălcare a politicilor organizației de către un utilizator autorizat.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.4, §3.2.6</div>
+      <div class="analysis">
+        <p><strong>Prioritizare — depinde de factori:</strong></p>
+        <ul>
+          <li>Ce fișiere sunt partajate? (conținut ilegal, proprietar, PII?)</li>
+          <li>Computerul conține date sensibile?</li>
+          <li>Este o încălcare repetată?</li>
+          <li>Există risc de malware prin P2P?</li>
+        </ul>
+        <p><strong>Privacy considerations:</strong> Investigarea conținutului fișierelor poate ridica probleme de confidențialitate. Se consultă legal department înainte de examinarea conținutului.</p>
+        <p>Functional = None/Low, Information = <strong>Depinde de conținut partajat</strong>, Recoverability = Regular (dacă nu sunt date compromise).</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Blocare trafic P2P la nivel de firewall/router</li>
+          <li>Identificare utilizator (DHCP, asset management)</li>
+          <li>Contactare utilizator + supervisor</li>
+          <li>Verificare ce fișiere au fost partajate</li>
+          <li>Dacă PII pe computer → izolarea imediată</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li>Dezinstalare software P2P</li>
+          <li>Scanare malware (P2P = vector frecvent)</li>
+          <li>Verificare integritate date pe computer</li>
+          <li>HR implicat pentru acțiuni disciplinare</li>
+          <li>Implementare application whitelisting sau blocarea aplicațiilor P2P via Group Policy</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>De ce utilizatorul a putut instala software P2P? Lipsa restricțiilor admin?</li>
+          <li>IDS-ul a detectat corect — sunt necesare și controale preventive (GPO, application whitelisting)</li>
+          <li>Training awareness angajați despre riscurile P2P</li>
+          <li>Politica de utilizare acceptabilă cunoscută și semnată?</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCENARIUL 11 -->
+<!-- ============================================================ -->
+<section id="scenariu-11" class="scenario">
+  <div class="scenario-header"><h3>Scenariul 11: Access Point Wireless Necunoscut</h3></div>
+  <a href="scenariu-11-detaliat.html" target="_blank" style="display:inline-block; margin:0.5rem 0 0.8rem; padding:6px 16px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:600;">📖 Deschide versiunea detaliată (întrebare cu întrebare)</a>
+  <div class="scenario-text">
+    Luni dimineață, help desk-ul primește apeluri de la 3 utilizatori de pe același etaj care au probleme cu accesul wireless. Un administrator de rețea descoperă un nou access point neautorizat (rogue AP) care nu a fost instalat de echipa sa.
+  </div>
+
+  <details class="phase phase-prep">
+    <summary>Faza 1: Pregătire</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §2.1</div>
+      <div class="analysis">
+        <p>Instalarea unui AP neautorizat = <strong>incident</strong>. Vector: <strong>Impersonation</strong> (rogue AP). Încălcări: instalare echipament neautorizat, potențial MITM, risc de interceptare trafic, acces neautorizat la rețea.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-detect">
+    <summary>Faza 2: Detecție și Analiză</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.2.2, §3.2.4</div>
+      <div class="analysis">
+        <p><strong>Detecția:</strong> Indirectă (rapoarte utilizatori) + confirmată tehnic (admin vede AP nou).</p>
+        <p><strong>Analiză:</strong></p>
+        <ul>
+          <li>Cine a instalat AP-ul? (intern, contractor, atacator extern?)</li>
+          <li>AP-ul capturează trafic? (MITM?)</li>
+          <li>Câți utilizatori s-au conectat la AP-ul rogue? Ce date au trecut prin el?</li>
+          <li>AP-ul este conectat la rețeaua internă?</li>
+        </ul>
+        <p><strong>Localizare fizică:</strong></p>
+        <ul>
+          <li><strong>Cel mai rapid:</strong> Signal strength analysis cu laptop/smartphone — walkabout pe etaj, semnalul cel mai puternic = locația AP-ului</li>
+          <li><strong>Cel mai discret:</strong> Verificare switch port logs — care port pe switch are un MAC address necunoscut</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-contain">
+    <summary>Faza 3: Izolare (Containment)</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.1, §3.3.2</div>
+      <div class="analysis">
+        <ul>
+          <li>Deconectare fizică a AP-ului (dacă localizat)</li>
+          <li>Blocare port switch la care era conectat</li>
+          <li>Confiscare AP (dovadă fizică — chain of custody)</li>
+          <li>Schimbare parole pentru utilizatorii care s-au conectat la AP rogue</li>
+          <li>Verificare dacă AP-ul e conectat la rețeaua internă sau are uplink propriu</li>
+          <li>Dacă AP-ul dispare înainte de localizare → monitoring pentru reapariție, blocare MAC address</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-recover">
+    <summary>Faza 4: Eradicare și Recuperare</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.3.4</div>
+      <div class="analysis">
+        <ul>
+          <li>Verificare toate stațiile de pe etaj pentru malware/compromitere</li>
+          <li>Schimbare credențiale care ar fi putut fi interceptate</li>
+          <li>Implementare wireless IDS (rogue AP detection)</li>
+          <li>802.1X (NAC) pe porturile de rețea</li>
+          <li>Dezactivare porturi de rețea neutilizate</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="phase phase-lessons">
+    <summary>Faza 5: Lecții Învățate</summary>
+    <div class="phase-content">
+      <div class="reference">Referință: §3.4.1</div>
+      <div class="analysis">
+        <ul>
+          <li>Se implementează wireless IDS pentru detecție automată rogue AP</li>
+          <li>802.1X (port-based NAC) pe toate porturile de rețea</li>
+          <li>Politica de securitate interzice instalarea de echipamente wireless fără autorizare?</li>
+          <li>Training angajați: cum verifică la ce rețea se conectează</li>
+          <li>Inspecții periodice ale spectrului wireless</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- NOTE DE CURS -->
+<!-- ============================================================ -->
+<section id="note-curs">
+  <h2>📝 Note de Curs</h2>
+
+  <div class="note-card" style="border-left-color: var(--phase-prep)">
+    <h4>Curs 2 (10 oct) — RSA & CTF</h4>
+    <ul>
+      <li>Exercițiu CTF — RSA Attack (Olimpiada Internațională de Criptografie 2020)</li>
+      <li>Soluție recuperare parametri RSA folosind oracol de criptare: A = enc(2)², B = enc(4), C = enc(2)·enc(3), D = enc(6)</li>
+      <li>Calculez A-B, C-D, apoi gcd(A-B, C-D) → factorizare → p, q</li>
+      <li>Numere prime Fermat: 2^(2^n)+1. F4 = 65537 = 2^16 + 1 — exponent RSA standard</li>
+    </ul>
+  </div>
+
+  <div class="note-card" style="border-left-color: var(--phase-detect)">
+    <h4>Curs 4 (23 oct) — Modelul de Securitate & Gestionare Incidente</h4>
+    <ul>
+      <li><strong>Lebăda neagră</strong> — clasificare amenințare</li>
+      <li>Modelul de securitate: Algoritmi → Module criptografice → Produse → Aplicație/Sistem</li>
+      <li>Utilizatorii produc &gt;90% din incidentele de securitate</li>
+      <li><strong>Studii de caz:</strong> Heathrow 2017, Kiev 2017 ransomware, Bristol 2018, LAX 2019 phishing</li>
+      <li><strong>6 pași ransomware:</strong></li>
+      <ol>
+        <li>Deconectăm echipamente infectate de la rețea</li>
+        <li>Efectuăm proceduri de backup offline</li>
+        <li>Activăm planul de răspuns la incidente</li>
+        <li>Identificăm și răspundem vulnerabilităților din ecosistem</li>
+        <li>Ne asigurăm că toată reteaua este protejată înainte de repornire</li>
+        <li>Monitorizare post-incident</li>
+      </ol>
+      <li><strong>Exemplu phishing:</strong> email → URL aparent legitim → Maria schimbă datele → atacatorii obțin credențiale → acces sisteme → copiere fișiere sensibile → compromitere email Maria → atac propagat la colegi</li>
+      <li><strong>Gestionare incident:</strong> Pregătire → Detecție și Analiză → Izolare, Eradicare, Recuperare → Activități post-incident</li>
+    </ul>
+  </div>
+
+  <div class="note-card" style="border-left-color: var(--phase-contain)">
+    <h4>Curs 5 — Securizare & Malware</h4>
+    <p><strong>Securizare laptop (8 măsuri):</strong></p>
+    <ol>
+      <li>Aplicații anti-malware/suite securitate complexe</li>
+      <li>Actualizare bază de date semnături malware</li>
+      <li>Criptare date sensibile (incident Heathrow 2017-2018, USB cu plan antiterorist)</li>
+      <li>Securizare OS: patch-uri, control acces, actualizări periodice</li>
+      <li>Actualizare aplicații critice (AV, firewall, IDPS)</li>
+      <li>Backup-uri: periodice, pe suporturi dedicate, criptate, în mai multe locații fizice</li>
+      <li>Gestionare parole: manager parole, parole puternice, unice, schimbate periodic</li>
+      <li>Autentificare 2FA (token securitate, smartphone)</li>
+    </ol>
+
+    <p><strong>Autentificare cifrată — 3 metode:</strong></p>
+    <div class="formula-box">
+      Enc(M) || Auth(Enc(M)) → <strong>IPSec</strong> (Encrypt-then-MAC)<br>
+      Enc(M || Auth(M)) → <strong>SSL</strong> (MAC-then-Encrypt)<br>
+      Enc(M) || Auth(M) → <strong>SSH</strong> (Encrypt-and-MAC)
+    </div>
+
+    <p><strong>Securizare rețea wireless:</strong> Filtrare MAC, ascundere SSID, IP-uri statice, reducere range DHCP.</p>
+
+    <p><strong>Atacuri email:</strong> Bombing (fișiere mari repetate), Spoofing (adresă falsificată), Spamming (conținut comercial), Phishing (furt credențiale).</p>
+
+    <p><strong>Atacuri web:</strong> DoS/DDoS (suprasolicitare), XSS (script malițios pe site), SQL injection (cod prin formulare intrare). Soluții: Security by design, validare input, evaluări risc.</p>
+  </div>
+
+  <div class="note-card" style="border-left-color: var(--phase-recover)">
+    <h4>Curs 9 (5 dec) — Shamir & Diffie-Hellman</h4>
+    <ul>
+      <li><strong>Schema de partajare secrete Shamir</strong></li>
+      <li><strong>Protocolul Diffie-Hellman</strong> — schimb de chei fără canal sigur inițial</li>
+      <li>Aplicații: TLS/SSL, VPN, comunicații securizate, crypto & blockchain</li>
+      <li><strong>ECDH</strong> — securitate mai bună, chei mai mici, performanță mai bună</li>
+      <li>Limitări DH: vulnerabil la MITM dacă identitatea nu e verificată; necesită numere prime mari</li>
+    </ul>
+  </div>
+
+  <div class="note-card" style="border-left-color: var(--phase-lessons)">
+    <h4>Curs 12 dec — Semnături Digitale</h4>
+    <ul>
+      <li>Mesaj semnat electronic, funcții hash, proprietăți</li>
+      <li>M1: „MESAJ DE SEMNAT ELECTRONIC" → hash: 82 B9 FD 38...</li>
+      <li>M2: „MESAJ EE SEMNAT ELECTRONIC" → hash: 5D 6E C9 52... (complet diferit!)</li>
+      <li>Demonstrează <strong>efectul avalanșă</strong>: o modificare mică în mesaj → hash complet diferit</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHECKLIST -->
+<!-- ============================================================ -->
+<section id="checklist">
+  <h2>✅ Checklist Incident Handling (Table 3-5)</h2>
+  <ul class="checklist">
+    <li class="cl-header">Detection and Analysis</li>
+    <li>1. Determină dacă a avut loc un incident</li>
+    <li>&nbsp;&nbsp;1.1 Analizează precursorii și indicatorii</li>
+    <li>&nbsp;&nbsp;1.2 Caută informații corelate</li>
+    <li>&nbsp;&nbsp;1.3 Efectuează cercetare (search engines, knowledge base)</li>
+    <li>&nbsp;&nbsp;1.4 Imediat ce se suspectează incident → documentează + colectează dovezi</li>
+    <li>2. Prioritizează pe baza factorilor relevanți (functional impact, information impact, recoverability)</li>
+    <li>3. Raportează personalului intern corespunzător și organizațiilor externe</li>
+
+    <li class="cl-header">Containment, Eradication, and Recovery</li>
+    <li>4. Achiziționează, preservă, securizează și documentează dovezile</li>
+    <li>5. Conține incidentul</li>
+    <li>6. Eradică incidentul</li>
+    <li>&nbsp;&nbsp;6.1 Identifică și remediază toate vulnerabilitățile exploatate</li>
+    <li>&nbsp;&nbsp;6.2 Elimină malware, materiale neadecvate, alte componente</li>
+    <li>&nbsp;&nbsp;6.3 Dacă se descoperă alte hosturi afectate → revino la pașii 1.1, 1.2, apoi 5, 6</li>
+    <li>7. Recuperează din incident</li>
+    <li>&nbsp;&nbsp;7.1 Readuce sistemele la starea operațională</li>
+    <li>&nbsp;&nbsp;7.2 Confirmă funcționarea normală</li>
+    <li>&nbsp;&nbsp;7.3 Dacă e necesar, implementează monitoring suplimentar</li>
+
+    <li class="cl-header">Post-Incident Activity</li>
+    <li>8. Creează raport follow-up</li>
+    <li>9. Organizează ședință lessons learned (obligatorie pt incidente majore)</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- ÎNTREBĂRI STANDARD -->
+<!-- ============================================================ -->
+<section id="intrebari-standard">
+  <h2>❓ Întrebări Standard (Appendix A.1)</h2>
+  <p class="text-muted">Aceste întrebări se aplică la <strong>ORICE</strong> scenariu. Referințele indică secțiunea NIST pentru fundamentare.</p>
+
+  <h3>Preparation</h3>
+  <ol>
+    <li><strong>Este un incident?</strong> Ce politici sunt încălcate? → §2.1<br>
+      <em>Pattern: aplică definiția incidentului — încălcare sau amenințare iminentă la adresa politicilor de securitate, politicilor de utilizare acceptabilă, sau practicilor standard.</em></li>
+    <li><strong>Ce măsuri preventive</strong> ar fi limitat impactul? → §3.1.2<br>
+      <em>Pattern: Risk assessment, host security, network security, malware prevention, user awareness.</em></li>
+  </ol>
+
+  <h3>Detection and Analysis</h3>
+  <ol>
+    <li><strong>Ce precursori</strong> ar putea fi detectați? Ar conduce la acțiune? → §3.2.2, §3.2.3</li>
+    <li><strong>Ce indicatori</strong> ar fi detectabili? → §3.2.2, §3.2.3</li>
+    <li><strong>Ce unelte suplimentare</strong> sunt necesare? → §3.2.3</li>
+    <li><strong>Cum se analizează și validează?</strong> Cine e implicat? → §3.2.4</li>
+    <li><strong>Cui se raportează</strong> intern? → §3.2.7</li>
+    <li><strong>Cum se prioritizează?</strong> → §3.2.6<br>
+      <em>Pattern: evaluare functional impact, information impact, recoverability effort.</em></li>
+  </ol>
+
+  <h3>Containment, Eradication, and Recovery</h3>
+  <ol>
+    <li><strong>Strategie de containment?</strong> De ce? → §3.3.1<br>
+      <em>Pattern: criterii = daune potențiale, preservare dovezi, disponibilitate servicii, timp/resurse, eficacitate, durată.</em></li>
+    <li><strong>Ce s-ar întâmpla dacă NU se conține?</strong> → §3.3.1</li>
+    <li><strong>Unelte suplimentare</strong> pentru răspuns? → §3.3.1, §3.3.4</li>
+    <li><strong>Personal implicat</strong> în containment/eradication/recovery? → §3.3.1, §3.3.4</li>
+    <li><strong>Dovezi:</strong> ce surse, cum se achiziționează, unde se stochează, cât se rețin? → §3.2.5, §3.3.2, §3.4.3</li>
+  </ol>
+
+  <h3>Post-Incident Activity</h3>
+  <ol>
+    <li><strong>Cine participă</strong> la ședința lessons learned? → §3.4.1</li>
+    <li><strong>Ce se face pentru prevenire</strong> incidente similare? → §3.1.2</li>
+    <li><strong>Ce se face pentru îmbunătățirea detecției</strong> incidentelor similare? → §3.1.2</li>
+  </ol>
+
+  <h3>General Questions</h3>
+  <ol>
+    <li>Câți membrii ai echipei participă? → §2.4.3</li>
+    <li>Ce alte grupuri din organizație sunt implicate? → §2.4.4<br>
+      <em>Management, IA, IT Support, Legal, PR, HR, Business Continuity, Physical Security</em></li>
+    <li>Căror părți externe se raportează? Când? Cum? Ce info? → §2.3.4</li>
+    <li>Ce alte comunicări externe pot avea loc? → §2.3.4</li>
+    <li>Ce unelte și resurse se folosesc? → §3.1.1</li>
+    <li>Cum ar fi diferit dacă era în alt moment (on-hours vs off-hours)? → §2.4.2</li>
+    <li>Cum ar fi diferit dacă era altă locație (onsite vs offsite)? → §2.4.2</li>
+  </ol>
+</section>
+
+<!-- ============================================================ -->
+<!-- APPENDIX G: CRISIS STEPS -->
+<!-- ============================================================ -->
+<section id="crisis-steps">
+  <h2>🚨 Pași de Criză (Appendix G)</h2>
+  <div class="card">
+    <p><em>Referință rapidă — ce faci când este criză și nu ai timp de citit tot documentul:</em></p>
+    <ol>
+      <li><strong>Documentează tot.</strong> Fiecare acțiune, fiecare dovadă, fiecare conversație.</li>
+      <li><strong>Găsește un coleg.</strong> Unul documentează, celălalt acționează.</li>
+      <li><strong>Analizează dovezile</strong> pentru a confirma incidentul. Cercetare suplimentară dacă e nevoie.</li>
+      <li><strong>Notifică persoanele potrivite</strong> (CIO, head of security). Doar celor care trebuie să știe. Canal securizat.</li>
+      <li><strong>Notifică US-CERT / CSIRT</strong> pentru asistență.</li>
+      <li><strong>Oprește incidentul</strong> — deconectare sisteme, modificare firewall/router.</li>
+      <li><strong>Preservă dovezile</strong> — disk images, copii log-uri.</li>
+      <li><strong>Elimină toate efectele</strong> — malware, fișiere Trojan, rebuild dacă compromis total.</li>
+      <li><strong>Identifică și remediază vulnerabilitățile</strong> exploatate.</li>
+      <li><strong>Confirmă revenirea la normal.</strong></li>
+      <li><strong>Creează raport final</strong> cu cronologie și estimare costuri.</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<script>
+// === NIST Section Mapping ===
+const nistPages = {
+  '2.1':16, '2.3':17, '2.3.2':18, '2.3.4':19, '2.3.4.2':19, '2.3.4.4':19,
+  '2.4':23, '2.4.2':24, '2.4.3':26, '2.4.4':27,
+  '3.1':31, '3.1.1':31, '3.1.2':33,
+  '3.2':35, '3.2.1':35, '3.2.2':36, '3.2.3':37, '3.2.4':38, '3.2.5':40, '3.2.6':42, '3.2.7':43,
+  '3.3':45, '3.3.1':45, '3.3.2':46, '3.3.3':47, '3.3.4':47,
+  '3.4':48, '3.4.1':48, '3.4.2':49, '3.4.3':51,
+  '3.5':52
+};
+// Fallback: subsections go to parent summary if no exact match
+const summaryFallback = {
+  '2.3.4.2':'2.3.4', '2.3.4.4':'2.3.4', '3':'3.1'
+};
+const pdfFile = 'NIST.SP.800-61r2.pdf';
+
+// Map sections to their chapter page
+function getChapterPage(sec) {
+  const s = summaryFallback[sec] || sec;
+  if (s.startsWith('2')) return 'nist-chapter2.html';
+  if (s.startsWith('3')) return 'nist-chapter3.html';
+  return null;
+}
+
+// === Popup Element ===
+const popup = document.createElement('div');
+popup.id = 'nist-popup';
+popup.innerHTML = `
+  <div class="nist-popup-title"></div>
+  <a class="nist-popup-btn nist-popup-summary" href="#">📖 Vezi Rezumatul</a>
+  <a class="nist-popup-btn nist-popup-pdf" href="#" target="_blank">📄 Deschide PDF</a>
+`;
+document.body.appendChild(popup);
+
+let popupTimeout;
+function showPopup(el, sec) {
+  clearTimeout(popupTimeout);
+  const rect = el.getBoundingClientRect();
+  const page = nistPages[sec];
+  const summaryId = summaryFallback[sec] || sec;
+  const chapterPage = getChapterPage(sec);
+
+  popup.querySelector('.nist-popup-title').textContent = '§' + sec;
+
+  // Summary button — opens the dedicated chapter page
+  const summaryBtn = popup.querySelector('.nist-popup-summary');
+  if (chapterPage) {
+    summaryBtn.href = chapterPage + '#nist-' + summaryId;
+    summaryBtn.target = '_blank';
+    summaryBtn.style.display = '';
+    summaryBtn.onclick = () => { hidePopup(); };
+  } else {
+    summaryBtn.style.display = 'none';
+  }
+
+  // PDF button
+  const pdfBtn = popup.querySelector('.nist-popup-pdf');
+  if (page) {
+    pdfBtn.href = pdfFile + '#page=' + page;
+    pdfBtn.style.display = '';
+    pdfBtn.onclick = () => { hidePopup(); };
+  } else {
+    pdfBtn.style.display = 'none';
+  }
+
+  popup.classList.add('visible');
+  // Position
+  const popupW = 220;
+  let left = rect.left + rect.width / 2 - popupW / 2;
+  if (left < 8) left = 8;
+  if (left + popupW > window.innerWidth - 8) left = window.innerWidth - popupW - 8;
+  let top = rect.bottom + window.scrollY + 8;
+  popup.style.left = left + 'px';
+  popup.style.top = top + 'px';
+}
+
+function hidePopup() {
+  popup.classList.remove('visible');
+}
+
+// Hide popup on click outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#nist-popup') && !e.target.classList.contains('nist-ref-link')) {
+    hidePopup();
+  }
+});
+document.addEventListener('scroll', () => { hidePopup(); }, { passive: true });
+
+// === Make ALL §X.Y references clickable across entire page ===
+function processTextNodes(root) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (node) => {
+      // Skip script/style/already-processed
+      const tag = node.parentElement?.tagName;
+      if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'A' || tag === 'INPUT' || tag === 'TEXTAREA') return NodeFilter.FILTER_REJECT;
+      if (node.parentElement?.classList.contains('nist-ref-link')) return NodeFilter.FILTER_REJECT;
+      // Match §X.Y or §X.Y.Z or §X.Y.Z.W
+      return /§[\d.]+/.test(node.textContent) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach(textNode => {
+    const frag = document.createDocumentFragment();
+    const parts = textNode.textContent.split(/(§[\d.]+)/g);
+    parts.forEach(part => {
+      const m = part.match(/^§([\d.]+)$/);
+      if (m) {
+        const sec = m[1].replace(/\.$/, ''); // remove trailing dot
+        const span = document.createElement('span');
+        span.className = 'nist-ref-link';
+        span.textContent = '§' + sec;
+        span.dataset.sec = sec;
+        span.title = 'Click pentru opțiuni: rezumat sau PDF';
+        span.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          showPopup(this, this.dataset.sec);
+        });
+        frag.appendChild(span);
+      } else {
+        frag.appendChild(document.createTextNode(part));
+      }
+    });
+    textNode.parentNode.replaceChild(frag, textNode);
+  });
+}
+
+// Process entire main content + references
+processTextNodes(document.querySelector('main'));
+
+// === Active nav highlight on scroll ===
+const allSections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  allSections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+
+// Close sidebar on mobile after click
+navLinks.forEach(l => l.addEventListener('click', () => {
+  if (window.innerWidth <= 768) document.querySelector('.sidebar').classList.remove('open');
+}));
+
+// Simple search
+document.getElementById('searchBox').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase();
+  if (q.length < 2) { allSections.forEach(s => s.style.display = ''); return; }
+  allSections.forEach(s => {
+    s.style.display = s.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+</script>
+
+</body>
+</html>

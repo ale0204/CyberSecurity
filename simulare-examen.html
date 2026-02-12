@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮 Simulare Examen — Daniel & Alexandra</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .sim-nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 60px);
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1rem 0;
+      z-index: 100;
+    }
+    .sim-nav a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .sim-nav a:hover, .sim-nav a.active {
+      color: var(--primary);
+      background: rgba(74,70,200,0.05);
+      border-left-color: var(--primary);
+    }
+    .sim-nav .nav-title {
+      padding: 8px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .sim-nav .sep {
+      padding: 10px 20px 4px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    html { font-size: 130%; }
+    .sim-main {
+      margin-left: 260px;
+      padding: 2rem 2.5rem 4rem;
+      max-width: 1200px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Role badges */
+    .role-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-right: 0.3rem;
+    }
+    .role-daniel {
+      background: rgba(52, 152, 219, 0.15);
+      color: #2980b9;
+      border: 1px solid rgba(52, 152, 219, 0.3);
+    }
+    .role-alexandra {
+      background: rgba(231, 76, 60, 0.12);
+      color: #c0392b;
+      border: 1px solid rgba(231, 76, 60, 0.25);
+    }
+    .role-both {
+      background: rgba(142, 68, 173, 0.12);
+      color: #8e44ad;
+      border: 1px solid rgba(142, 68, 173, 0.25);
+    }
+
+    /* Intro card */
+    .intro-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .intro-card h2 {
+      margin: 0 0 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+    }
+
+    /* Role assignment section */
+    .role-assign {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin: 1rem 0;
+    }
+    .role-card-sim {
+      padding: 1.2rem;
+      border-radius: 10px;
+      border: 2px solid;
+    }
+    .role-card-daniel {
+      background: linear-gradient(135deg, rgba(52,152,219,0.08), rgba(52,152,219,0.01));
+      border-color: rgba(52,152,219,0.3);
+    }
+    .role-card-alexandra {
+      background: linear-gradient(135deg, rgba(231,76,60,0.08), rgba(231,76,60,0.01));
+      border-color: rgba(231,76,60,0.25);
+    }
+    .role-card-sim h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    .role-card-sim ul {
+      margin: 0.3rem 0 0 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .role-card-sim li { margin-bottom: 0.3rem; }
+
+    /* Scenario simulation card */
+    .sim-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .sim-block h2 {
+      font-size: 1.4rem;
+      margin: 0 0 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+    }
+    .sim-block h3 {
+      font-size: 1.1rem;
+      margin: 1.5rem 0 0.8rem;
+    }
+
+    .scenario-brief {
+      background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01));
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.2rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Phase blocks */
+    .phase-sim {
+      margin: 1rem 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .phase-sim summary {
+      cursor: pointer;
+      padding: 0.8rem 1.2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .phase-sim summary::-webkit-details-marker { display: none; }
+    .phase-sim summary::before {
+      content: '▶';
+      font-size: 0.7rem;
+      transition: transform 0.2s;
+    }
+    .phase-sim[open] summary::before { transform: rotate(90deg); }
+    .phase-sim .phase-body {
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+    }
+
+    .phase-prep-sim summary { background: var(--phase-prep); }
+    .phase-detect-sim summary { background: var(--phase-detect); }
+    .phase-contain-sim summary { background: var(--phase-contain); }
+    .phase-recover-sim summary { background: var(--phase-recover); }
+    .phase-lessons-sim summary { background: var(--phase-lessons); }
+
+    /* Dialog blocks */
+    .dialog {
+      margin: 0.8rem 0;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      position: relative;
+    }
+    .dialog-daniel {
+      background: rgba(52,152,219,0.06);
+      border-left: 3px solid #2980b9;
+      margin-right: 2rem;
+    }
+    .dialog-alexandra {
+      background: rgba(231,76,60,0.06);
+      border-left: 3px solid #c0392b;
+      margin-right: 2rem;
+    }
+    .dialog .speaker {
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+    }
+    .dialog-daniel .speaker { color: #2980b9; }
+    .dialog-alexandra .speaker { color: #c0392b; }
+    .dialog p, .dialog ul { margin: 0.3rem 0; font-size: 0.92rem; color: var(--text-secondary); }
+    .dialog ul { margin-left: 1rem; }
+
+    /* Exam question */
+    .exam-q {
+      background: rgba(241,196,15,0.1);
+      border: 1px solid rgba(241,196,15,0.3);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 0;
+    }
+    .exam-q .q-label {
+      font-weight: 700;
+      color: #f39c12;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
+    }
+    .exam-q p {
+      margin: 0;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Hidden answer */
+    .answer-reveal {
+      margin: 0.5rem 0 1rem;
+    }
+    .answer-reveal summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--primary);
+      padding: 0.4rem 0;
+      list-style: none;
+      font-size: 0.9rem;
+    }
+    .answer-reveal summary::-webkit-details-marker { display: none; }
+    .answer-reveal summary::before {
+      content: '👁️ ';
+    }
+    .answer-reveal .answer-body {
+      padding: 0.8rem 1rem;
+      background: rgba(39,174,96,0.05);
+      border-left: 3px solid var(--phase-recover);
+      border-radius: 0 6px 6px 0;
+      margin-top: 0.3rem;
+    }
+    .answer-reveal .answer-body p,
+    .answer-reveal .answer-body ul {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin: 0.3rem 0;
+    }
+    .answer-reveal .answer-body ul { margin-left: 1rem; }
+
+    /* NIST ref tag */
+    .nist-ref-tag {
+      display: inline-block;
+      background: rgba(74,70,200,0.1);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nist-ref-tag:hover { background: rgba(74,70,200,0.2); }
+
+    /* Surprise element */
+    .surprise-box {
+      background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(231,76,60,0.02));
+      border: 2px dashed var(--phase-contain);
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin: 1rem 0;
+    }
+    .surprise-box .surprise-title {
+      font-weight: 700;
+      color: var(--phase-contain);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tips */
+    .tip-box {
+      background: linear-gradient(135deg, rgba(39,174,96,0.08), rgba(39,174,96,0.02));
+      border: 1px solid rgba(39,174,96,0.25);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0;
+    }
+    .tip-box .tip-title {
+      font-weight: 700;
+      color: var(--phase-recover);
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Score tracker */
+    .score-tracker {
+      background: var(--bg-card);
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .score-tracker h3 {
+      color: var(--primary);
+      margin: 0 0 0.5rem;
+    }
+    .score-items { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .score-item label {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .score-item input[type="checkbox"] { accent-color: var(--primary); }
+
+    @media (max-width: 768px) {
+      html { font-size: 112%; }
+      .sim-nav { display: none; }
+      .sim-main { margin-left: 0; padding: 1rem; }
+      .role-assign { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎮 Simulare Examen — Daniel & Alexandra</h1>
+  <p>Practică la examenul de incidente de securitate — joc de roluri pe scenarii reale</p>
+</header>
+
+<nav class="sim-nav">
+  <div class="nav-title">🎮 Simulare</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Pregătire</div>
+  <a href="#cum-functioneaza">Cum funcționează</a>
+  <a href="#rolurile-voastre">Rolurile voastre</a>
+  <a href="#cheat-sheet">Cheat sheet</a>
+  <div class="sep">Simulări</div>
+  <a href="#sim-1">Sim 1: Ransomware</a>
+  <a href="#sim-2">Sim 2: Insider Data Theft</a>
+  <a href="#sim-3">Sim 3: Supply Chain</a>
+  <a href="#sim-4">Sim 4: Phishing → Lateral</a>
+  <a href="#sim-5">Sim 5: Cloud Misconfiguration</a>
+</nav>
+
+<div class="sim-main">
+  <a href="index.html" class="back-link">← Înapoi la pagina principală</a>
+
+  <!-- ============================================================ -->
+  <!-- CUM FUNCȚIONEAZĂ -->
+  <!-- ============================================================ -->
+  <div class="intro-card" id="cum-functioneaza">
+    <h2>📋 Cum Funcționează</h2>
+    <p>La examen, veți primi un <strong>scenariu de incident</strong> și trebuie să-l gestionați împreună, parcurgând toate fazele NIST. Iată cum să exersați:</p>
+
+    <ol style="line-height:1.8;">
+      <li><strong>Citiți scenariul</strong> — doar enunțul, fără a deschide fazele</li>
+      <li><strong>Daniel</strong> conduce răspunsul, <strong>Alexandra</strong> pune întrebări-ghid și verifică</li>
+      <li>Parcurgeți fiecare fază <strong>în ordine</strong>, discutând fiecare întrebare</li>
+      <li>Daniel răspunde <strong>fără să vadă răspunsul</strong>, apoi deschideți pentru verificare</li>
+      <li>La elementul surpriză — reacționați în timp real</li>
+      <li>La final, bifați ce ați acoperit corect în <strong>Score Tracker</strong></li>
+    </ol>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 Sfat important</div>
+      <p style="font-size:0.9rem; color:var(--text-secondary); margin:0;">La examen NU aveți acces la materiale. Scopul acestei simulări e să vă antrenați să <strong>gândiți procedural</strong> fără să citiți. Alexandra: dacă Daniel se blochează, dă-i hint-uri din referințele NIST, nu răspunsul direct.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ROLURILE VOASTRE -->
+  <!-- ============================================================ -->
+  <div class="intro-card" id="rolurile-voastre">
+    <h2>👥 Rolurile Voastre</h2>
+    <p>Voi sunteți o echipă de 2. Iată cum vă împărțiți:</p>
+
+    <div class="role-assign">
+      <div class="role-card-sim role-card-daniel">
+        <h3>🔵 Daniel — Incident Manager & Analist Tehnic</h3>
+        <ul>
+          <li>Conduce răspunsul la incident</li>
+          <li>Identifică dacă e incident sau nu (§2.1)</li>
+          <li>Analizează indicatori și precursori</li>
+          <li>Propune strategia de containment</li>
+          <li>Decide prioritizarea (impact funcțional, info, recoverability)</li>
+          <li>Coordonează eradicarea și recuperarea</li>
+          <li>Documentează tot ce se întâmplă</li>
+        </ul>
+      </div>
+      <div class="role-card-sim role-card-alexandra">
+        <h3>🔴 Alexandra — Comunicare, Conformitate & Verificare</h3>
+        <ul>
+          <li>Pune întrebări-ghid (ca profesorul la examen)</li>
+          <li>Gestionează comunicarea externă</li>
+          <li>Verifică aspectele legale (GDPR, notificare PII)</li>
+          <li>Contactează law enforcement dacă e nevoie</li>
+          <li>Se asigură că chain of custody e respectat</li>
+          <li>Organizează ședința lessons learned</li>
+          <li>Verifică dacă Daniel acoperă toate punctele</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">🔄 Alternare roluri</div>
+      <p style="font-size:0.9rem; color:var(--text-secondary); margin:0;">După 2-3 simulări, <strong>schimbați rolurile</strong>! Daniel ia rolul Alexandrei și invers. Așa învățați ambele perspective și sunteți pregătiți indiferent ce vă cere profesorul.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHEAT SHEET -->
+  <!-- ============================================================ -->
+  <div class="intro-card" id="cheat-sheet">
+    <h2>📝 Cheat Sheet — Ce Trebuie Acoperit la Fiecare Fază</h2>
+    <p style="font-size:0.85rem; color:var(--text-muted);">Folosiți asta ca ghid mental. La examen nu-l aveți, dar acum vă ajută să verificați dacă ați acoperit tot.</p>
+
+    <details class="phase-sim phase-prep-sim">
+      <summary>🟣 Pregătire (Preparation)</summary>
+      <div class="phase-body">
+        <ul>
+          <li>✅ Este un incident? (definiție §2.1: încălcare/amenințare iminentă a politicilor)</li>
+          <li>✅ Ce politici sunt încălcate?</li>
+          <li>✅ Ce măsuri preventive ar fi ajutat? (§3.1.2: risk assessment, host/network security, AV, awareness)</li>
+          <li>✅ Ce resurse și instrumente avem? (§3.1.1: jump kit, forensic workstation, contact lists)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-detect-sim">
+      <summary>🟠 Detecție și Analiză</summary>
+      <div class="phase-body">
+        <ul>
+          <li>✅ Precursori detectabili? (§3.2.2: semne că POATE avea loc)</li>
+          <li>✅ Indicatori detectabili? (§3.2.2: semne că A AVUT loc)</li>
+          <li>✅ Surse: alerte IDPS/SIEM/AV, log-uri OS/rețea, info publice, oameni (§3.2.3)</li>
+          <li>✅ Analiza: corelație surse multiple, baseline, NTP sync (§3.2.4)</li>
+          <li>✅ Prioritizare: Functional Impact + Information Impact + Recoverability (§3.2.6)</li>
+          <li>✅ Notificare: CIO → InfoSec → System Owner → HR/Legal/PR (§3.2.7)</li>
+          <li>✅ Documentare imediată (§3.2.5)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-contain-sim">
+      <summary>🔴 Containment, Eradicare, Recuperare</summary>
+      <div class="phase-body">
+        <ul>
+          <li>✅ Strategie containment: criterii = daune, dovezi, disponibilitate, timp, eficacitate (§3.3.1)</li>
+          <li>✅ Ce se întâmplă dacă NU containuim?</li>
+          <li>✅ Colectare dovezi: chain of custody, disk image, date volatile (§3.3.2)</li>
+          <li>✅ Identificare atacator: WHOIS, search engines, databases, ISP (§3.3.3)</li>
+          <li>✅ Eradicare: ștergere malware, dezactivare conturi, patch vulnerabilități (§3.3.4)</li>
+          <li>✅ Recuperare: restaurare din backup, rebuild, schimbare parole, monitoring (§3.3.4)</li>
+          <li>✅ Ciclul e iterativ — se pot descoperi alte hosturi → înapoi la detecție</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-lessons-sim">
+      <summary>🟢 Post-Incident (Lessons Learned)</summary>
+      <div class="phase-body">
+        <ul>
+          <li>✅ Ședință lessons learned (obligatorie pt incidente majore) (§3.4.1)</li>
+          <li>✅ Întrebări: ce s-a întâmplat, ce a mers, ce nu, ce îmbunătățim</li>
+          <li>✅ Metrici: nr incidente, timp mediu, evaluare obiectivă/subiectivă (§3.4.2)</li>
+          <li>✅ Retenție dovezi: min 2-3 ani, indefinit dacă legal (§3.4.3)</li>
+          <li>✅ Follow-up report: cronologie, cost, vulnerabilități, acțiuni</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="phase-sim" style="margin:1rem 0;">
+      <summary style="background:var(--text-secondary); cursor:pointer; padding:0.8rem 1.2rem; font-weight:700; font-size:1rem; color:white; list-style:none; display:flex; align-items:center; gap:0.5rem; border-radius:10px 10px 0 0;">⚙️ Întrebări Generale (la orice scenariu)</summary>
+      <div class="phase-body">
+        <ul>
+          <li>✅ Câți membri IR participă? (§2.4.3)</li>
+          <li>✅ Ce departamente implicate? Management, IT, Legal, HR, PR, BCP, Physical Security (§2.4.4)</li>
+          <li>✅ Raportare externă: cui, când, cum, ce info (§2.3.4)</li>
+          <li>✅ Instrumente și resurse (§3.1.1)</li>
+          <li>✅ Diferență on-hours vs off-hours (§2.4.2)</li>
+          <li>✅ Diferență onsite vs offsite (§2.4.2)</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SIMULARE 1: RANSOMWARE -->
+  <!-- ============================================================ -->
+  <div class="sim-block" id="sim-1">
+    <h2>🔴 Simulare 1: Ransomware Attack</h2>
+
+    <div class="scenario-brief">
+      Vineri seară, la ora 22:00, mai mulți angajați de la departamentul de contabilitate raportează că nu-și pot deschide fișierele. Pe ecranele lor apare un mesaj care cere 5 Bitcoin (≈ €200.000) pentru decriptare, cu un termen limită de 48 de ore. Un analist de securitate verifică și descoperă că 3 servere de fișiere sunt afectate, iar fișierele au extensia .encrypted. Antivirusul nu a detectat nimic. Backup-urile automate de la ora 18:00 par intacte, dar cele anterioare nu au fost verificate.
+    </div>
+
+    <!-- PREPARATION -->
+    <details class="phase-sim phase-prep-sim">
+      <summary>🟣 Faza 1: Pregătire</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Este aceasta un incident de securitate? Ce politici sunt încălcate?</p>
+        </div>
+        <div class="dialog dialog-alexandra">
+          <div class="speaker">🔴 Alexandra (ghidează):</div>
+          <p>Daniel, gândește-te la definiția NIST a unui incident. Ce criterii verifici?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel (răspunde):</div>
+              <p><strong>Da, este categoric un incident.</strong> Conform §2.1, un incident este o încălcare sau amenințare iminentă la politicile de securitate.</p>
+              <ul>
+                <li><strong>Confidentiality:</strong> Ransomware-ul a accesat fișierele pentru a le cripta → acces neautorizat</li>
+                <li><strong>Integrity:</strong> Fișierele au fost modificate (criptate) → integritatea datelor compromisă</li>
+                <li><strong>Availability:</strong> Fișierele nu mai pot fi accesate → disponibilitatea afectată</li>
+              </ul>
+              <p>Politici încălcate: politica de securitate a informațiilor, politica de protecție a datelor, politica de utilizare acceptabilă a resurselor IT.</p>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce măsuri preventive ar fi putut limita sau preveni acest incident?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li><strong>Host Security</strong> (§3.1.2): Endpoint Detection & Response (EDR) în loc de AV tradițional, application whitelisting</li>
+                <li><strong>Network Security:</strong> Segmentarea rețelei — contabilitatea nu ar trebui să aibă acces direct la toate serverele de fișiere</li>
+                <li><strong>User Awareness:</strong> Training anti-phishing (ransomware-ul vine de obicei prin email)</li>
+                <li><strong>Backup Strategy:</strong> Backup-uri offline/air-gapped, testate regulat</li>
+                <li><strong>Patch Management:</strong> Patch-uri la zi pentru a preveni exploatarea vulnerabilităților</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra (completează):</div>
+              <p>Și <strong>least privilege</strong> — angajații de contabilitate au nevoie de acces write pe toate cele 3 servere de fișiere? Probabil nu.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <!-- DETECTION -->
+    <details class="phase-sim phase-detect-sim">
+      <summary>🟠 Faza 2: Detecție și Analiză</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce precursori și indicatori puteam detecta? Din ce surse?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Precursori</strong> (§3.2.2 — semne că POATE avea loc):</p>
+              <ul>
+                <li>Email-uri de phishing recente la departamentul contabilitate</li>
+                <li>Scanări de rețea sau accesări anormale pe servere în zilele anterioare</li>
+                <li>Buletine de securitate despre variante noi de ransomware</li>
+              </ul>
+              <p><strong>Indicatori</strong> (§3.2.2 — semne că A AVUT loc):</p>
+              <ul>
+                <li>Fișiere cu extensia .encrypted</li>
+                <li>Mesaj de ransomware pe ecrane</li>
+                <li>Activitate intensă I/O pe servere (criptare în masă)</li>
+                <li>Conexiuni către servere C&C (Command & Control)</li>
+              </ul>
+              <p><strong>Surse</strong> (§3.2.3): log-uri servere fișiere, SIEM, alerte gateway email, log-uri proxy/firewall, rapoarte utilizatori.</p>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cum prioritizezi acest incident? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.6</a></p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <table style="width:100%; font-size:0.85rem;">
+                <tr><th>Factor</th><th>Nivel</th><th>Justificare</th></tr>
+                <tr><td><strong>Functional Impact</strong></td><td><span style="color:var(--phase-contain); font-weight:700;">HIGH</span></td><td>3 servere de fișiere indisponibile, departamentul contabilitate blocat</td></tr>
+                <tr><td><strong>Information Impact</strong></td><td><span style="color:var(--phase-detect); font-weight:700;">Integrity Loss</span></td><td>Fișierele au fost modificate/criptate fără autorizare</td></tr>
+                <tr><td><strong>Recoverability</strong></td><td><span style="color:#f39c12; font-weight:700;">Supplemented</span></td><td>Backup-urile de la 18:00 par intacte — recuperare posibilă cu resurse suplimentare</td></tr>
+              </table>
+              <p><strong>Prioritate: CRITICĂ</strong> — acțiune imediată, chiar dacă e vineri seară.</p>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cine trebuie notificat?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel (intern):</div>
+              <ul>
+                <li>CIO și Head of Information Security — imediat</li>
+                <li>Echipa IT — pentru suport tehnic (izolarea serverelor)</li>
+                <li>Management — impact operațional departament contabilitate</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra (extern):</div>
+              <ul>
+                <li><strong>Law enforcement</strong> (§2.3.4.2) — ransomware e infracțiune</li>
+                <li><strong>US-CERT / CERT local</strong> — raportare incident</li>
+                <li>Dacă date clienți afectate → notificare GDPR (<strong>72 ore</strong>)</li>
+                <li>Asigurare cyber? Notificare asigurator</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <!-- CONTAINMENT -->
+    <details class="phase-sim phase-contain-sim">
+      <summary>🔴 Faza 3: Containment, Eradicare, Recuperare</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce strategie de containment propui? Ce se întâmplă dacă nu containuim?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Containment imediat:</strong></p>
+              <ul>
+                <li>Izolarea celor 3 servere de rețea (deconectare fizică/logică)</li>
+                <li>Izolarea segmentului de rețea al contabilității</li>
+                <li>Blocare C&C — identificare și blocare conexiuni externe suspecte la firewall</li>
+                <li><strong>NU oprim serverele!</strong> — datele volatile (procese, conexiuni active) sunt dovezi</li>
+              </ul>
+              <p><strong>Fără containment:</strong> Ransomware-ul se poate răspândi la alte servere, criptând și backup-urile. Atacatorul poate exfiltra date înainte de criptare (double extortion).</p>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce dovezi colectezi și cum menții chain of custody?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel (tehnic):</div>
+              <ul>
+                <li><strong>Disk images</strong> ale serverelor afectate (înainte de orice cleanup)</li>
+                <li>Captura <strong>memoriei RAM</strong> (procese ransomware active)</li>
+                <li>Log-uri firewall, proxy, email gateway</li>
+                <li>Nota de ransomware (sample malware)</li>
+                <li>Timeline activitate pe servere</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra (chain of custody):</div>
+              <ul>
+                <li>Documentez fiecare dovadă: <strong>cine</strong> a colectat, <strong>când</strong>, <strong>unde</strong> e stocată</li>
+                <li>Stocare pe medii dedicate, sigilate, etichetate</li>
+                <li>Hash-uri criptografice pentru integritate</li>
+                <li>Log de transfer la orice deplasare a dovezilor</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="surprise-box">
+          <div class="surprise-title">⚡ ELEMENT SURPRIZĂ!</div>
+          <p style="font-weight:600; color:var(--text-primary);">În timp ce echipa gestionează ransomware-ul, Alexandra primește un email de la atacator: „Avem și o copie a datelor voastre financiare. Dacă nu plătiți în 24h, le publicăm online." — Ce faceți?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model pentru elementul surpriză</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p>Revenim la <strong>Detection & Analysis</strong> — ciclul NIST e iterativ!</p>
+              <ul>
+                <li>Verificăm dacă exfiltrarea e reală — log-uri outbound traffic în perioada compromiterii</li>
+                <li>Escalare prioritate: <strong>Information Impact</strong> crește la Privacy/Proprietary Breach</li>
+                <li>Recoverability devine potențial <strong>Not Recoverable</strong> (date publicate = ireversibil)</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra:</div>
+              <ul>
+                <li>Informez <strong>Legal</strong> imediat — double extortion are implicații juridice noi</li>
+                <li>Notificare <strong>GDPR</strong> dacă date personale sunt implicate (72h)</li>
+                <li><strong>Law enforcement</strong> — actualizare cu informația nouă</li>
+                <li>Pregătire comunicat <strong>Public Affairs</strong> — în caz de leak</li>
+                <li><strong>NU plătim</strong> rascumpărarea — conform recomandărilor law enforcement</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cum eradicăm și recuperăm?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Eradicare</strong> (§3.3.4):</p>
+              <ul>
+                <li>Identificare vector de intrare (probabil phishing → analiză email gateway)</li>
+                <li>Scanare TOATE stațiile din rețea pentru malware</li>
+                <li>Dezactivare conturi compromise</li>
+                <li>Patch vulnerabilitățile exploatate</li>
+              </ul>
+              <p><strong>Recuperare:</strong></p>
+              <ul>
+                <li>Restaurare din backup-urile de la 18:00 (după verificare integritate!)</li>
+                <li>Rebuild servere dacă compromiterea e profundă</li>
+                <li>Schimbarea TUTUROR parolelor din domeniu</li>
+                <li>Monitoring intensiv post-restaurare</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <!-- POST-INCIDENT -->
+    <details class="phase-sim phase-lessons-sim">
+      <summary>🟢 Faza 4: Post-Incident (Lessons Learned)</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cum organizezi ședința de lessons learned? Ce îmbunătățiri propui?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra (organizează):</div>
+              <p>Ședință obligatorie — incident major. Participă: echipa IR, IT, management, Legal, HR, contabilitate.</p>
+              <p>Întrebări de discutat (§3.4.1):</p>
+              <ul>
+                <li>Ce s-a întâmplat exact și când? (timeline completă)</li>
+                <li>De ce AV-ul nu a detectat ransomware-ul?</li>
+                <li>Procedurile au fost urmate? Unde am deviat?</li>
+                <li>Backup-urile au funcționat? Au fost suficiente?</li>
+                <li>Timpul de răspuns a fost adecvat (vineri seară)?</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel (îmbunătățiri):</div>
+              <ul>
+                <li>Înlocuire AV tradițional cu EDR</li>
+                <li>Implementare backup-uri air-gapped (offline)</li>
+                <li>Segmentare rețea contabilitate</li>
+                <li>Training anti-phishing lunar</li>
+                <li>Procedură de răspuns 24/7 (nu doar în programul de lucru)</li>
+                <li>Monitorizare exfiltrare date (DLP)</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="score-tracker">
+          <h3>📊 Score Tracker — Simulare 1</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted);">Bifează ce ați acoperit corect fără să vedeți răspunsurile:</p>
+          <div class="score-items">
+            <div class="score-item"><label><input type="checkbox"> E incident (CIA)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Măsuri preventive</label></div>
+            <div class="score-item"><label><input type="checkbox"> Precursori</label></div>
+            <div class="score-item"><label><input type="checkbox"> Indicatori</label></div>
+            <div class="score-item"><label><input type="checkbox"> Prioritizare corectă</label></div>
+            <div class="score-item"><label><input type="checkbox"> Notificare completă</label></div>
+            <div class="score-item"><label><input type="checkbox"> Containment adecvat</label></div>
+            <div class="score-item"><label><input type="checkbox"> Dovezi + chain of custody</label></div>
+            <div class="score-item"><label><input type="checkbox"> Element surpriză</label></div>
+            <div class="score-item"><label><input type="checkbox"> Eradicare + Recuperare</label></div>
+            <div class="score-item"><label><input type="checkbox"> Lessons learned</label></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SIMULARE 2: INSIDER DATA THEFT -->
+  <!-- ============================================================ -->
+  <div class="sim-block" id="sim-2">
+    <h2>🟠 Simulare 2: Insider Data Theft</h2>
+
+    <div class="scenario-brief">
+      Luni dimineața, echipa DLP (Data Loss Prevention) primește o alertă: un angajat din departamentul R&D a copiat 2.5 GB de documente de proiectare confidențiale pe un stick USB personal, joi seara precedentă, după orele de program. Angajatul și-a dat demisia cu 2 săptămâni în urmă și mai are o săptămână de preaviz. Verificarea badge-ului confirmă că a fost singura persoană în birou joi seara. Angajatul are acces legitim la documentele respective ca parte a atribuțiilor sale.
+    </div>
+
+    <details class="phase-sim phase-prep-sim">
+      <summary>🟣 Faza 1: Pregătire</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Este aceasta un incident? Angajatul avea acces legitim la acele fișiere.</p>
+        </div>
+        <div class="dialog dialog-alexandra">
+          <div class="speaker">🔴 Alexandra (ghidează):</div>
+          <p>Atenție — faptul că are acces nu înseamnă că orice face cu accesul e ok. Gândește-te la ce politici sunt relevante.</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Da, este un incident.</strong> Deși angajatul avea acces legitim, copierea pe USB personal a documentelor confidențiale constituie <strong>Improper Usage</strong> — încălcarea politicii de utilizare acceptabilă.</p>
+              <ul>
+                <li><strong>Confidentiality:</strong> Documente confidențiale R&D copiate pe mediu necontrolat</li>
+                <li>Contextul: angajat în preaviz de demisie → motivație clară de furt IP</li>
+                <li>Vector de atac: <strong>Loss/Theft of Equipment</strong> sau <strong>Improper Usage</strong> (§3.2.1)</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce măsuri preventive ar fi limitat acest incident?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li><strong>Politică USB:</strong> Blocare porturi USB sau whitelisting doar pentru dispozitive organizaționale</li>
+                <li><strong>DLP activ:</strong> Alerta a venit DUPĂ — DLP-ul ar trebui să BLOCHEZE, nu doar să alerteze</li>
+                <li><strong>Procedură off-boarding:</strong> La depunerea demisiei → restricționare imediată access nivel — read only, nu write/copy</li>
+                <li><strong>Monitoring intensificat</strong> pentru angajații în preaviz</li>
+                <li><strong>User Awareness:</strong> Angajații trebuie să știe că activitatea este monitorizată</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-detect-sim">
+      <summary>🟠 Faza 2: Detecție și Analiză</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cum prioritizezi? Ce indicatori și surse folosești?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <table style="width:100%; font-size:0.85rem;">
+                <tr><th>Factor</th><th>Nivel</th><th>Justificare</th></tr>
+                <tr><td>Functional Impact</td><td><span style="color:#27ae60; font-weight:700;">None</span></td><td>Niciun serviciu afectat</td></tr>
+                <tr><td>Information Impact</td><td><span style="color:var(--phase-contain); font-weight:700;">Proprietary Breach</span></td><td>Documente confidențiale R&D exfiltrate</td></tr>
+                <tr><td>Recoverability</td><td><span style="color:var(--phase-contain); font-weight:700;">Not Recoverable</span></td><td>Datele sunt deja pe USB — nu se pot „recupera"</td></tr>
+              </table>
+              <p><strong>Prioritate: RIDICATĂ</strong> — deși nu e impact funcțional, proprietatea intelectuală e în pericol și recuperarea e imposibilă.</p>
+              <p><strong>Surse:</strong> Log-uri DLP, badge acces fizic, log-uri USB (Windows Event Log), camerele de supraveghere, log-uri acces către fișierele respective.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-contain-sim">
+      <summary>🔴 Faza 3: Containment, Eradicare, Recuperare</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce strategie de containment aplici unui angajat care e încă în organizație?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li><strong>Dezactivare imediată acces</strong> la toate sistemele, VPN, email</li>
+                <li>Reținerea echipamentelor IT ale angajatului (laptop, badge)</li>
+                <li><strong>NU alertăm angajatul</strong> direct — coordonare cu HR și Legal mai întâi</li>
+                <li>Imagine forensic a laptopului înainte de orice altceva</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra:</div>
+              <ul>
+                <li>Implicare <strong>HR</strong> — pentru procedura disciplinară/terminare imediată</li>
+                <li>Implicare <strong>Legal</strong> — posibila încălcare a clauzelor de confidențialitate/NDA</li>
+                <li>Verificare dacă e nevoie de <strong>law enforcement</strong> (furt proprietate intelectuală = infracțiune)</li>
+                <li>Documentez totul pentru potențial litigiu</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="surprise-box">
+          <div class="surprise-title">⚡ ELEMENT SURPRIZĂ!</div>
+          <p style="font-weight:600; color:var(--text-primary);">La investigarea laptopului, echipa descoperă că angajatul a instalat și un keylogger pe stația colegului de birou cu 3 săptămâni în urmă. Keylogger-ul a capturat credențiale de acces la proiecte la care angajatul NU avea acces.</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model pentru elementul surpriză</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p>Escalare majoră — ciclul revine la <strong>Detection & Analysis</strong>!</p>
+              <ul>
+                <li>Amploarea compromiterii e mult mai mare decât am crezut</li>
+                <li>Trebuie verificat: ce a capturat keylogger-ul, la ce proiecte a accesat cu credențialele furate</li>
+                <li>Scanare toate stațiile din departamentul R&D pentru alte keylogger-e</li>
+                <li>Schimbare <strong>TOATE</strong> parolele angajaților din R&D</li>
+                <li>Prioritate crește: Information Impact devine și mai grav</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra:</div>
+              <p>Implicarea <strong>law enforcement</strong> devine obligatorie — acum e acces neautorizat clar (credențiale furate). Contactez poliția/FBI.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-lessons-sim">
+      <summary>🟢 Faza 4: Post-Incident</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce lessons learned și ce îmbunătățiri?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Implementare procedură off-boarding care restricționează accesul LA DEPUNEREA DEMISIEI</li>
+                <li>DLP să BLOCHEZE, nu doar să alerteze</li>
+                <li>USB blocking pentru dispozitive personale</li>
+                <li>Monitoring intensiv automat pentru angajații în preaviz</li>
+                <li>Verificare periodică a stațiilor pentru software neautorizat (keyloggers)</li>
+                <li>Training awareness: oamenii să raporteze comportament suspect al colegilor</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="score-tracker">
+          <h3>📊 Score Tracker — Simulare 2</h3>
+          <div class="score-items">
+            <div class="score-item"><label><input type="checkbox"> E incident (Improper Usage)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Politici USB/acces</label></div>
+            <div class="score-item"><label><input type="checkbox"> Prioritizare corectă</label></div>
+            <div class="score-item"><label><input type="checkbox"> HR + Legal implicați</label></div>
+            <div class="score-item"><label><input type="checkbox"> Containment fără alertare</label></div>
+            <div class="score-item"><label><input type="checkbox"> Forensic laptop</label></div>
+            <div class="score-item"><label><input type="checkbox"> Element surpriză (keylogger)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Ciclu iterativ</label></div>
+            <div class="score-item"><label><input type="checkbox"> Lessons learned</label></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SIMULARE 3: SUPPLY CHAIN -->
+  <!-- ============================================================ -->
+  <div class="sim-block" id="sim-3">
+    <h2>🟣 Simulare 3: Supply Chain Compromise</h2>
+
+    <div class="scenario-brief">
+      Miercuri dimineață, echipa de securitate primește un buletin CERT urgent: un update recent al software-ului de monitorizare a rețelei (SolarView), folosit de organizație, conținea un backdoor. Update-ul a fost instalat automat pe 12 servere acum 2 săptămâni. Backdoor-ul permite execuție de comenzi remote și exfiltrare de date. Alte 5 organizații din sector au raportat deja compromitere prin același vector.
+    </div>
+
+    <details class="phase-sim phase-prep-sim">
+      <summary>🟣 Faza 1: Pregătire</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Este incident? Ce e special la un supply chain attack față de alte incidente?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Da, este incident</strong> — chiar dacă compromiterea vine printr-un canal „de încredere" (update oficial al vendorului).</p>
+              <ul>
+                <li>Toate cele 3 aspecte CIA sunt afectate: backdoor = acces neautorizat (C), posibil modificare date (I), potențial oprire servicii (A)</li>
+                <li>Specificul supply chain: <strong>sursa de încredere e compromisă</strong> — update-ul era „legitim" din perspectiva procesului normal</li>
+                <li>Vector: nu se încadrează perfect în categoriile standard — cel mai aproape de <strong>Web</strong> sau <strong>Other</strong> (§3.2.1)</li>
+                <li>Impactul: 12 servere, 2 săptămâni de expunere, sector-wide</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce măsuri preventive ar fi ajutat contra unui supply chain attack?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li><strong>Verificare hash/semnătură</strong> update-uri înainte de deploy</li>
+                <li><strong>Staging environment:</strong> testare update-uri într-un mediu izolat înainte de producție</li>
+                <li><strong>Segmentare rețea:</strong> serverele de monitorizare nu ar trebui să aibă acces direct la Internet</li>
+                <li><strong>Least privilege:</strong> software-ul de monitorizare rulează cu privilegii minime?</li>
+                <li><strong>Monitoring outbound:</strong> detecție conexiuni C&C de la servere de monitorizare</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-detect-sim">
+      <summary>🟠 Faza 2: Detecție și Analiză</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce e diferit la analiza unui supply chain attack? Cum prioritizezi?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Analiza</strong> — nu căutăm doar indicator clasici:</p>
+              <ul>
+                <li>IoCs (Indicators of Compromise) din buletinul CERT — hash-uri, domenii C&C, IP-uri</li>
+                <li>Verificare log-uri outbound pe toate 12 serverele — au comunicat cu C&C?</li>
+                <li>Ce date au accesat serverele de monitorizare? (credențiale, topologie rețea, date sensibile)</li>
+                <li>2 săptămâni de expunere — atacatorul a avut timp să se miște lateral</li>
+              </ul>
+              <table style="width:100%; font-size:0.85rem; margin-top:0.5rem;">
+                <tr><th>Factor</th><th>Nivel</th><th>Justificare</th></tr>
+                <tr><td>Functional Impact</td><td><span style="color:var(--phase-contain); font-weight:700;">HIGH</span></td><td>12 servere de monitoring — vizibilitate completă în rețea</td></tr>
+                <tr><td>Information Impact</td><td><span style="color:var(--phase-contain); font-weight:700;">Integrity Loss</span></td><td>Backdoor = execuție comenzi → orice e posibil</td></tr>
+                <tr><td>Recoverability</td><td><span style="color:var(--phase-contain); font-weight:700;">Extended</span></td><td>12 servere + potențial lateral movement pe 2 săptămâni</td></tr>
+              </table>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-contain-sim">
+      <summary>🔴 Faza 3: Containment, Eradicare, Recuperare</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cum containuim când 12 servere critice sunt afectate?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Izolarea <strong>imediată</strong> a tuturor 12 serverelor de Internet (blocare outbound)</li>
+                <li>Menținere conectivitate internă minimă (organizația încă are nevoie de monitoring)</li>
+                <li>Rollback software-ul SolarView la versiunea anterioară update-ului compromis</li>
+                <li>Scanarea tuturor 12 serverelor cu IoCs din buletinul CERT</li>
+                <li>Verificare dacă backdoor-ul a fost folosit pentru lateral movement</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="surprise-box">
+          <div class="surprise-title">⚡ ELEMENT SURPRIZĂ!</div>
+          <p style="font-weight:600; color:var(--text-primary);">Analiza forensic arată că atacatorul a folosit backdoor-ul pentru a instala un sniffer pe serverul principal de monitorizare, captând parolele admin-ilor de rețea timp de 2 săptămâni. Au fost capturate credențiale pentru 8 dispozitive de rețea critice (firewall, routere core, switch-uri).</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Amploare: <strong>TOATĂ infrastructura de rețea</strong> e potențial compromisă</li>
+                <li>Schimbare imediată TOATE credențialele de admin rețea (firewall, routere, switch-uri)</li>
+                <li>Verificare configurații pe cele 8 dispozitive — au fost modificate? ACL-uri noi? Reguli firewall șterse?</li>
+                <li>Restore configurații din backup-uri verificate (de dinainte de compromitere)</li>
+                <li>Activare MFA pe TOATE conturile privilegiate</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra:</div>
+              <p>Contactez vendorul SolarView pentru IoCs suplimentare și timeline. Raportez incidentul CERT-ului. Coordonez cu cele 5 organizații din sector — partajare informații despre atacuri (§2.3.4).</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-lessons-sim">
+      <summary>🟢 Faza 4: Post-Incident</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Lessons learned specifice supply chain?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Implementare proces de validare update-uri (staging, hash verification)</li>
+                <li>Segmentare: tool-urile de monitoring NU trebuie să aibă acces direct la Internet</li>
+                <li>Credențiale diferite pentru fiecare dispozitiv (nu shared credentials)</li>
+                <li>Monitoring del monitorizatorilor — alertare pe comportament anormal al tool-urilor de securitate</li>
+                <li>Relații pre-stabilite cu CERT și organizații din sector pentru răspuns rapid</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="score-tracker">
+          <h3>📊 Score Tracker — Simulare 3</h3>
+          <div class="score-items">
+            <div class="score-item"><label><input type="checkbox"> Identificare supply chain</label></div>
+            <div class="score-item"><label><input type="checkbox"> Preventive specifice</label></div>
+            <div class="score-item"><label><input type="checkbox"> Folosit IoCs CERT</label></div>
+            <div class="score-item"><label><input type="checkbox"> Prioritizare (12 servere)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Containment adecvat</label></div>
+            <div class="score-item"><label><input type="checkbox"> Surpriză (sniffer)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Schimbat credențiale</label></div>
+            <div class="score-item"><label><input type="checkbox"> Coordonare sector</label></div>
+            <div class="score-item"><label><input type="checkbox"> Lessons learned</label></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SIMULARE 4: PHISHING → LATERAL MOVEMENT -->
+  <!-- ============================================================ -->
+  <div class="sim-block" id="sim-4">
+    <h2>🟡 Simulare 4: Phishing → Lateral Movement</h2>
+
+    <div class="scenario-brief">
+      Joi la ora 14:00, un angajat din HR raportează că a primit un email aparent de la CEO, cerându-i să deschidă un document urgent privind restructurarea salarială. A deschis atașamentul (un fișier .xlsm cu macro-uri), dar documentul era gol. Două ore mai târziu, SIEM-ul alertează asupra unor conexiuni SSH neobișnuite de la stația HR spre 4 servere interne, inclusiv serverul de Active Directory. Antivirusul nu a detectat nimic.
+    </div>
+
+    <details class="phase-sim phase-prep-sim">
+      <summary>🟣 Faza 1: Pregătire</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Este incident? Ce vector de atac identifici?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Da, incident.</strong> Vector: <strong>Email</strong> (§3.2.1) — spear phishing cu atașament malware (.xlsm cu macro-uri).</p>
+              <ul>
+                <li>Impersonation + Email: email falsificat de la CEO (social engineering)</li>
+                <li>Macro-urile au instalat malware care a permis lateral movement</li>
+                <li>Conexiunile SSH de la HR spre servere interne = acces neautorizat clar</li>
+                <li>Dacă Active Directory e compromis → TOATĂ organizația e în pericol</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-detect-sim">
+      <summary>🟠 Faza 2: Detecție și Analiză</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce indicatori ai și cum analizezi lateral movement-ul?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Indicatori:</strong></p>
+              <ul>
+                <li>Email suspect de la „CEO" (header-e falsificate)</li>
+                <li>Fișier .xlsm gol dar cu macro-uri executate</li>
+                <li>Conexiuni SSH de la o stație HR (HR nu folosește SSH!)</li>
+                <li>4 servere accesate, inclusiv AD — pattern de lateral movement</li>
+                <li>AV nu detectează → malware Zero-day sau polimorf</li>
+              </ul>
+              <p><strong>Analiza lateral movement:</strong></p>
+              <ul>
+                <li>Ce credențiale au fost folosite pe cele 4 servere?</li>
+                <li>Ce operații au fost efectuate pe serverul AD?</li>
+                <li>Au fost create conturi noi? Privilegii escalate?</li>
+                <li>Există și alter stații cu conexiuni anormale?</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cum prioritizezi?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <table style="width:100%; font-size:0.85rem;">
+              <tr><th>Factor</th><th>Nivel</th><th>Justificare</th></tr>
+              <tr><td>Functional Impact</td><td><span style="color:var(--phase-contain); font-weight:700;">HIGH</span></td><td>Active Directory posibil compromis = toată infra e la risc</td></tr>
+              <tr><td>Information Impact</td><td><span style="color:var(--phase-contain); font-weight:700;">Integrity Loss</span></td><td>Modificări posibile pe AD (conturi, privilegii)</td></tr>
+              <tr><td>Recoverability</td><td><span style="color:var(--phase-contain); font-weight:700;">Extended</span></td><td>AD compromis = rebuild complet potențial necesar</td></tr>
+            </table>
+            <p style="margin-top:0.5rem;"><strong>Prioritate: CRITICĂ MAXIMĂ</strong></p>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-contain-sim">
+      <summary>🔴 Faza 3: Containment, Eradicare, Recuperare</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce containment aplici? Cum gestionezi un AD potențial compromis?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Containment:</strong></p>
+              <ul>
+                <li>Izolarea imediată a stației HR compromise</li>
+                <li>Blocare conexiuni SSH anormale la firewall intern</li>
+                <li>Verificare AD: conturi noi, modificări privilegii, GPO-uri modificate</li>
+                <li>Resetare <strong>parola KRBTGT</strong> de 2 ori (golden ticket mitigation)</li>
+                <li>Resetare TOATE conturile admin de domeniu</li>
+              </ul>
+              <p><strong>Eradicare & Recuperare:</strong></p>
+              <ul>
+                <li>Rebuild stație HR din imagine curată</li>
+                <li>Analiza celor 4 servere — rebuild dacă compromise</li>
+                <li>Blocare la email gateway: atașamente .xlsm, macro-uri din surse externe</li>
+                <li>Reset parole toți utilizatorii (dacă AD confirmat compromis)</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="surprise-box">
+          <div class="surprise-title">⚡ ELEMENT SURPRIZĂ!</div>
+          <p style="font-weight:600; color:var(--text-primary);">Echipa descoperă că atacatorul a creat o regulă de forwarding pe email-ul CEO-ului real — toate mesajele cu cuvintele „contract", „plată" și „transfer" sunt forward-ate la un email extern. Când verificați, descoperiți că 3 facturi false au fost trimise clienților săptămâna aceasta de pe email-ul CEO-ului.</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Ștergere imediată regulă de forwarding</li>
+                <li>Resetare parola CEO + activare MFA</li>
+                <li>Verificare TOATE regulile de forwarding din organizație</li>
+                <li>Contactare clienți afectați — facturi false = BEC (Business Email Compromise)</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra:</div>
+              <ul>
+                <li><strong>Legal</strong> — posibilă fraudă financiară, clienții trebuie avertizați IMEDIAT</li>
+                <li><strong>Law enforcement</strong> — BEC e infracțiune financiară</li>
+                <li><strong>Banca</strong> — verificare dacă plățile pot fi blocate/reversate</li>
+                <li><strong>Public Affairs</strong> — comunicat către clienți, scuze și clarificare</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-lessons-sim">
+      <summary>🟢 Faza 4: Post-Incident</summary>
+      <div class="phase-body">
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Blocare macro-uri în fișiere din surse externe</li>
+                <li>Implementare DMARC/SPF/DKIM pe email</li>
+                <li>MFA obligatoriu pentru toate conturile</li>
+                <li>Monitoring forwarding rules automat</li>
+                <li>Training anti-phishing cu simulări lunare</li>
+                <li>Network segmentation — HR nu accesează servere prin SSH</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="score-tracker">
+          <h3>📊 Score Tracker — Simulare 4</h3>
+          <div class="score-items">
+            <div class="score-item"><label><input type="checkbox"> Vector email/phishing</label></div>
+            <div class="score-item"><label><input type="checkbox"> Lateral movement</label></div>
+            <div class="score-item"><label><input type="checkbox"> Prioritizare (AD)</label></div>
+            <div class="score-item"><label><input type="checkbox"> KRBTGT reset</label></div>
+            <div class="score-item"><label><input type="checkbox"> Surpriză (BEC)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Contactare clienți</label></div>
+            <div class="score-item"><label><input type="checkbox"> Law enforcement</label></div>
+            <div class="score-item"><label><input type="checkbox"> Lessons learned</label></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SIMULARE 5: CLOUD MISCONFIGURATION -->
+  <!-- ============================================================ -->
+  <div class="sim-block" id="sim-5">
+    <h2>🔵 Simulare 5: Cloud Storage Misconfiguration</h2>
+
+    <div class="scenario-brief">
+      Marți dimineață, un cercetător de securitate extern contactează organizația: a descoperit un bucket S3 (cloud storage) al organizației, accesibil public, conținând backup-uri ale bazei de date cu informații personale ale clienților (nume, CNP-uri, adrese, numere de telefon). Bucket-ul a fost configurat „public" în urmă cu 3 luni, la o migrare către cloud. Nu se știe dacă altcineva a accesat datele în acest interval.
+    </div>
+
+    <details class="phase-sim phase-prep-sim">
+      <summary>🟣 Faza 1: Pregătire</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Este incident? Nu a fost un atac — a fost o greșeală de configurare.</p>
+        </div>
+        <div class="dialog dialog-alexandra">
+          <div class="speaker">🔴 Alexandra (ghidează):</div>
+          <p>Atenție la nuanță. Nu contează dacă a fost intenționat sau nu — NIST definește incidentul altfel.</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p><strong>Da, este incident.</strong> Conform §2.1, nu contează dacă e intenționat — este o <strong>încălcare a politicilor de securitate</strong> (date confidențiale expuse public).</p>
+              <ul>
+                <li><strong>Confidentiality:</strong> PII (CNP, adrese) expus public pe Internet timp de 3 luni</li>
+                <li>Chiar dacă nu a fost atac, expunerea datelor personale = <strong>Privacy Breach</strong></li>
+                <li>Vector: se încadrează în <strong>Improper Usage</strong> — greșeală de configurare de către personal autorizat</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-detect-sim">
+      <summary>🟠 Faza 2: Detecție și Analiză</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Cum determinăm dacă datele au fost accesate de alții în cele 3 luni?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Verificare <strong>access logs</strong> ale bucket-ului S3 (dacă erau activate)</li>
+                <li>Verificare log-uri CloudTrail (AWS) pentru operații pe bucket</li>
+                <li>Căutare pe Google, Shodan, GreyNoise — bucket-ul a fost indexat?</li>
+                <li>Verificare leak databases și paste sites — datele au apărut undeva?</li>
+                <li>Contactare cercetătorul extern — cum a găsit bucket-ul, a descărcat date?</li>
+              </ul>
+              <table style="width:100%; font-size:0.85rem; margin-top:0.5rem;">
+                <tr><th>Factor</th><th>Nivel</th><th>Justificare</th></tr>
+                <tr><td>Functional Impact</td><td><span style="color:#27ae60; font-weight:700;">None</span></td><td>Niciun serviciu afectat</td></tr>
+                <tr><td>Information Impact</td><td><span style="color:var(--phase-contain); font-weight:700;">Privacy Breach</span></td><td>PII expus (CNP, adrese)</td></tr>
+                <tr><td>Recoverability</td><td><span style="color:var(--phase-contain); font-weight:700;">Not Recoverable</span></td><td>Datele au fost publice 3 luni — nu se poate „anula"</td></tr>
+              </table>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-contain-sim">
+      <summary>🔴 Faza 3: Containment, Eradicare, Recuperare</summary>
+      <div class="phase-body">
+        <div class="exam-q">
+          <div class="q-label">📋 Întrebare Examen</div>
+          <p>Ce containment aplici? Ce implicații legale apar?</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel (containment):</div>
+              <ul>
+                <li>Schimbare <strong>imediată</strong> a permisiunilor bucket-ului S3 → private</li>
+                <li>Audit TOATE bucket-urile cloud pentru configurări similare</li>
+                <li>Verificare dacă backup-urile sunt criptate (ar fi limitat expunerea)</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra (legal):</div>
+              <ul>
+                <li><strong>GDPR</strong> — notificare autoritate de protecție date în maxim <strong>72 de ore</strong></li>
+                <li>Notificare <strong>toate persoanele afectate</strong> — CNP-ul e identificator unic, risc mare de identity theft</li>
+                <li>Documentare: câte persoane, ce date, interval de expunere</li>
+                <li>Pregătire: linie de asistență pentru persoane afectate, oferire credit monitoring</li>
+                <li>Posibil amendă GDPR — documentăm totul pentru a arăta bună-credință</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="surprise-box">
+          <div class="surprise-title">⚡ ELEMENT SURPRIZĂ!</div>
+          <p style="font-weight:600; color:var(--text-primary);">Un jurnalist contactează departamentul de comunicare: „Am informații că datele personale a mii de clienți ai organizației dvs. au fost publice pe Internet. Aveți un comentariu?" — Un blog de securitate a publicat deja un articol despre expunere.</p>
+        </div>
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-alexandra">
+              <div class="speaker">🔴 Alexandra:</div>
+              <ul>
+                <li>Activare <strong>Public Affairs</strong> — mesaj pregătit, nu improvizăm (§2.3.4.1)</li>
+                <li>Mesaj: „Suntem conștienți de situație, am luat măsuri imediate, cooperăm cu autoritățile, vom notifica persoanele afectate"</li>
+                <li><strong>NU divulgăm detalii tehnice</strong> (câte persoane exact, ce date) până nu avem analiza completă</li>
+                <li>Accelerare notificare persoane afectate — nu mai putem amâna</li>
+                <li>Transparență: recunoaștem problema, arătăm acțiunile luate</li>
+              </ul>
+            </div>
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <p>Accelerez analiza — avem nevoie de numere exacte cât mai repede pentru comunicatul oficial. Verificare urgentă: bucket-ul era indexat de search engines?</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="phase-sim phase-lessons-sim">
+      <summary>🟢 Faza 4: Post-Incident</summary>
+      <div class="phase-body">
+        <details class="answer-reveal">
+          <summary>Vezi răspunsul model</summary>
+          <div class="answer-body">
+            <div class="dialog dialog-daniel">
+              <div class="speaker">🔵 Daniel:</div>
+              <ul>
+                <li>Implementare <strong>Cloud Security Posture Management</strong> (CSPM) — scanare automată configurări</li>
+                <li>Criptare obligatorie pentru toate datele stocate în cloud</li>
+                <li>Audit automat permisiuni la fiecare deployment</li>
+                <li>Procedură de review securitate pentru orice migrare cloud</li>
+                <li>Training echipa IT pe cloud security best practices</li>
+                <li>Alertare automată dacă un bucket devine public</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        <div class="score-tracker">
+          <h3>📊 Score Tracker — Simulare 5</h3>
+          <div class="score-items">
+            <div class="score-item"><label><input type="checkbox"> E incident (deși neintenționat)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Analiza accesului 3 luni</label></div>
+            <div class="score-item"><label><input type="checkbox"> Prioritizare (Not Recoverable)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Containment rapid</label></div>
+            <div class="score-item"><label><input type="checkbox"> GDPR 72h</label></div>
+            <div class="score-item"><label><input type="checkbox"> Surpriză (media)</label></div>
+            <div class="score-item"><label><input type="checkbox"> Public Affairs</label></div>
+            <div class="score-item"><label><input type="checkbox"> Notificare persoane</label></div>
+            <div class="score-item"><label><input type="checkbox"> Cloud security lessons</label></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Pagina principală</a>
+    <a href="exercitii-incidente.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Exerciții NIST →</a>
+  </div>
+</div>
+
+<script>
+// Scroll highlight nav
+const navLinks = document.querySelectorAll('.sim-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => {
+  const id = a.getAttribute('href').slice(1);
+  const el = document.getElementById(id);
+  if (el) sections.push({ el, a });
+});
+window.addEventListener('scroll', () => {
+  let current = sections[0];
+  for (const s of sections) {
+    if (s.el.getBoundingClientRect().top <= 120) current = s;
+  }
+  navLinks.forEach(a => a.classList.remove('active'));
+  if (current) current.a.classList.add('active');
+}, { passive: true });
+</script>
+</body>
+</html>

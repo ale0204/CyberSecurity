@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenariu 2 — Worm și DDoS Agent Infestation (Detaliat)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html { font-size: 140%; }
+    header { margin-left: 280px; }
+    .page-nav { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); overflow-y: auto; padding: 1rem 0; z-index: 100; }
+    .page-nav a { display: block; padding: 5px 18px; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; line-height: 1.4; }
+    .page-nav a:hover, .page-nav a.active { color: var(--primary); background: rgba(74,70,200,0.05); border-left-color: var(--primary); }
+    .page-nav .nav-title { padding: 6px 18px; font-weight: 700; font-size: 0.82rem; color: var(--text-primary); }
+    .page-nav .sep { padding: 10px 18px 3px; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+    .page-main { margin-left: 280px; padding: 1.5rem 2rem 3rem; max-width: 1100px; }
+    .back-link { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.82rem; }
+    .back-link:hover { text-decoration: underline; }
+    .scenario-box { background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01)); border-left: 4px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; font-size: 0.88rem; }
+    .phase-header { padding: 0.6rem 1rem; border-radius: 8px; color: white; font-weight: 700; font-size: 0.95rem; margin: 1.8rem 0 0.8rem; }
+    .phase-header-prep { background: var(--phase-prep); }
+    .phase-header-detect { background: var(--phase-detect); }
+    .phase-header-contain { background: var(--phase-contain); }
+    .phase-header-post { background: var(--phase-lessons); }
+    .q-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+    .q-top { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.2rem; }
+    .q-question { flex: 1; font-weight: 600; color: var(--text-primary); font-size: 0.88rem; line-height: 1.5; }
+    .q-ref { flex-shrink: 0; background: rgba(74,70,200,0.1); color: var(--primary); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .q-ref:hover { background: rgba(74,70,200,0.2); }
+    .q-answer { border-top: 1px dashed var(--border); }
+    .q-answer summary { cursor: pointer; padding: 0.6rem 1.2rem; font-weight: 700; font-size: 0.78rem; color: var(--primary); list-style: none; user-select: none; display: flex; align-items: center; gap: 0.4rem; }
+    .q-answer summary::-webkit-details-marker { display: none; }
+    .q-answer summary::before { content: '▶'; font-size: 0.6rem; transition: transform 0.2s; }
+    .q-answer[open] summary::before { transform: rotate(90deg); }
+    .q-answer[open] summary { color: var(--phase-recover); }
+    .answer-content { padding: 0 1.2rem 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .answer-content p { margin: 0.3rem 0; }
+    .answer-content ul { margin: 0.3rem 0 0.3rem 1.2rem; }
+    .answer-content li { margin-bottom: 0.25rem; }
+    .answer-content table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content table th, .answer-content table td { padding: 0.4rem 0.6rem; border: 1px solid var(--border); text-align: left; }
+    .answer-content table th { background: rgba(74,70,200,0.05); font-weight: 700; }
+    .answer-content .nist-quote { background: rgba(241,196,15,0.08); border-left: 3px solid #f39c12; padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; font-style: italic; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content strong { color: var(--text-primary); }
+    .answer-content .conclusion-box { background: rgba(39,174,96,0.06); border-left: 3px solid var(--phase-recover); padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; margin: 0.5rem 0; }
+    .specific-section { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+    .specific-section h2 { font-size: 1rem; color: var(--text-primary); margin-bottom: 0.8rem; }
+    @media (max-width: 768px) { html { font-size: 112%; } .page-nav { display: none; } .page-main { margin-left: 0; padding: 1rem; } header { margin-left: 0; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Scenariul 2: Worm și DDoS Agent Infestation</h1>
+  <p>Analiză detaliată — întrebare cu întrebare, cu referințe NIST și răspunsuri ascunse</p>
+</header>
+
+<nav class="page-nav">
+  <div class="nav-title">📖 Scenariu 2: Worm & DDoS</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Secțiuni</div>
+  <a href="#scenario-text">📋 Enunțul scenariului</a>
+  <div class="sep">Întrebări Standard (A.1)</div>
+  <a href="#prep">🟣 Pregătire (2)</a>
+  <a href="#detect">🟠 Detecție & Analiză (6)</a>
+  <a href="#contain">🔴 Containment (5)</a>
+  <a href="#post">🟢 Post-Incident (3)</a>
+  <div class="sep">Specifice Scenariului</div>
+  <a href="#specific">❓ Întrebări specifice (8)</a>
+</nav>
+
+<div class="page-main">
+  <a href="index.html#scenariu-2" class="back-link">← Înapoi la pagina principală</a>
+
+  <div id="scenario-text" class="scenario-box">
+    On a Tuesday morning, a new worm is released; it spreads itself through removable media, and it can copy itself to open Windows shares. When the worm infects a host, it installs a DDoS agent. The organization has already incurred widespread infections before antivirus signatures become available several hours after the worm started to spread.
+  </div>
+
+  <!-- PREPARATION -->
+  <div class="phase-header phase-header-prep" id="prep">🟣 Preparation (Pregătire)</div>
+
+  <div class="q-card" id="p-q1">
+    <div class="q-top">
+      <div class="q-question">1. Would the organization consider this activity to be an incident? If so, which of the organization's policies does this activity violate?</div>
+      <a href="nist-chapter2.html#nist-2.1" target="_blank" class="q-ref">§2.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Da, este un incident de securitate.</strong></p>
+        <p>Infectarea cu malware (worm) și instalarea de agenți DDoS constituie o <strong>încălcare directă a politicilor de securitate</strong>:</p>
+        <ul>
+          <li><strong>Compromiterea integrității</strong> sistemelor (worm-ul modifică fișiere, instalează componente)</li>
+          <li><strong>Utilizarea neautorizată a resurselor</strong> (agent DDoS pregătit să atace)</li>
+          <li><strong>Amenințare la disponibilitate</strong> — DDoS-ul pregătit poate fi activat oricând</li>
+          <li><strong>Răspândire pe scară largă</strong> — infecție masivă înainte de semnături AV</li>
+        </ul>
+        <div class="conclusion-box">
+          <strong>Concluzie:</strong> Incident critic — încalcă politica de securitate IT, politica de protecție malware, și politica de utilizare acceptabilă a resurselor.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="p-q2">
+    <div class="q-top">
+      <div class="q-question">2. What measures are in place to attempt to prevent this type of incident from occurring or to limit its impact?</div>
+      <a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Malware Prevention:</strong> Dezactivare autorun pe removable media, restricționare share-uri Windows deschise</li>
+          <li><strong>Host Security:</strong> Patch-uri la zi, least privilege, dezactivare servicii nenecesare</li>
+          <li><strong>Network Security:</strong> Segmentare rețea pentru limitarea răspândirii laterale</li>
+          <li><strong>User Awareness:</strong> Training despre pericolele media removabilă</li>
+          <li><strong>Group Policy:</strong> Blocare executare automată pe USB, restricții pe share-urile de rețea</li>
+          <li><strong>Application Whitelisting:</strong> Permite doar executabilele autorizate</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- DETECTION AND ANALYSIS -->
+  <div class="phase-header phase-header-detect" id="detect">🟠 Detection and Analysis (Detecție și Analiză)</div>
+
+  <div class="q-card" id="d-q1">
+    <div class="q-top">
+      <div class="q-question">1. What precursors of the incident, if any, might the organization detect? Would any precursors cause the organization to take action before the incident occurred?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Precursori:</strong></p>
+        <ul>
+          <li>Buletine de securitate despre noul worm de la US-CERT/CERT</li>
+          <li>Rapoarte de la alte organizații deja afectate</li>
+          <li>Alerte din surse threat intelligence despre noul malware</li>
+          <li>Rapoarte de la vendorii AV despre worm-ul nou (chiar dacă semnăturile nu sunt gata)</li>
+        </ul>
+        <p><strong>Acțiuni preventive:</strong> Dacă precursorii sunt detectați → blocare proactivă USB autorun via GPO, restricționare share-uri, alertare utilizatori, pregătire IOC-uri (hash-uri) pentru blocare.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="d-q2">
+    <div class="q-top">
+      <div class="q-question">2. What indicators of the incident might the organization detect? Which indicators would cause someone to think that an incident might have occurred?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Alerte AV</strong> — chiar fără semnături, detecție euristică/comportamentală</li>
+          <li><strong>Trafic de rețea anormal</strong> între hosturi interne (propagare laterală prin share-uri)</li>
+          <li><strong>Încercări masive de acces</strong> la share-uri Windows multiple de pe un singur host</li>
+          <li><strong>Procese necunoscute</strong> care rulează pe hosturi infectate</li>
+          <li><strong>Conexiuni de rețea</strong> către servere C&C (command and control)</li>
+          <li><strong>File integrity checking</strong> detectează modificări neașteptate</li>
+          <li><strong>Activitate USB anormală</strong> detectată de endpoint monitoring</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="d-q3">
+    <div class="q-top">
+      <div class="q-question">3. What additional tools might be needed to detect this particular incident?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>EDR (Endpoint Detection and Response):</strong> Detecție comportamentală pe endpoint-uri</li>
+          <li><strong>Network traffic analysis:</strong> Identificarea pattern-urilor de propagare laterală</li>
+          <li><strong>YARA rules:</strong> Detecție bazată pe pattern-uri binare ale worm-ului</li>
+          <li><strong>Sandbox analysis:</strong> Analiza dinamică a fișierelor suspecte</li>
+          <li><strong>Threat intelligence feeds:</strong> IOC-uri (hash-uri, IP-uri C&C) partajate de comunitate</li>
+          <li><strong>USB device monitoring:</strong> Logare dispozitive conectate</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="d-q4">
+    <div class="q-top">
+      <div class="q-question">4. How would the incident response team analyze and validate this incident? What personnel would be involved?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Analiză și validare:</strong></p>
+        <ul>
+          <li>Izolarea unui specimen al worm-ului pentru analiză</li>
+          <li>Identificarea IOC-urilor: hash-uri fișier, procese create, chei registru, conexiuni rețea</li>
+          <li>Scanare rețea pentru toate hosturile care prezintă IOC-urile identificate</li>
+          <li>Determinarea vectorilor de răspândire (USB, share-uri) și a funcționalității (DDoS agent)</li>
+          <li>Verificare dacă agentul DDoS a fost deja activat</li>
+        </ul>
+        <p><strong>Personal:</strong></p>
+        <ul>
+          <li><strong>Analiști malware:</strong> Reverse engineering al worm-ului</li>
+          <li><strong>Administratori rețea:</strong> Identificarea hosturilor infectate prin trafic</li>
+          <li><strong>Administratori sisteme:</strong> Verificarea endpoint-urilor</li>
+          <li><strong>SOC/IR team:</strong> Coordonare generală</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="d-q5">
+    <div class="q-top">
+      <div class="q-question">5. To which people and groups within the organization would the team report the incident?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>CIO / CISO:</strong> Infecție masivă, impact organizațional</li>
+          <li><strong>Management:</strong> Impactul asupra productivității (hosturi izolate)</li>
+          <li><strong>Toți administratorii de sisteme:</strong> Acțiuni urgente necesare pe endpoint-uri</li>
+          <li><strong>Help desk:</strong> Vor primi apeluri de la utilizatori afectați</li>
+          <li><strong>US-CERT / CERT local:</strong> Raportare, contribuție la response comunitar</li>
+          <li><strong>Utilizatorii:</strong> Comunicat despre situație, instrucțiuni (nu folosiți USB, nu accesați share-uri)</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="d-q6">
+    <div class="q-top">
+      <div class="q-question">6. How would the team prioritize the handling of this incident?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <table>
+          <tr><th>Criteriu</th><th>Nivel</th><th>Justificare</th></tr>
+          <tr><td><strong>Functional Impact</strong></td><td style="color:var(--phase-contain); font-weight:700;">HIGH</td><td>Infecție pe scară largă, sisteme compromise, posibil DDoS iminent</td></tr>
+          <tr><td><strong>Information Impact</strong></td><td style="color:var(--phase-detect); font-weight:700;">INTEGRITY LOSS</td><td>Worm-ul modifică fișiere sistem, instalează componente</td></tr>
+          <tr><td><strong>Recoverability</strong></td><td style="color:var(--phase-contain); font-weight:700;">EXTENDED</td><td>Necesită resurse suplimentare — curățare la scară largă</td></tr>
+        </table>
+        <div class="conclusion-box">
+          <strong>Prioritate: CRITICĂ</strong> — Impact funcțional major, recuperare complexă, risc de DDoS iminent. Toate celelalte activități sunt secundare.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- CONTAINMENT -->
+  <div class="phase-header phase-header-contain" id="contain">🔴 Containment, Eradication, and Recovery</div>
+
+  <div class="q-card" id="c-q1">
+    <div class="q-top">
+      <div class="q-question">1. What strategy should the organization take to contain the incident? Why is this strategy preferable to others?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Strategie pe mai multe fronturi (containment în straturi):</strong></p>
+        <ul>
+          <li><strong>Segmentare rețea:</strong> Izolarea segmentelor afectate prin modificarea regulilor firewall/switch</li>
+          <li><strong>Blocare removable media:</strong> Dezactivare porturi USB via Group Policy pe toate hosturile</li>
+          <li><strong>Blocare share-uri:</strong> Restricționare acces la share-urile Windows deschise</li>
+          <li><strong>Blocare IOC-uri:</strong> Hash-uri cunoscute ale worm-ului, trafic către IP-uri C&C</li>
+          <li><strong>Izolarea hosturilor infectate:</strong> Deconectare de la rețea</li>
+          <li><strong>Filtrare trafic outbound:</strong> Blocare comunicare DDoS agent</li>
+        </ul>
+        <p><strong>De ce e preferabilă:</strong> Abordarea multi-layered e necesară deoarece worm-ul are mai mulți vectori de propagare (USB + share-uri). Blocarea doar a unuia nu e suficientă.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="c-q2">
+    <div class="q-top">
+      <div class="q-question">2. What could happen if the incident were not contained?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Infecție 100%</strong> a hosturilor din organizație</li>
+          <li><strong>Activarea DDoS agent</strong> — organizația devine sursă de atac împotriva altor entități</li>
+          <li><strong>Responsabilitate legală</strong> dacă agenții DDoS sunt folosiți pentru a ataca alte organizații</li>
+          <li><strong>Pierderea integrității datelor</strong> pe toate sistemele infectate</li>
+          <li><strong>Oprirea completă a operațiunilor</strong> — productivitate zero</li>
+          <li><strong>Costuri enorme de recuperare</strong> — rebuild la scară largă</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="c-q3">
+    <div class="q-top">
+      <div class="q-question">3. What additional tools might be needed to respond to this particular incident?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Enterprise AV management console:</strong> Push semnături noi imediat ce sunt disponibile</li>
+          <li><strong>Network scanning tools:</strong> Identificare rapidă a tuturor hosturilor infectate</li>
+          <li><strong>Deployment tools (SCCM, GPO):</strong> Push politici USB/share rapid pe toate stațiile</li>
+          <li><strong>Imaging tools:</strong> Rebuild rapid din imagini curate</li>
+          <li><strong>Backup verification tools:</strong> Verificare integritate backup-uri</li>
+          <li><strong>Communication tools (out-of-band):</strong> Email intern poate fi afectat</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="c-q4">
+    <div class="q-top">
+      <div class="q-question">4. Which personnel would be involved in the containment, eradication, and/or recovery processes?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>IR Team Lead:</strong> Coordonare generală a operațiunii la scară largă</li>
+          <li><strong>Administratori sisteme:</strong> Curățare/rebuild endpoint-uri — volumul mare necesită multe mâini</li>
+          <li><strong>Administratori rețea:</strong> Segmentare, filtrare trafic, blocare C&C</li>
+          <li><strong>Help desk:</strong> Comunicare cu utilizatorii, triaj stații de lucru</li>
+          <li><strong>Analiști malware:</strong> Analiza worm-ului, identificare IOC-uri complete</li>
+          <li><strong>Management:</strong> Aprobare decizii cu impact operațional (izolarea segmentelor = downtime)</li>
+          <li><strong>Comunicare:</strong> Informarea tuturor angajaților despre situație și instrucțiuni</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="c-q5">
+    <div class="q-top">
+      <div class="q-question">5. What sources of evidence, if any, should the organization acquire? How would the evidence be acquired? Where would it be stored? How long should it be retained?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.2.5, §3.3.2, §3.4.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Surse:</strong></p>
+        <ul>
+          <li>Specimen worm (fișier malware pentru analiză)</li>
+          <li>Log-uri rețea (trafic de propagare, conexiuni C&C)</li>
+          <li>Log-uri endpoint (procese, modificări registru, fișiere create)</li>
+          <li>Disk images de pe câteva hosturi reprezentative (nu toate — sunt prea multe)</li>
+          <li>Capturi trafic (pcap) de la senzori rețea</li>
+          <li>Timeline: când a început, cum s-a răspândit, câte hosturi</li>
+        </ul>
+        <p><strong>Stocare:</strong> Medii dedicate, write-once, hash-uri pentru integritate, acces controlat.</p>
+        <p><strong>Retenție:</strong> Minim 2-3 ani. Dacă se descoperă că agentul DDoS a fost folosit → retenție extinsă (implicații legale).</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- POST-INCIDENT -->
+  <div class="phase-header phase-header-post" id="post">🟢 Post-Incident Activity</div>
+
+  <div class="q-card" id="pi-q1">
+    <div class="q-top">
+      <div class="q-question">1. Who would attend the lessons learned meeting regarding this incident?</div>
+      <a href="nist-chapter3.html#nist-3.4" target="_blank" class="q-ref">§3.4.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Echipa IR completă</strong></li>
+          <li><strong>Administratori sisteme și rețea</strong> — au implementat containment-ul</li>
+          <li><strong>Help desk</strong> — feedback din prima linie</li>
+          <li><strong>Management IT</strong> — decizii strategice pe viitor</li>
+          <li><strong>Responsabil Group Policy</strong> — politicile USB/share</li>
+          <li><strong>Reprezentanți utilizatori</strong> — cum a afectat productivitatea</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="pi-q2">
+    <div class="q-top">
+      <div class="q-question">2. What could be done to prevent similar incidents from occurring in the future?</div>
+      <a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Dezactivare permanentă autorun</strong> pe removable media (GPO)</li>
+          <li><strong>Restricționare share-uri</strong> — principiul least privilege</li>
+          <li><strong>EDR deployment</strong> — detecție comportamentală, nu doar semnături</li>
+          <li><strong>Application whitelisting</strong> — doar executabile autorizate</li>
+          <li><strong>Network segmentation</strong> — limitare blast radius</li>
+          <li><strong>Exerciții de simulare</strong> pentru infecție malware pe scară largă</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="q-card" id="pi-q3">
+    <div class="q-top">
+      <div class="q-question">3. What could be done to improve detection of similar incidents?</div>
+      <a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>EDR pe toate endpoint-urile</strong> — detecție comportamentală rapidă</li>
+          <li><strong>Network anomaly detection</strong> — alertare pe propagare laterală anormală</li>
+          <li><strong>Threat intelligence feeds</strong> — IOC-uri partajate de comunitate rapid</li>
+          <li><strong>SIEM rules</strong> — corelarea alertelor AV cu trafic de rețea anormal</li>
+          <li><strong>USB device logging</strong> — monitorizare conectări dispozitive</li>
+          <li><strong>Sandbox automat</strong> — analiza automată a fișierelor noi pe endpoint-uri</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- SPECIFIC QUESTIONS -->
+  <div class="specific-section" id="specific">
+    <h2>❓ Întrebări Specifice Scenariului (8)</h2>
+
+    <div class="q-card" id="s-q1">
+      <div class="q-top">
+        <div class="q-question">1. How would the incident response team identify all infected hosts?</div>
+        <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <ul>
+            <li><strong>IOC scanning:</strong> Scanare tuturor hosturilor pentru hash-urile worm-ului, procesele și cheile registru create</li>
+            <li><strong>Network traffic analysis:</strong> Identificare hosturi cu trafic de propagare sau conexiuni C&C</li>
+            <li><strong>AV scan centralizat:</strong> Imediat ce semnăturile sunt disponibile, push și scan pe toate stațiile</li>
+            <li><strong>File integrity monitoring:</strong> Detectare modificări suspecte pe fișiere sistem</li>
+            <li><strong>Active Directory / SCCM inventory:</strong> Comparare stare normală vs. curentă</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="q-card" id="s-q2">
+      <div class="q-top">
+        <div class="q-question">2. How would the organization attempt to prevent the worm from entering the organization before antivirus signatures were released?</div>
+        <a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <ul>
+            <li><strong>Blocare executare automată</strong> pe removable media (GPO urgentă)</li>
+            <li><strong>Restricționare share-uri Windows</strong> — închidere share-uri deschise</li>
+            <li><strong>Segmentare rețea</strong> — izolarea segmentelor încă neinfectate</li>
+            <li><strong>Blocare hash-uri binare</strong> ale worm-ului dacă sunt disponibile (IOC sharing)</li>
+            <li><strong>Application whitelisting</strong> — permite doar executabile cunoscute</li>
+            <li><strong>Restricționare trafic outbound suspect</strong> la firewall</li>
+            <li><strong>Alertare utilizatori:</strong> NU conectați USB-uri, NU deschideți fișiere de pe share-uri</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="q-card" id="s-q3">
+      <div class="q-top">
+        <div class="q-question">3. How would the organization attempt to prevent the worm from being spread by infected hosts before antivirus signatures were released?</div>
+        <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <ul>
+            <li><strong>Izolarea hosturilor infectate</strong> — deconectare de la rețea</li>
+            <li><strong>Blocare SMB/CIFS</strong> pe firewall intern — previne propagare prin share-uri</li>
+            <li><strong>Dezactivare USB</strong> pe toate stațiile via GPO</li>
+            <li><strong>Blocarea proceselor worm-ului</strong> prin Application Control sau reguli specifice</li>
+            <li><strong>Network quarantine</strong> — VLAN de izolare pentru hosturi suspecte</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="q-card" id="s-q4">
+      <div class="q-top">
+        <div class="q-question">4. Would the organization attempt to patch all vulnerable machines? If so, how would this be done?</div>
+        <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.4</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <p><strong>Da, dar cu priorități:</strong></p>
+          <ul>
+            <li><strong>Prioritate 1:</strong> Servere critice și hosturi neinfectate</li>
+            <li><strong>Prioritate 2:</strong> Hosturi după curățare/rebuild</li>
+            <li><strong>Mecanism:</strong> WSUS/SCCM pentru push centralizat de patch-uri</li>
+            <li><strong>Verificare:</strong> Confirmare că patch-ul e aplicat pe fiecare mașină</li>
+          </ul>
+          <p><strong>Provocare:</strong> Dacă patch-ul nu există încă (zero-day), se aplică workaround-uri (dezactivare vectori de propagare) până la patch.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="q-card" id="s-q5">
+      <div class="q-top">
+        <div class="q-question">5. How would the handling of this incident change if infected hosts had been configured to attack another organization's website the next morning?</div>
+        <a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <p><strong>Urgența crește dramatic:</strong></p>
+          <ul>
+            <li><strong>Notificare organizația țintă</strong> (conform §2.3.4) — obligatoriu moral și posibil legal</li>
+            <li><strong>Raportare US-CERT</strong> — incident cu impact extern</li>
+            <li><strong>Izolarea imediată a TUTUROR hosturilor infectate</strong> — chiar dacă afectează productivitatea</li>
+            <li><strong>Blocare trafic outbound</strong> către IP-urile țintă la firewall</li>
+            <li><strong>Responsabilitate legală crescută</strong> — dacă organizația știe de compromis și permite atacul, poate fi responsabilă</li>
+            <li><strong>Deadline clar:</strong> Totul trebuie rezolvat ÎNAINTE de dimineață</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="q-card" id="s-q6">
+      <div class="q-top">
+        <div class="q-question">6. How would the handling of this incident change if one or more of the infected hosts contained sensitive personally identifiable information?</div>
+        <a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <ul>
+            <li>Se activează procedura de <strong>breach notification</strong></li>
+            <li>Information Impact devine <strong>Privacy Breach</strong></li>
+            <li>Notificare persoane afectate, autorități de protecție date, legal department</li>
+            <li>Se verifică dacă worm-ul a <strong>exfiltrat date</strong> (nu doar infectat)</li>
+            <li>Se face analiză forensic suplimentară pe hosturile cu PII</li>
+            <li>Prioritatea rămâne CRITICĂ dar se adaugă <strong>componenta legală/compliance</strong></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="q-card" id="s-q7">
+      <div class="q-top">
+        <div class="q-question">7. How would the incident response team keep the organization's users informed about the status of the incident?</div>
+        <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <ul>
+            <li><strong>Email-uri periodice</strong> cu update-uri (dacă email funcționează)</li>
+            <li><strong>Canale alternative:</strong> Intranet, SMS, telefon, PA system</li>
+            <li><strong>Help desk briefing:</strong> Script de comunicare pentru întrebările utilizatorilor</li>
+            <li><strong>Pagina de status</strong> internă cu progresul curățării</li>
+            <li><strong>Instrucțiuni clare:</strong> Ce să facă/nu facă (nu conectați USB, raportați comportament ciudat)</li>
+            <li><strong>Frecvență:</strong> Update-uri cel puțin la 2-4 ore în timpul fazei active</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="q-card" id="s-q8">
+      <div class="q-top">
+        <div class="q-question">8. What additional measures would the team perform for hosts that are not currently connected to the network (e.g., staff on vacation, offsite employees)?</div>
+        <span class="q-ref" style="cursor:default;">Practică IT</span>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <div class="nist-quote">⚠️ Întrebare practică — nu are secțiune NIST dedicată. Testează cunoștințe operaționale de administrare IT.</div>
+          <ul>
+            <li><strong>Quarantine VLAN:</strong> Hosturile care se reconectează sunt plasate automat într-o rețea de carantină</li>
+            <li><strong>NAC check:</strong> Verificare automată AV signatures + patch la conectare</li>
+            <li><strong>Notificare angajați:</strong> Email/SMS — „Înainte de a conecta laptopul, contactați IT"</li>
+            <li><strong>Login script:</strong> Scanare automată la prima conectare</li>
+            <li><strong>Inventar dispozitive offline:</strong> Lista tuturor echipamentelor neconectate, tracking reconectare</li>
+            <li><strong>Procedură de re-entry:</strong> Fiecare laptop revenit trece prin IT pentru verificare</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="scenariu-1-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Scenariu 1</a>
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Pagina principală</a>
+    <a href="scenariu-3-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Scenariu 3 →</a>
+  </div>
+</div>
+
+<script>
+const navLinks = document.querySelectorAll('.page-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) sections.push({ el, a }); });
+window.addEventListener('scroll', () => { let current = sections[0]; for (const s of sections) { if (s.el.getBoundingClientRect().top <= 120) current = s; } navLinks.forEach(a => a.classList.remove('active')); if (current) current.a.classList.add('active'); }, { passive: true });
+</script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenariu 8 — Compromitere Telecommuting (Detaliat)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html { font-size: 140%; }
+    header { margin-left: 280px; }
+    .page-nav { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); overflow-y: auto; padding: 1rem 0; z-index: 100; }
+    .page-nav a { display: block; padding: 5px 18px; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; line-height: 1.4; }
+    .page-nav a:hover, .page-nav a.active { color: var(--primary); background: rgba(74,70,200,0.05); border-left-color: var(--primary); }
+    .page-nav .nav-title { padding: 6px 18px; font-weight: 700; font-size: 0.82rem; color: var(--text-primary); }
+    .page-nav .sep { padding: 10px 18px 3px; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+    .page-main { margin-left: 280px; padding: 1.5rem 2rem 3rem; max-width: 1100px; }
+    .back-link { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.82rem; }
+    .back-link:hover { text-decoration: underline; }
+    .scenario-box { background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01)); border-left: 4px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; font-size: 0.88rem; }
+    .phase-header { padding: 0.6rem 1rem; border-radius: 8px; color: white; font-weight: 700; font-size: 0.95rem; margin: 1.8rem 0 0.8rem; }
+    .phase-header-prep { background: var(--phase-prep); } .phase-header-detect { background: var(--phase-detect); } .phase-header-contain { background: var(--phase-contain); } .phase-header-post { background: var(--phase-lessons); }
+    .q-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+    .q-top { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.2rem; }
+    .q-question { flex: 1; font-weight: 600; color: var(--text-primary); font-size: 0.88rem; line-height: 1.5; }
+    .q-ref { flex-shrink: 0; background: rgba(74,70,200,0.1); color: var(--primary); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .q-ref:hover { background: rgba(74,70,200,0.2); }
+    .q-answer { border-top: 1px dashed var(--border); }
+    .q-answer summary { cursor: pointer; padding: 0.6rem 1.2rem; font-weight: 700; font-size: 0.78rem; color: var(--primary); list-style: none; user-select: none; display: flex; align-items: center; gap: 0.4rem; }
+    .q-answer summary::-webkit-details-marker { display: none; }
+    .q-answer summary::before { content: '▶'; font-size: 0.6rem; transition: transform 0.2s; }
+    .q-answer[open] summary::before { transform: rotate(90deg); }
+    .q-answer[open] summary { color: var(--phase-recover); }
+    .answer-content { padding: 0 1.2rem 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .answer-content p { margin: 0.3rem 0; } .answer-content ul { margin: 0.3rem 0 0.3rem 1.2rem; } .answer-content li { margin-bottom: 0.25rem; }
+    .answer-content table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content table th, .answer-content table td { padding: 0.4rem 0.6rem; border: 1px solid var(--border); text-align: left; }
+    .answer-content table th { background: rgba(74,70,200,0.05); font-weight: 700; }
+    .answer-content .nist-quote { background: rgba(241,196,15,0.08); border-left: 3px solid #f39c12; padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; font-style: italic; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content strong { color: var(--text-primary); }
+    .answer-content .conclusion-box { background: rgba(39,174,96,0.06); border-left: 3px solid var(--phase-recover); padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; margin: 0.5rem 0; }
+    .specific-section { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+    .specific-section h2 { font-size: 1rem; color: var(--text-primary); margin-bottom: 0.8rem; }
+    @media (max-width: 768px) { html { font-size: 112%; } .page-nav { display: none; } .page-main { margin-left: 0; padding: 1rem; } header { margin-left: 0; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Scenariul 8: Compromitere Telecommuting</h1>
+  <p>Analiză detaliată — întrebare cu întrebare, cu referințe NIST și răspunsuri ascunse</p>
+</header>
+<nav class="page-nav">
+  <div class="nav-title">📖 Scenariu 8: VPN</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Secțiuni</div>
+  <a href="#scenario-text">📋 Enunțul scenariului</a>
+  <div class="sep">Întrebări Standard (A.1)</div>
+  <a href="#prep">🟣 Pregătire (2)</a>
+  <a href="#detect">🟠 Detecție & Analiză (6)</a>
+  <a href="#contain">🔴 Containment (5)</a>
+  <a href="#post">🟢 Post-Incident (3)</a>
+  <div class="sep">Specifice Scenariului</div>
+  <a href="#specific">❓ Întrebări specifice (5)</a>
+</nav>
+<div class="page-main">
+  <a href="index.html#scenariu-8" class="back-link">← Înapoi la pagina principală</a>
+  <div id="scenario-text" class="scenario-box">
+    On a Saturday night, network intrusion detection software records an inbound connection originating from a watchlist IP address. The intrusion detection analyst determines that the connection is being made to the organization's VPN server and contacts the incident response team. The team reviews the intrusion detection, firewall, and VPN server logs and identifies the user ID that was authenticated for the session and the name of the user associated with the user ID.
+  </div>
+
+  <div class="phase-header phase-header-prep" id="prep">🟣 Preparation (Pregătire)</div>
+  <div class="q-card" id="p-q1">
+    <div class="q-top"><div class="q-question">1. Would the organization consider this activity to be an incident? If so, which of the organization's policies does this activity violate?</div><a href="nist-chapter2.html#nist-2.1" target="_blank" class="q-ref">§2.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Da, incident.</strong></p>
+      <p>Conexiune VPN de la o IP pe watchlist + autentificare cu credențiale de angajat:</p>
+      <ul>
+        <li><strong>Posibilă compromitere</strong> a contului utilizatorului</li>
+        <li><strong>Acces neautorizat</strong> prin VPN</li>
+        <li>Gravitate dependentă de: utilizatorul este <strong>complice sau victimă</strong>?</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="p-q2">
+    <div class="q-top"><div class="q-question">2. What measures are in place to attempt to prevent this type of incident from occurring or to limit its impact?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>2FA/MFA pe VPN:</strong> Previne utilizarea credențialelor furate</li>
+        <li><strong>IP watchlist integration:</strong> Blocare automată la conectare</li>
+        <li><strong>VPN session monitoring:</strong> Alertare pe conexiuni neobișnuite</li>
+        <li><strong>Security awareness training:</strong> Angajați conștienți de riscuri</li>
+        <li><strong>Endpoint security:</strong> Antivirus pe computerele de acasă</li>
+        <li><strong>Computer use policy:</strong> Reguli pentru echipamentele de telecommuting</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-detect" id="detect">🟠 Detection and Analysis (Detecție și Analiză)</div>
+  <div class="q-card" id="d-q1">
+    <div class="q-top"><div class="q-question">1. What precursors of the incident, if any, might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li>Tentative anterioare de login eșuate pe VPN cu acel user ID</li>
+        <li>Phishing emails targetând angajatul</li>
+        <li>IP pe watchlist văzut anterior în alte conexiuni</li>
+        <li>Malware/Trojan detectat pe sisteme ale angajatului</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q2">
+    <div class="q-top"><div class="q-question">2. What indicators of the incident might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IDS alert:</strong> Conexiune de la IP pe watchlist (detectat!)</li>
+        <li><strong>Ora neobișnuită:</strong> Sâmbătă noaptea</li>
+        <li><strong>Locație neobișnuită:</strong> IP din altă regiune decât de obicei</li>
+        <li><strong>Sesiune simultană:</strong> User conectat din 2+ locații</li>
+        <li><strong>Resurse accesate:</strong> Acces la date neobișnuite pentru rolul utilizatorului</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to detect this particular incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Threat intelligence feeds:</strong> Actualizare watchlists</li>
+        <li><strong>UEBA (User & Entity Behavior Analytics):</strong> Detectare comportament anormal</li>
+        <li><strong>VPN behavioral analysis:</strong> Ore, locații, resurse accesate obișnuit</li>
+        <li><strong>Endpoint assessment:</strong> Verificare securitate computer utilizator</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q4">
+    <div class="q-top"><div class="q-question">4. How would the incident response team analyze and validate this incident? What personnel would be involved?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Pași:</strong></p>
+      <ul>
+        <li><strong>Pas 1: Contactare utilizator</strong> acasă — el/ea e conectat?</li>
+        <li><strong>Pas 2:</strong> Dacă NU → dezactivare cont + deconectare VPN imediat</li>
+        <li>Verificare ce resurse au fost accesate</li>
+        <li>Verificare conexiuni anterioare de la aceeași IP sau IP-uri suspecte</li>
+        <li>Verificare dacă contul pe mai multe IP-uri simultan</li>
+      </ul>
+      <p><strong>Personal:</strong> IR team, VPN admin, network security, utilizatorul, management.</p>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q5">
+    <div class="q-top"><div class="q-question">5. To which people and groups within the organization would the team report the incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Utilizatorul:</strong> Notificare compromitere cont</li>
+        <li><strong>Supervisor utilizator</strong></li>
+        <li><strong>IT security / CISO</strong></li>
+        <li><strong>HR:</strong> Dacă se dovedește complicitate</li>
+        <li><strong>Proprietarii resurselor accesate</strong></li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q6">
+    <div class="q-top"><div class="q-question">6. How would the team prioritize the handling of this incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <table>
+        <tr><th>Criteriu</th><th>Nivel</th><th>Justificare</th></tr>
+        <tr><td><strong>Functional Impact</strong></td><td>LOW</td><td>Doar un cont VPN</td></tr>
+        <tr><td><strong>Information Impact</strong></td><td style="color:var(--phase-detect);">DEPINDE DE ACCES</td><td>Ce resurse a accesat?</td></tr>
+        <tr><td><strong>Recoverability</strong></td><td>REGULAR</td><td>Schimbare parole, dezactivare sesiune</td></tr>
+      </table>
+      <div class="conclusion-box"><strong>Prioritate:</strong> Medium-High. IP pe watchlist plus autentificare reușită = acces neautorizat confirmat. Se escaladează dacă informații sensibile accesate.</div>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-contain" id="contain">🔴 Containment, Eradication, and Recovery</div>
+  <div class="q-card" id="c-q1">
+    <div class="q-top"><div class="q-question">1. What strategy should the organization take to contain the incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Deconectare sesiune VPN</strong></li>
+        <li><strong>Dezactivare temporară cont</strong></li>
+        <li><strong>Blocare IP watchlist</strong> la firewall</li>
+        <li><strong>Verificare acces</strong> la resurse sensibile în timpul sesiunii</li>
+        <li>Dacă computerul user-ului e compromis (Trojan) → <strong>izolarea computerului</strong></li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q2">
+    <div class="q-top"><div class="q-question">2. What could happen if the incident were not contained?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Acces continuu</strong> la resursele organizației prin VPN</li>
+        <li><strong>Exfiltrare date</strong></li>
+        <li><strong>Lateral movement</strong> — accesarea altor sisteme interne</li>
+        <li><strong>Instalare backdoors</strong> pe sistemele accesate</li>
+        <li><strong>Keystroke logger</strong> capturează mai multe parole</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to respond to this particular incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>VPN log analysis</strong></li>
+        <li><strong>Endpoint forensics tools:</strong> Analiza computerului utilizatorului (de acasă)</li>
+        <li><strong>Malware scanning:</strong> Trojan, keylogger detection</li>
+        <li><strong>Access audit tools:</strong> Ce a fost accesat prin VPN</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q4">
+    <div class="q-top"><div class="q-question">4. Which personnel would be involved in the containment, eradication, and/or recovery processes?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR team:</strong> Investigație</li>
+        <li><strong>VPN admin:</strong> Dezactivare sesiune/cont</li>
+        <li><strong>Network security:</strong> Blocare IP</li>
+        <li><strong>Utilizatorul:</strong> Colaborare, acces la computer personal</li>
+        <li><strong>HR:</strong> Dacă complicitate suspectată</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q5">
+    <div class="q-top"><div class="q-question">5. What sources of evidence, if any, should the organization acquire?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.2.5, §3.3.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>VPN server logs</strong></li>
+        <li><strong>IDS/firewall logs</strong></li>
+        <li><strong>Access logs</strong> — resurse accesate prin VPN</li>
+        <li><strong>Computer-ul utilizatorului</strong> (dacă este disponibil — computer personal!)</li>
+        <li><strong>Threat intelligence</strong> pe IP-ul watchlist</li>
+      </ul>
+      <div class="nist-quote">Atenție: dacă computer-ul personal al angajatului → probleme juridice cu aquizitia dovezilor. Legal department consultat!</div>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-post" id="post">🟢 Post-Incident Activity</div>
+  <div class="q-card" id="pi-q1">
+    <div class="q-top"><div class="q-question">1. Who would attend the lessons learned meeting?</div><a href="nist-chapter3.html#nist-3.4" target="_blank" class="q-ref">§3.4.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR team</strong></li>
+        <li><strong>VPN/network team</strong></li>
+        <li><strong>Management IT</strong></li>
+        <li><strong>Utilizatorul</strong> (learning opportunity)</li>
+        <li><strong>HR</strong> (dacă relevant)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q2">
+    <div class="q-top"><div class="q-question">2. What could be done to prevent similar incidents from occurring in the future?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>2FA/MFA obligatoriu pe VPN</strong> → credențialele furate nu sunt suficiente</li>
+        <li><strong>Politica de utilizare</strong> a computerelor personale pentru VPN</li>
+        <li><strong>Watchlist IP integration cu SIEM</strong> — alertare/blocare automată</li>
+        <li><strong>Training utilizatori</strong> despre securitatea echipamentelor de acasă</li>
+        <li><strong>Familia folosește computerul?</strong> → risc de Trojan prin jocuri/downloads</li>
+        <li><strong>VPN split tunneling disabled</strong></li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q3">
+    <div class="q-top"><div class="q-question">3. What could be done to improve detection of similar incidents?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>UEBA:</strong> Behavioral analysis pe sesiuni VPN</li>
+        <li><strong>Geo-IP alerts:</strong> Conexiuni din locații neobișnuite</li>
+        <li><strong>Dual-session detection:</strong> Alertă dacă user conectat din 2 locuri</li>
+        <li><strong>After-hours monitoring intensificat</strong></li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="specific-section" id="specific">
+    <h2>❓ Întrebări Specifice Scenariului (5)</h2>
+    <div class="q-card" id="s-q1">
+      <div class="q-top"><div class="q-question">1. What should the team's next step be (e.g., calling the user at home, disabling the user ID, disconnecting the VPN session)? Why should this step be performed first? What step should be performed second?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Pasul 1: Contactare utilizator acasă.</strong></p>
+        <p>De ce primul? Deoarece determină <strong>direcția întregii investigații</strong>:</p>
+        <ul>
+          <li>Dacă utilizatorul confirmă că <strong>este conectat</strong> → possible compromitere PC personal sau comportament suspect al utilizatorului</li>
+          <li>Dacă utilizatorul spune că <strong>NU este conectat</strong> → credențiale furate, cont compromis cert</li>
+        </ul>
+        <p><strong>Pasul 2: Dezactivare cont + deconectare sesiune VPN.</strong></p>
+        <p>Dacă e clar că nu e utilizatorul → pas 2 devine pas 1 (oprire acces imediat).</p>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q2">
+      <div class="q-top"><div class="q-question">2. How would the handling of this incident differ if the external IP address belonged to an open proxy?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li><strong>Identitatea atacatorului reală este ascunsă</strong> în spatele proxy-ului</li>
+          <li><strong>Mult mai greu de trasat</strong> sursa reală a conexiunii</li>
+          <li>Sugerează <strong>atacator sofisticat</strong> care folosește anonimizare</li>
+          <li><strong>Blocare proxy nu rezolvă:</strong> Atacatorul va folosi alt proxy</li>
+          <li>Focus pe <strong>cum au fost obținute credențialele</strong>, nu pe sursa IP</li>
+          <li><strong>Blocare categorii proxy/Tor</strong> la nivel VPN</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q3">
+      <div class="q-top"><div class="q-question">3. How would the handling of this incident differ if the ID had been used to initiate VPN connections from several external IP addresses without the knowledge of the user?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li><strong>Compromitere confirmată</strong> — credențialele sunt sigur furate</li>
+          <li><strong>Multiple IP-uri:</strong> Posibil mai mulți atacatori sau botnet</li>
+          <li><strong>Amploare mai mare:</strong> Verificare TOATE sesiunile de pe IP-urile suspecte</li>
+          <li><strong>Ce resurse au fost accesate</strong> din fiecare sesiune?</li>
+          <li>Credențialele au fost <strong>distribuite</strong> sau vândute?</li>
+          <li><strong>Schimbare imediată</strong> parolă + activare 2FA</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q4">
+      <div class="q-top"><div class="q-question">4. Suppose that the identified user's computer had become compromised by a game containing a Trojan horse that was downloaded by a family member. How would this affect the team's analysis? How would this affect evidence gathering? What should the team do in terms of eradicating the incident from the user's computer?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Impact pe analiză:</strong></p>
+        <ul>
+          <li>Utilizatorul este <strong>victimă, nu complice</strong></li>
+          <li>Trojan-ul a capturat credențialele VPN</li>
+          <li>Posibil a capturat și <strong>alte parole</strong> tastate pe computer</li>
+        </ul>
+        <p><strong>Evidence gathering:</strong></p>
+        <ul>
+          <li>Computer-ul e <strong>personal</strong> → complicații juridice cu achizitarea dovezilor</li>
+          <li>Necesită <strong>cooperarea voluntară</strong> a angajatului</li>
+          <li>Organizația nu poate <strong>forțat</strong> forensics pe PC personal</li>
+        </ul>
+        <p><strong>Eradicare:</strong></p>
+        <ul>
+          <li><strong>Curățare completă / rebuild</strong> al computerului</li>
+          <li><strong>Schimbare TOATE parolele</strong> tastate pe acel computer</li>
+          <li>Instalare <strong>antivirus actualizat</strong></li>
+          <li>Educarea familiei despre descărcări sigure</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q5">
+      <div class="q-top"><div class="q-question">5. Suppose that the user installed antivirus software and determined that the Trojan horse had included a keystroke logger. How would this affect the handling of the incident? How would this differ if the user were a system administrator? Or a high-ranking executive?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Keystroke logger = TOATE tastările capturate.</strong></p>
+        <ul>
+          <li>Schimbare <strong>TOATE parolele</strong> utilizatorului din organizație</li>
+          <li>Verificare <strong>toate conturile</strong> pentru acces neautorizat</li>
+        </ul>
+        <p><strong>Dacă utilizatorul este system administrator:</strong></p>
+        <ul>
+          <li>Impact <strong>masiv</strong> — admin passwords compromise</li>
+          <li>Verificare <strong>TOATE serverele/sistemele</strong> administrate</li>
+          <li>Schimbare <strong>toate credențialele administrative</strong></li>
+          <li>Posibil <strong>backdoors instalate</strong> cu acces admin pe sisteme</li>
+        </ul>
+        <p><strong>Dacă utilizatorul este executiv de rang înalt:</strong></p>
+        <ul>
+          <li>Acces la <strong>informații strategice, financiare, confidențiale</strong></li>
+          <li><strong>Espionaj industrial</strong> posibil</li>
+          <li><strong>Board/management</strong> notificat</li>
+          <li>Implicații <strong>legale și reputaționale</strong> semnificative</li>
+        </ul>
+        <div class="conclusion-box"><strong>Cu cât utilizatorul are mai mult acces, cu atât impactul keystroke logger-ului este mai devastator.</strong></div>
+      </div></details>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="scenariu-7-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Scenariu 7</a>
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Pagina principală</a>
+    <a href="scenariu-9-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Scenariu 9 →</a>
+  </div>
+</div>
+<script>
+const navLinks = document.querySelectorAll('.page-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) sections.push({ el, a }); });
+window.addEventListener('scroll', () => { let current = sections[0]; for (const s of sections) { if (s.el.getBoundingClientRect().top <= 120) current = s; } navLinks.forEach(a => a.classList.remove('active')); if (current) current.a.classList.add('active'); }, { passive: true });
+</script>
+</body>
+</html>

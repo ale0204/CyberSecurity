@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenariu 4 — Server Bază de Date Compromis (Detaliat)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html { font-size: 140%; }
+    header { margin-left: 280px; }
+    .page-nav { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); overflow-y: auto; padding: 1rem 0; z-index: 100; }
+    .page-nav a { display: block; padding: 5px 18px; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; line-height: 1.4; }
+    .page-nav a:hover, .page-nav a.active { color: var(--primary); background: rgba(74,70,200,0.05); border-left-color: var(--primary); }
+    .page-nav .nav-title { padding: 6px 18px; font-weight: 700; font-size: 0.82rem; color: var(--text-primary); }
+    .page-nav .sep { padding: 10px 18px 3px; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+    .page-main { margin-left: 280px; padding: 1.5rem 2rem 3rem; max-width: 1100px; }
+    .back-link { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.82rem; }
+    .back-link:hover { text-decoration: underline; }
+    .scenario-box { background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01)); border-left: 4px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; font-size: 0.88rem; }
+    .phase-header { padding: 0.6rem 1rem; border-radius: 8px; color: white; font-weight: 700; font-size: 0.95rem; margin: 1.8rem 0 0.8rem; }
+    .phase-header-prep { background: var(--phase-prep); } .phase-header-detect { background: var(--phase-detect); } .phase-header-contain { background: var(--phase-contain); } .phase-header-post { background: var(--phase-lessons); }
+    .q-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+    .q-top { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.2rem; }
+    .q-question { flex: 1; font-weight: 600; color: var(--text-primary); font-size: 0.88rem; line-height: 1.5; }
+    .q-ref { flex-shrink: 0; background: rgba(74,70,200,0.1); color: var(--primary); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .q-ref:hover { background: rgba(74,70,200,0.2); }
+    .q-answer { border-top: 1px dashed var(--border); }
+    .q-answer summary { cursor: pointer; padding: 0.6rem 1.2rem; font-weight: 700; font-size: 0.78rem; color: var(--primary); list-style: none; user-select: none; display: flex; align-items: center; gap: 0.4rem; }
+    .q-answer summary::-webkit-details-marker { display: none; }
+    .q-answer summary::before { content: '▶'; font-size: 0.6rem; transition: transform 0.2s; }
+    .q-answer[open] summary::before { transform: rotate(90deg); }
+    .q-answer[open] summary { color: var(--phase-recover); }
+    .answer-content { padding: 0 1.2rem 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .answer-content p { margin: 0.3rem 0; } .answer-content ul { margin: 0.3rem 0 0.3rem 1.2rem; } .answer-content li { margin-bottom: 0.25rem; }
+    .answer-content table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content table th, .answer-content table td { padding: 0.4rem 0.6rem; border: 1px solid var(--border); text-align: left; }
+    .answer-content table th { background: rgba(74,70,200,0.05); font-weight: 700; }
+    .answer-content .nist-quote { background: rgba(241,196,15,0.08); border-left: 3px solid #f39c12; padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; font-style: italic; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content strong { color: var(--text-primary); }
+    .answer-content .conclusion-box { background: rgba(39,174,96,0.06); border-left: 3px solid var(--phase-recover); padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; margin: 0.5rem 0; }
+    .specific-section { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+    .specific-section h2 { font-size: 1rem; color: var(--text-primary); margin-bottom: 0.8rem; }
+    @media (max-width: 768px) { html { font-size: 112%; } .page-nav { display: none; } .page-main { margin-left: 0; padding: 1rem; } header { margin-left: 0; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Scenariul 4: Server Bază de Date Compromis</h1>
+  <p>Analiză detaliată — întrebare cu întrebare, cu referințe NIST și răspunsuri ascunse</p>
+</header>
+<nav class="page-nav">
+  <div class="nav-title">📖 Scenariu 4: DB Server</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Secțiuni</div>
+  <a href="#scenario-text">📋 Enunțul scenariului</a>
+  <div class="sep">Întrebări Standard (A.1)</div>
+  <a href="#prep">🟣 Pregătire (2)</a>
+  <a href="#detect">🟠 Detecție & Analiză (6)</a>
+  <a href="#contain">🔴 Containment (5)</a>
+  <a href="#post">🟢 Post-Incident (3)</a>
+  <div class="sep">Specifice Scenariului</div>
+  <a href="#specific">❓ Întrebări specifice (4)</a>
+</nav>
+<div class="page-main">
+  <a href="index.html#scenariu-4" class="back-link">← Înapoi la pagina principală</a>
+  <div id="scenario-text" class="scenario-box">
+    On a Tuesday night, a database administrator performs some off-hours maintenance on several production database servers. The administrator notices some unfamiliar and unusual directory names on one of the servers. After reviewing the directory listings and viewing some of the files, the administrator concludes that the server has been attacked and calls the incident response team for assistance. The team's investigation determines that the attacker successfully gained root access to the server six weeks ago.
+  </div>
+
+  <div class="phase-header phase-header-prep" id="prep">🟣 Preparation (Pregătire)</div>
+  <div class="q-card" id="p-q1">
+    <div class="q-top"><div class="q-question">1. Would the organization consider this activity to be an incident? If so, which of the organization's policies does this activity violate?</div><a href="nist-chapter2.html#nist-2.1" target="_blank" class="q-ref">§2.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Da, incident critic.</strong></p>
+      <p>Acces root neautorizat pe unui server de producție = încălcare majoră:</p>
+      <ul>
+        <li><strong>Acces neautorizat</strong> la sisteme și date</li>
+        <li><strong>Compromiterea integrității și confidențialității</strong></li>
+        <li><strong>6 săptămâni nedetectat</strong> — timp suficient pentru exfiltrare, persistență, mișcare laterală</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="p-q2">
+    <div class="q-top"><div class="q-question">2. What measures are in place to attempt to prevent this type of incident from occurring or to limit its impact?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Hardening servere:</strong> Dezactivare servicii nenecesare, patching regulat</li>
+        <li><strong>File integrity monitoring (FIM):</strong> Alertare pe modificări fișiere sistem</li>
+        <li><strong>Privileged access management:</strong> Controlul strict al accesului root/admin</li>
+        <li><strong>Log monitoring / SIEM:</strong> Detecție access anomalies</li>
+        <li><strong>Network segmentation:</strong> Isolarea serverelor de BD de rețeaua generală</li>
+        <li><strong>IDS/IPS:</strong> Detectarea tentativelor de exploatare</li>
+        <li><strong>Regular audits:</strong> Verificarea periodică a serverelor critice</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-detect" id="detect">🟠 Detection and Analysis (Detecție și Analiză)</div>
+  <div class="q-card" id="d-q1">
+    <div class="q-top"><div class="q-question">1. What precursors of the incident, if any, might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li>Scanări de vulnerabilități direcționate către serverul de BD</li>
+        <li>Tentative de exploatare loggate de IDS/IPS</li>
+        <li>Buletine de securitate pentru vulnerabilitatea exploatată</li>
+        <li>Activitate anormală pe conturile de serviciu ale BD</li>
+      </ul>
+      <p><strong>Problema:</strong> Detecția a fost <strong>accidentală</strong> (mentenanță de rutină), nu prin mecanisme de securitate — semnal de alarmă major.</p>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q2">
+    <div class="q-top"><div class="q-question">2. What indicators of the incident might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Directoare necunoscute</strong> pe server (ceea ce a descoperit adminul)</li>
+        <li><strong>Fișiere neobișnuite</strong> sau cu timestamp-uri suspecte</li>
+        <li><strong>Modificări în fișiere de configurare</strong> (cron jobs, SSH keys adăugate)</li>
+        <li><strong>Procese necunoscute</strong> care rulează</li>
+        <li><strong>Conturi noi</strong> sau modificări de privilegii</li>
+        <li><strong>Network connections</strong> anormale de la server</li>
+        <li><strong>Log gaps</strong> — perioade fără log-uri (atacatorul le-a șters?)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to detect this particular incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>File integrity monitoring (Tripwire, OSSEC):</strong> Ar fi detectat directoarele noi</li>
+        <li><strong>Rootkit detection (rkhunter, chkrootkit):</strong> Verificare compromitere OS</li>
+        <li><strong>Memory forensics (Volatility):</strong> Analiza proceselor în memorie</li>
+        <li><strong>Disk forensics (FTK, Autopsy):</strong> Analiza completă disk</li>
+        <li><strong>Network forensics:</strong> Trafic capturat de/la server</li>
+        <li><strong>Log analysis tools:</strong> Timeline analysis din SIEM</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q4">
+    <div class="q-top"><div class="q-question">4. How would the incident response team analyze and validate this incident? What personnel would be involved?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Analiză:</strong></p>
+      <ul>
+        <li>Ce s-a întâmplat în cele 6 săptămâni? Timeline completă</li>
+        <li>Ce date conținea serverul? Au fost accesate/copiate?</li>
+        <li>Cum a obținut atacatorul acces root? Ce vulnerabilitate?</li>
+        <li>Există persistență: backdoor, cont ascuns, SSH key, cron job?</li>
+        <li>A fost serverul folosit ca pivot pentru alte sisteme?</li>
+        <li>Verificare integritate date din baza de date</li>
+      </ul>
+      <p><strong>Personal:</strong> DBA, administratori sisteme, analiști securitate, IR team lead, management IT.</p>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q5">
+    <div class="q-top"><div class="q-question">5. To which people and groups within the organization would the team report the incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>CISO:</strong> Compromitere server de producție — acces root</li>
+        <li><strong>Management executiv:</strong> Date clienți potențial compromise</li>
+        <li><strong>Legal department:</strong> Posibilă breach notification (PII)</li>
+        <li><strong>Echipele care depind de BD:</strong> Server indisponibil pe durata investigației</li>
+        <li><strong>US-CERT / CERT:</strong> Raportare incident</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q6">
+    <div class="q-top"><div class="q-question">6. How would the team prioritize the handling of this incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <table>
+        <tr><th>Criteriu</th><th>Nivel</th><th>Justificare</th></tr>
+        <tr><td><strong>Functional Impact</strong></td><td style="color:var(--phase-detect); font-weight:700;">MEDIUM-HIGH</td><td>Server de producție compromis, necesită rebuild</td></tr>
+        <tr><td><strong>Information Impact</strong></td><td style="color:var(--phase-contain); font-weight:700;">PRIVACY + INTEGRITY</td><td>Acces root 6 săpt = potențial acces la toate datele</td></tr>
+        <tr><td><strong>Recoverability</strong></td><td style="color:var(--phase-contain); font-weight:700;">EXTENDED</td><td>6 săptămâni de activitate malițioasă de investigat</td></tr>
+      </table>
+      <div class="conclusion-box"><strong>Prioritate: CRITICĂ</strong> — 6 săptămâni de acces root nedetectat. Puțin probabil ca atacatorul să nu fi accesat datele.</div>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-contain" id="contain">🔴 Containment, Eradication, and Recovery</div>
+  <div class="q-card" id="c-q1">
+    <div class="q-top"><div class="q-question">1. What strategy should the organization take to contain the incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Izolarea serverului</strong> (nu oprirea imediată — se pierd date volatile!)</li>
+        <li><strong>Captură memorie RAM</strong> înainte de orice altceva</li>
+        <li><strong>Full disk image</strong> (pe media write-once)</li>
+        <li><strong>Verificare alte servere</strong> din aceeași rețea pentru semne de compromitere</li>
+        <li><strong>Blocare acces atacator:</strong> Schimbare parole root, verificare chei SSH, blocare IP-uri suspecte</li>
+        <li><strong>Restricționare acces</strong> la baza de date</li>
+      </ul>
+      <div class="nist-quote">Nu opriți serverul! Memoria RAM conține procese active, conexiuni de rețea, chei de criptare — dovezi care se pierd la restart.</div>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q2">
+    <div class="q-top"><div class="q-question">2. What could happen if the incident were not contained?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Continuarea exfiltrării</strong> de date din baza de date</li>
+        <li><strong>Mișcare laterală</strong> — atacatorul compromite alte servere</li>
+        <li><strong>Distrugerea sau modificarea</strong> datelor din BD</li>
+        <li><strong>Instalarea de backdoors suplimentare</strong> pentru persistență</li>
+        <li><strong>Utilizarea serverului ca pivot</strong> pentru atacuri externe</li>
+        <li><strong>Pierderea completă a încrederii</strong> în integritatea datelor</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to respond to this particular incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Memory dump tools (LiME, Volatility):</strong> Captură și analiză RAM</li>
+        <li><strong>Forensic imaging (dd, FTK Imager):</strong> Disk image integritate</li>
+        <li><strong>Rootkit detection tools:</strong> Verificare OS compromis</li>
+        <li><strong>Database audit tools:</strong> Verificare integritate date BD</li>
+        <li><strong>Clean OS images:</strong> Pentru rebuild</li>
+        <li><strong>Verified backups:</strong> Backup-uri de dinainte de compromis (6+ săpt.)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q4">
+    <div class="q-top"><div class="q-question">4. Which personnel would be involved in the containment, eradication, and/or recovery processes?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR Team Lead:</strong> Coordonare investigație</li>
+        <li><strong>DBA:</strong> Verificare integritate BD, restaurare</li>
+        <li><strong>Administratori sisteme:</strong> Rebuild server, hardening</li>
+        <li><strong>Analist forensic:</strong> Analiza memoriei și disk-ului</li>
+        <li><strong>Legal:</strong> Dacă PII compromis → breach notification</li>
+        <li><strong>Management:</strong> Aprobare timp de inactivitate pentru rebuild</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q5">
+    <div class="q-top"><div class="q-question">5. What sources of evidence, if any, should the organization acquire?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.2.5, §3.3.2, §3.4.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Memory dump</strong> (live acquisition)</li>
+        <li><strong>Full disk image</strong> (bit-for-bit)</li>
+        <li><strong>Network logs</strong> — trafic de la/către server pe ultimele 6+ săptămâni</li>
+        <li><strong>SIEM logs</strong> — alertele ignorate/nedetectate</li>
+        <li><strong>Firewall logs</strong> — conexiuni externe de la server</li>
+        <li><strong>Database audit logs</strong> — ce query-uri au rulat</li>
+        <li><strong>Screenshot-uri</strong> directoare și fișiere suspecte</li>
+      </ul>
+      <p><strong>Stocare:</strong> Write-once media, hash-uri SHA-256, chain of custody.</p>
+      <p><strong>Retenție:</strong> Minim 3 ani; dacă litigiu → indefinit.</p>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-post" id="post">🟢 Post-Incident Activity</div>
+  <div class="q-card" id="pi-q1">
+    <div class="q-top"><div class="q-question">1. Who would attend the lessons learned meeting?</div><a href="nist-chapter3.html#nist-3.4" target="_blank" class="q-ref">§3.4.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR team complet</strong></li>
+        <li><strong>DBA(s)</strong> — cel care a descoperit + colegii</li>
+        <li><strong>Administratori sisteme</strong></li>
+        <li><strong>Management IT / CISO</strong></li>
+        <li><strong>Legal</strong> (dacă breach notification a fost necesar)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q2">
+    <div class="q-top"><div class="q-question">2. What could be done to prevent similar incidents from occurring in the future?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>File integrity monitoring (FIM)</strong> pe toate serverele critice</li>
+        <li><strong>Patch management riguros</strong> — patch-urile de securitate aplicate rapid</li>
+        <li><strong>Privileged access management (PAM)</strong> — monitorizare acces root</li>
+        <li><strong>Network segmentation:</strong> BD izolate, acces controlat</li>
+        <li><strong>Regular security audits</strong> pe serverele de BD</li>
+        <li><strong>Hardening guides</strong> aplicate și verificate periodic</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q3">
+    <div class="q-top"><div class="q-question">3. What could be done to improve detection of similar incidents?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>FIM cu alerte real-time</strong> — detectare imediată directoarele/fișiere noi</li>
+        <li><strong>SIEM rules</strong> — corelarea log-urilor BD cu acces neobișnuit</li>
+        <li><strong>Behavioral detection</strong> — commands/procese anormale pe server</li>
+        <li><strong>Regular vulnerability scans</strong> + penetration testing</li>
+        <li><strong>Database activity monitoring (DAM)</strong></li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="specific-section" id="specific">
+    <h2>❓ Întrebări Specifice Scenariului (4)</h2>
+    <div class="q-card" id="s-q1">
+      <div class="q-top"><div class="q-question">1. What sources might the team use to determine when the compromise had occurred?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.5</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li><strong>Filesystem timestamps:</strong> Created/modified dates pe directoarele și fișierele atacatorului</li>
+          <li><strong>Log-uri sistem:</strong> Auth logs, su/sudo logs, SSH logs</li>
+          <li><strong>SIEM/centralized logs:</strong> Sunt mai fiabile decât cele locale</li>
+          <li><strong>Firewall/IDS logs:</strong> Prima conexiune suspectă de la/către server</li>
+          <li><strong>Database audit logs:</strong> Prima interogare anormală</li>
+          <li><strong>Backup comparison:</strong> Comparare backup-uri din săptămâni consecutive pentru a vedea când au apărut fișierele</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q2">
+      <div class="q-top"><div class="q-question">2. How would the handling change if the database server had been running a packet sniffer and capturing passwords from the network?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Incidentul se extinde dramatic:</strong></p>
+        <ul>
+          <li><strong>TOATE parolele capturate pe rețea</strong> sunt considerate compromise</li>
+          <li>Schimbare <strong>TOATE credențialele</strong> din organizație</li>
+          <li>Verificare toate conturile pentru acces neautorizat</li>
+          <li>Information Impact = <strong>Privacy Breach + Integrity Loss</strong></li>
+          <li>Implementare obligatorie: <strong>comunicare criptată</strong> (SSH în loc de telnet, HTTPS etc.)</li>
+          <li>Verificare dacă parolele capturate au fost transmise extern</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q3">
+      <div class="q-top"><div class="q-question">3. How would the handling change if the server was running a process that would copy a database containing sensitive customer PII each night and transfer it to an external address?</div><a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li>Se activează <strong>breach notification</strong> conform legislației</li>
+          <li>Se determină exact ce date au fost exfiltrate și pe ce perioadă (până la 6 săptămâni)</li>
+          <li>Se notifică <strong>toate persoanele afectate</strong></li>
+          <li>Se contactează <strong>autoritatea de protecție date</strong></li>
+          <li><strong>Legal department</strong> implicat imediat</li>
+          <li>Recoverability = <strong>Not Recoverable</strong> (datele au fost deja exfiltrate)</li>
+          <li>Se analizează traficul de rețea pe ultimele 6 săptămâni</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q4">
+      <div class="q-top"><div class="q-question">4. How would the handling change if the team discovered a rootkit on the server?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Rootkit = compromitere totală a OS-ului.</strong></p>
+        <ul>
+          <li><strong>Nu se mai poate avea încredere în nimic</strong> de pe acel sistem (nici log-uri, nici fișiere, nici procese vizibile)</li>
+          <li><strong>Rebuild complet din scratch</strong> — obligatoriu</li>
+          <li><strong>Log-urile locale sunt nefiabile</strong> — dovezi doar din log-uri de rețea/SIEM/alte sisteme</li>
+          <li>Analiză forensic <strong>offline</strong> pe disk image</li>
+          <li>Se verifică dacă rootkit-ul <strong>s-a răspândit</strong> pe alte sisteme</li>
+        </ul>
+      </div></details>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="scenariu-3-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Scenariu 3</a>
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Pagina principală</a>
+    <a href="scenariu-5-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Scenariu 5 →</a>
+  </div>
+</div>
+<script>
+const navLinks = document.querySelectorAll('.page-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) sections.push({ el, a }); });
+window.addEventListener('scroll', () => { let current = sections[0]; for (const s of sections) { if (s.el.getBoundingClientRect().top <= 120) current = s; } navLinks.forEach(a => a.classList.remove('active')); if (current) current.a.classList.add('active'); }, { passive: true });
+</script>
+</body>
+</html>

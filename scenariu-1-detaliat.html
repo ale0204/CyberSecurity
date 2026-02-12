@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenariu 1 — DNS Server DoS (Detaliat)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html { font-size: 140%; }
+    header { margin-left: 280px; }
+
+    .page-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1rem 0;
+      z-index: 100;
+    }
+    .page-nav a {
+      display: block;
+      padding: 5px 18px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.78rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .page-nav a:hover, .page-nav a.active {
+      color: var(--primary);
+      background: rgba(74,70,200,0.05);
+      border-left-color: var(--primary);
+    }
+    .page-nav .nav-title {
+      padding: 6px 18px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--text-primary);
+    }
+    .page-nav .sep {
+      padding: 10px 18px 3px;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .page-main {
+      margin-left: 280px;
+      padding: 1.5rem 2rem 3rem;
+      max-width: 1100px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.82rem;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Scenario box */
+    .scenario-box {
+      background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01));
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 0.88rem;
+    }
+
+    /* Phase header */
+    .phase-header {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin: 1.8rem 0 0.8rem;
+    }
+    .phase-header-prep { background: var(--phase-prep); }
+    .phase-header-detect { background: var(--phase-detect); }
+    .phase-header-contain { background: var(--phase-contain); }
+    .phase-header-post { background: var(--phase-lessons); }
+
+    /* Question card — the main layout */
+    .q-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .q-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+    }
+    .q-question {
+      flex: 1;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .q-ref {
+      flex-shrink: 0;
+      background: rgba(74,70,200,0.1);
+      color: var(--primary);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .q-ref:hover { background: rgba(74,70,200,0.2); }
+
+    /* Collapsible answer */
+    .q-answer {
+      border-top: 1px dashed var(--border);
+    }
+    .q-answer summary {
+      cursor: pointer;
+      padding: 0.6rem 1.2rem;
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: var(--primary);
+      list-style: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .q-answer summary::-webkit-details-marker { display: none; }
+    .q-answer summary::before {
+      content: '▶';
+      font-size: 0.6rem;
+      transition: transform 0.2s;
+    }
+    .q-answer[open] summary::before { transform: rotate(90deg); }
+    .q-answer[open] summary { color: var(--phase-recover); }
+    .answer-content {
+      padding: 0 1.2rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .answer-content p { margin: 0.3rem 0; }
+    .answer-content ul { margin: 0.3rem 0 0.3rem 1.2rem; }
+    .answer-content li { margin-bottom: 0.25rem; }
+    .answer-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5rem 0;
+      font-size: 0.82rem;
+    }
+    .answer-content table th,
+    .answer-content table td {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .answer-content table th {
+      background: rgba(74,70,200,0.05);
+      font-weight: 700;
+    }
+    .answer-content .nist-quote {
+      background: rgba(241,196,15,0.08);
+      border-left: 3px solid #f39c12;
+      padding: 0.5rem 0.8rem;
+      border-radius: 0 6px 6px 0;
+      font-style: italic;
+      margin: 0.5rem 0;
+      font-size: 0.82rem;
+    }
+    .answer-content strong { color: var(--text-primary); }
+    .answer-content .conclusion-box {
+      background: rgba(39,174,96,0.06);
+      border-left: 3px solid var(--phase-recover);
+      padding: 0.5rem 0.8rem;
+      border-radius: 0 6px 6px 0;
+      margin: 0.5rem 0;
+    }
+
+    /* Specific questions section */
+    .specific-section {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--border);
+    }
+    .specific-section h2 {
+      font-size: 1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      html { font-size: 112%; }
+      .page-nav { display: none; }
+      .page-main { margin-left: 0; padding: 1rem; }
+      header { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Scenariul 1: DNS Server Denial of Service (DoS)</h1>
+  <p>Analiză detaliată — întrebare cu întrebare, cu referințe NIST și răspunsuri ascunse</p>
+</header>
+
+<nav class="page-nav">
+  <div class="nav-title">📖 Scenariu 1: DNS DoS</div>
+  <a href="index.html">← Pagina principală</a>
+  <a href="simulare-examen.html">← Simulare Examen</a>
+  <div class="sep" style="margin-top:0.5rem;">Secțiuni</div>
+  <a href="#scenario-text">📋 Enunțul scenariului</a>
+  <div class="sep">Întrebări Standard (A.1)</div>
+  <a href="#prep">🟣 Pregătire (2 întrebări)</a>
+  <a href="#detect">🟠 Detecție & Analiză (6 întrebări)</a>
+  <a href="#contain">🔴 Containment (5 întrebări)</a>
+  <a href="#post">🟢 Post-Incident (3 întrebări)</a>
+  <div class="sep">Specifice Scenariului</div>
+  <a href="#specific">❓ Întrebări specifice (3)</a>
+</nav>
+
+<div class="page-main">
+  <a href="simulare-examen.html" class="back-link">← Înapoi la Simulare Examen</a>
+
+  <!-- SCENARIO TEXT -->
+  <div id="scenario-text" class="scenario-box">
+    On a Saturday afternoon, external users start having problems accessing the organization's public websites. Over the next hour, the problem worsens to the point where nearly every access attempt fails. Meanwhile, a member of the organization's networking staff responds to alerts from an Internet border router and determines that the organization's Internet bandwidth is being consumed by an unusually large volume of User Datagram Protocol (UDP) packets to and from both the organization's public DNS servers. Analysis of the traffic shows that the DNS servers are receiving high volumes of requests from a single external IP address. Also, all the DNS requests from that address come from the same source port.
+  </div>
+
+  <!-- ================================================ -->
+  <!-- PREPARATION -->
+  <!-- ================================================ -->
+  <div class="phase-header phase-header-prep" id="prep">🟣 Preparation (Pregătire)</div>
+
+  <!-- P-Q1 -->
+  <div class="q-card" id="p-q1">
+    <div class="q-top">
+      <div class="q-question">1. Would the organization consider this activity to be an incident? If so, which of the organization's policies does this activity violate?</div>
+      <a href="nist-chapter2.html#nist-2.1" target="_blank" class="q-ref">§2.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <div class="nist-quote">„A computer security incident is a violation or imminent threat of violation of computer security policies, acceptable use policies, or standard security practices." — §2.1</div>
+        <p><strong>Da, este un incident de securitate.</strong></p>
+        <p>Traficul UDP masiv de la o singură IP, pe un singur port sursă, direcționat către serverele DNS publice  constituie o amenințare directă la adresa <strong>disponibilității</strong> serviciilor IT:</p>
+        <ul>
+          <li><strong>Impactul este real și măsurabil</strong> — site-urile publice sunt indisponibile</li>
+          <li><strong>Persistă și se agravează</strong> în timp (de la dificultăți → eșecuri aproape complete)</li>
+          <li><strong>Comportament intenționat</strong>, specific atacului DoS (singură IP, singur port sursă)</li>
+        </ul>
+        <div class="conclusion-box">
+          <strong>Concluzie:</strong> Încalcă politica de securitate a informațiilor (disponibilitate servicii critice) și practicile standard de securitate (protecție infrastructură rețea împotriva utilizării abuzive).
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- P-Q2 -->
+  <div class="q-card" id="p-q2">
+    <div class="q-top">
+      <div class="q-question">2. What measures are in place to attempt to prevent this type of incident from occurring or to limit its impact?</div>
+      <a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Network Security:</strong> Configurare rate limiting pe routerele de frontieră, filtrare trafic UDP suspect</li>
+          <li><strong>Risk Assessment:</strong> Evaluare risc pentru serverele DNS publice — identificarea ca resursă critică</li>
+          <li><strong>Infrastructură redundantă:</strong> Servere DNS distribuite geographic, servicii DNS anycast</li>
+          <li><strong>Relații pre-stabilite cu ISP:</strong> Acorduri pentru filtrare upstream în caz de DDoS</li>
+          <li><strong>Monitorizare:</strong> Alerte automate pentru trafic anormal pe porturi DNS (port 53)</li>
+          <li><strong>Firewall rules:</strong> Blocare trafic DNS de la adrese care generează volum anormal</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- DETECTION AND ANALYSIS -->
+  <!-- ================================================ -->
+  <div class="phase-header phase-header-detect" id="detect">🟠 Detection and Analysis (Detecție și Analiză)</div>
+
+  <!-- D-Q1 -->
+  <div class="q-card" id="d-q1">
+    <div class="q-top">
+      <div class="q-question">1. What precursors of the incident, if any, might the organization detect? Would any precursors cause the organization to take action before the incident occurred?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <div class="nist-quote">„A precursor is a sign that an attacker may be preparing to cause an incident." — §3.2.2</div>
+        <p><strong>Precursori posibili:</strong></p>
+        <ul>
+          <li>Creșteri graduale ale traficului UDP către serverele DNS în zilele/orele anterioare</li>
+          <li>Pattern-uri repetitive de cereri de la aceeași adresă IP externă</li>
+          <li>Utilizarea aceluiași port sursă (anomalie clară — traficul DNS normal folosește porturi diferite)</li>
+          <li>Scanări de porturi sau reconnaissance anterioare de la aceeași IP</li>
+          <li>Buletine de securitate despre atacuri DoS vizând servere DNS</li>
+        </ul>
+        <p><strong>Surse de detecție:</strong> routere de margine, sisteme de monitorizare trafic (SNMP, NetFlow), IDPS, log-uri DNS.</p>
+        <p><strong>Acțiuni preventive:</strong> Dacă detectați devreme → filtrare trafic de la IP suspect, notificare ISP, activare rate limiting, alertare echipa IR.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- D-Q2 -->
+  <div class="q-card" id="d-q2">
+    <div class="q-top">
+      <div class="q-question">2. What indicators of the incident might the organization detect? Which indicators would cause someone to think that an incident might have occurred?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Indicatori:</strong></p>
+        <ul>
+          <li><strong>Alerte router de frontieră</strong> — volum anormal de trafic UDP pe portul 53</li>
+          <li><strong>Indisponibilitatea site-urilor publice</strong> raportată de utilizatori externi</li>
+          <li><strong>Log-uri DNS</strong> cu volum mare de cereri de la o singură IP, pe un singur port sursă</li>
+          <li><strong>Consum complet</strong> al lățimii de bandă Internet (bandwidth saturation)</li>
+          <li><strong>Alerte IDPS</strong> pentru pattern de atac DoS/flood</li>
+          <li><strong>Network flow analysis</strong> arătând trafic anormal unidirecțional</li>
+        </ul>
+        <p>Un singur indicator ar fi suficient pentru investigație, dar combinația între alerta de la router + rapoartele utilizatorilor + analiza traficului confirmă clar un incident de tip DoS.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- D-Q3 -->
+  <div class="q-card" id="d-q3">
+    <div class="q-top">
+      <div class="q-question">3. What additional tools might be needed to detect this particular incident?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Packet capture (tcpdump, Wireshark):</strong> Analiză detaliată a pachetelor UDP</li>
+          <li><strong>NetFlow/sFlow analyzers:</strong> Vizualizare pattern-uri de trafic și volum</li>
+          <li><strong>IDPS (Snort, Suricata):</strong> Detectarea signature-urilor de atac DoS</li>
+          <li><strong>DNS query analyzers:</strong> Analiza specifică a cererilor DNS (tipuri, frecvență, conținut)</li>
+          <li><strong>Bandwidth monitoring (MRTG, Cacti, PRTG):</strong> Vizualizarea utilizării bandwidth-ului</li>
+          <li><strong>SIEM:</strong> Corelarea alertelor din multiple surse pentru a confirma atacul</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- D-Q4 -->
+  <div class="q-card" id="d-q4">
+    <div class="q-top">
+      <div class="q-question">4. How would the incident response team analyze and validate this incident? What personnel would be involved in the analysis and validation process?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Analiză și validare:</strong></p>
+        <ul>
+          <li>Verificare dacă problema e un atac sau o defecțiune (corelarea mai multor surse)</li>
+          <li>Analiza traficului: confirmare că vine de la o singură IP, un singur port (atac deliberat, nu trafic legitim)</li>
+          <li>Comparare cu <strong>baseline-ul normal</strong> de trafic DNS — confirmare anomalie</li>
+          <li>Verificare sincronizare <strong>NTP</strong> pe toate dispozitivele (timestamp-uri corecte pentru investigație)</li>
+          <li>Excludere false positive: server DNS overloaded din alte cauze? update DNS propagation?</li>
+        </ul>
+        <p><strong>Personal implicat:</strong></p>
+        <ul>
+          <li><strong>Administratori rețea:</strong> Analiza traficului și log-urilor router</li>
+          <li><strong>Administratori DNS:</strong> Verificarea serverelor DNS și log-urilor lor</li>
+          <li><strong>Analiști securitate / IR team:</strong> Coordonarea investigației, aplicarea procedurilor</li>
+          <li><strong>SOC (dacă există):</strong> Monitorizare și corelarea alertelor</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- D-Q5 -->
+  <div class="q-card" id="d-q5">
+    <div class="q-top">
+      <div class="q-question">5. To which people and groups within the organization would the team report the incident?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>CIO</strong> — incident cu impact asupra prezenței online</li>
+          <li><strong>Head of Information Security</strong> — atac activ</li>
+          <li><strong>Management</strong> — impact business (site-uri publice down în weekend)</li>
+          <li><strong>Echipa de incident response</strong> — pentru handling</li>
+          <li><strong>Administratori rețea și sisteme</strong> — pentru containment tehnic</li>
+          <li><strong>ISP-ul organizației</strong> — pentru asistență filtrare upstream</li>
+          <li><strong>US-CERT / CERT local</strong> — raportare incident (obligatoriu dacă agenție federală)</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- D-Q6 -->
+  <div class="q-card" id="d-q6">
+    <div class="q-top">
+      <div class="q-question">6. How would the team prioritize the handling of this incident?</div>
+      <a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <table>
+          <tr><th>Criteriu</th><th>Nivel</th><th>Justificare</th></tr>
+          <tr><td><strong>Functional Impact</strong></td><td style="color:var(--phase-contain); font-weight:700;">HIGH</td><td>Servicii critice (website-uri publice) indisponibile pentru toți utilizatorii externi</td></tr>
+          <tr><td><strong>Information Impact</strong></td><td style="color:var(--phase-recover); font-weight:700;">NONE</td><td>Nu s-a compromis informație — doar disponibilitate afectată</td></tr>
+          <tr><td><strong>Recoverability</strong></td><td style="color:var(--phase-detect); font-weight:700;">REGULAR</td><td>Recuperare predictibilă odată ce traficul malițios e filtrat</td></tr>
+        </table>
+        <div class="conclusion-box">
+          <strong>Prioritate: RIDICATĂ</strong> — impact funcțional major, dar recuperare fezabilă. Acțiune imediată necesară — chiar dacă e sâmbătă.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- CONTAINMENT, ERADICATION, RECOVERY -->
+  <!-- ================================================ -->
+  <div class="phase-header phase-header-contain" id="contain">🔴 Containment, Eradication, and Recovery</div>
+
+  <!-- C-Q1 -->
+  <div class="q-card" id="c-q1">
+    <div class="q-top">
+      <div class="q-question">1. What strategy should the organization take to contain the incident? Why is this strategy preferable to others?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <div class="nist-quote">„Containment strategies vary based on the type of incident. Organizations should create separate containment strategies for each major incident type." — §3.3.1</div>
+        <p><strong>Strategie recomandată:</strong></p>
+        <ul>
+          <li><strong>Filtrare imediată</strong> la nivel de router de frontieră — blocare trafic de la IP-ul atacatorului</li>
+          <li><strong>Rate limiting</strong> pe traficul UDP către serverele DNS (portul 53)</li>
+          <li><strong>Contact ISP</strong> pentru filtrare upstream (null routing pentru IP-ul atacatorului)</li>
+          <li><strong>Activare DNS anycast</strong> sau redirecționare către servere DNS backup/alternative</li>
+        </ul>
+        <p><strong>De ce e preferabilă:</strong></p>
+        <ul>
+          <li>Implementare rapidă — regulă de firewall/ACL se aplică în minute</li>
+          <li>Eficacitate ridicată — blochează sursa specifică</li>
+          <li>Nu afectează traficul legitim</li>
+          <li>Serviciile se pot restaura rapid după filtrare</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- C-Q2 -->
+  <div class="q-card" id="c-q2">
+    <div class="q-top">
+      <div class="q-question">2. What could happen if the incident were not contained?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Indisponibilitate completă</strong> a prezenței online a organizației (website-uri, email dacă DNS-ul rezolvă MX records)</li>
+          <li><strong>Pierderi financiare</strong> — clienți care nu pot accesa serviciile organizației</li>
+          <li><strong>Afectarea reputației</strong> — percepția publică de nesiguranță</li>
+          <li><strong>Escalarea atacului</strong> — dacă atacatorul vede că reușește, poate amplifica</li>
+          <li><strong>Impact operațional intern</strong> — dacă DNS-ul intern depinde de serverele publice</li>
+          <li><strong>Imposibilitatea comunicării externe</strong> prin email (MX records nerezolvabile)</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- C-Q3 -->
+  <div class="q-card" id="c-q3">
+    <div class="q-top">
+      <div class="q-question">3. What additional tools might be needed to respond to this particular incident?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>DDoS mitigation services</strong> (Cloudflare, Akamai, AWS Shield) — protecție externă</li>
+          <li><strong>Traffic scrubbing</strong> — separarea traficului legitim de cel malițios</li>
+          <li><strong>Advanced firewall/IPS rules</strong> — reguli specifice anti-flood</li>
+          <li><strong>Out-of-band management</strong> — acces la echipamente dacă rețeaua e saturată</li>
+          <li><strong>Alternate DNS hosting</strong> — serviciu DNS secundar temporar</li>
+          <li><strong>Communication tools</strong> — telefon, nu email (dacă DNS e down, email poate fi afectat)</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- C-Q4 -->
+  <div class="q-card" id="c-q4">
+    <div class="q-top">
+      <div class="q-question">4. Which personnel would be involved in the containment, eradication, and/or recovery processes?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Incident Response Team Lead:</strong> Coordonare generală și decizii</li>
+          <li><strong>Administratori rețea:</strong> Implementare ACL-uri, rate limiting, reconfigurare routere</li>
+          <li><strong>Administratori DNS:</strong> Verificare integritate servere, reconfigurare DNS</li>
+          <li><strong>Analist securitate:</strong> Analiza traficului, identificarea pattern-urilor de atac</li>
+          <li><strong>Contact ISP:</strong> Coordonare pentru filtrare upstream</li>
+          <li><strong>Management:</strong> Aprobare decizii critice (ex: achiziție serviciu DDoS mitigation de urgență)</li>
+          <li><strong>Comunicare:</strong> Informarea stakeholder-ilor despre downtime</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- C-Q5 -->
+  <div class="q-card" id="c-q5">
+    <div class="q-top">
+      <div class="q-question">5. What sources of evidence, if any, should the organization acquire? How would the evidence be acquired? Where would it be stored? How long should it be retained?</div>
+      <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.2.5, §3.3.2, §3.4.3</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <p><strong>Surse de dovezi:</strong></p>
+        <ul>
+          <li>Log-uri router de frontieră (timestamp, IP sursă, volum trafic)</li>
+          <li>Capturi de pachete (<strong>pcap</strong>) ale traficului atacului</li>
+          <li>Log-uri servere DNS (cereri de la IP-ul atacatorului)</li>
+          <li><strong>Network flow data</strong> (NetFlow/sFlow) — vizualizarea pattern-ului</li>
+          <li>Alerte IDPS — timestamp-uri, reguli triggerate</li>
+          <li>Documentarea acțiunilor: cine, ce, când</li>
+        </ul>
+        <p><strong>Achiziție:</strong> Export log-uri din routere/servere, salvare pcap captures, screenshot-uri alerte. Tot cu <strong>timestamp-uri sincronizate NTP</strong>.</p>
+        <p><strong>Stocare:</strong> Medii dedicate (write-once dacă posibil), separate de sistemele de producție, cu acces controlat. Hash-uri criptografice pentru integritate.</p>
+        <p><strong>Retenție:</strong> Conform politicii organizației — minim <strong>2-3 ani</strong>. Dacă implicații legale (proces contra atacatorului), retenție <strong>indefinită</strong> până la rezolvarea cazului (§3.4.3).</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- POST-INCIDENT -->
+  <!-- ================================================ -->
+  <div class="phase-header phase-header-post" id="post">🟢 Post-Incident Activity</div>
+
+  <!-- PI-Q1 -->
+  <div class="q-card" id="pi-q1">
+    <div class="q-top">
+      <div class="q-question">1. Who would attend the lessons learned meeting regarding this incident?</div>
+      <a href="nist-chapter3.html#nist-3.4" target="_blank" class="q-ref">§3.4.1</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Echipa IR</strong> — toți cei implicați în handling</li>
+          <li><strong>Administratori rețea</strong> — au implementat containment-ul</li>
+          <li><strong>Administratori DNS</strong> — au verificat serverele</li>
+          <li><strong>Management IT</strong> — decizii strategice</li>
+          <li><strong>Responsabil securitate</strong> — evaluarea preventivă</li>
+          <li><strong>Reprezentanți ISP</strong> (opțional) — feedback pe colaborare</li>
+          <li><strong>Business stakeholders</strong> — au fost afectați de downtime</li>
+        </ul>
+        <p>Ședința trebuie organizată cât mai aproape de incident (§3.4.1), cât informațiile sunt fresh.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- PI-Q2 -->
+  <div class="q-card" id="pi-q2">
+    <div class="q-top">
+      <div class="q-question">2. What could be done to prevent similar incidents from occurring in the future?</div>
+      <a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Servicii anti-DDoS</strong> (Cloudflare, Akamai) — protecție proactivă</li>
+          <li><strong>DNS anycast</strong> — distribuire geografică, reziliență</li>
+          <li><strong>Rate limiting permanent</strong> pe traficul DNS</li>
+          <li><strong>Acorduri cu ISP</strong> pentru response automat în caz de DDoS</li>
+          <li><strong>Redundanță DNS</strong> — servere DNS multiple, la provideri diferiți</li>
+          <li><strong>Proceduri actualizate</strong> pentru weekend/off-hours response</li>
+          <li><strong>Exerciții de simulare</strong> periodice pentru atacuri DoS/DDoS</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- PI-Q3 -->
+  <div class="q-card" id="pi-q3">
+    <div class="q-top">
+      <div class="q-question">3. What could be done to improve detection of similar incidents?</div>
+      <a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a>
+    </div>
+    <details class="q-answer">
+      <summary>Vezi răspunsul</summary>
+      <div class="answer-content">
+        <ul>
+          <li><strong>Monitoring automat</strong> al traficului DNS cu alerte pe threshold-uri specifice</li>
+          <li><strong>Baseline de trafic</strong> — definirea „normalului" pentru a detecta anomalii rapid</li>
+          <li><strong>Alerte SIEM</strong> corelate — combinare alerte de la routere, DNS, IDPS</li>
+          <li><strong>External monitoring</strong> — servicii care verifică disponibilitatea site-urilor din exterior</li>
+          <li><strong>Dashboard vizual</strong> în timp real pentru traficul pe portul 53</li>
+          <li><strong>Automatizare:</strong> Reguli care activează rate limiting automat la volum anormal</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- SCENARIO-SPECIFIC QUESTIONS -->
+  <!-- ================================================ -->
+  <div class="specific-section" id="specific">
+    <h2>❓ Întrebări Specifice Scenariului</h2>
+
+    <!-- S-Q1 -->
+    <div class="q-card" id="s-q1">
+      <div class="q-top">
+        <div class="q-question">1. Whom should the organization contact regarding the external IP address in question?</div>
+        <a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <ul>
+            <li><strong>Proprietarul adresei IP</strong> (identificat prin WHOIS/ARIN) — alertare și cerere de cooperare</li>
+            <li><strong>ISP-ul propriu</strong> — pentru asistență filtrare upstream (null routing)</li>
+            <li><strong>US-CERT / CERT local</strong> — raportare incident (dacă agenție federală)</li>
+            <li><strong>ISAC sectorial</strong> — informare comunitate, posibil alții sunt atacați</li>
+            <li><strong>NU</strong> se contactează multiple agenții de aplicare a legii simultan (risc jurisdicțional)</li>
+          </ul>
+          <p>Se documentează toată comunicarea externă — ce s-a transmis, cui, când, prin ce canal.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- S-Q2 -->
+    <div class="q-card" id="s-q2">
+      <div class="q-top">
+        <div class="q-question">2. Suppose that after the initial containment measures were put in place, the network administrators detected that nine internal hosts were also attempting the same unusual requests to the DNS server. How would that affect the handling of this incident?</div>
+        <a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.2.4</a>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <p><strong>Schimbare majoră:</strong> Incidentul se transformă din <strong>atac extern DoS</strong> în <strong>compromitere internă + DDoS.</strong></p>
+          <ul>
+            <li>Se revine la <strong>Detection & Analysis</strong> — ciclul NIST este <strong>iterativ</strong> (§3)</li>
+            <li>Se identifică <strong>toate</strong> gazdele interne infectate (nu doar cele 9 — pot fi mai multe)</li>
+            <li>Se verifică dacă au fost compromise prin <strong>malware</strong> (bot, agent DDoS)</li>
+            <li>Se <strong>izolează</strong> cele 9 hosturi de rețea</li>
+            <li>Se scanează pentru malware/bot, se verifică vectorul de infectare</li>
+            <li>Se verifică dacă există și <strong>alte hosturi infectate</strong> care nu au început încă atacul</li>
+          </ul>
+          <p><strong>Prioritatea crește</strong> — acum avem compromitere internă, nu doar atac extern. Information Impact poate crește dacă malware-ul a accesat date pe acele hosturi.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- S-Q3 -->
+    <div class="q-card" id="s-q3">
+      <div class="q-top">
+        <div class="q-question">3. Suppose that two of the nine internal hosts disconnected from the network before their system owners were identified. How would the system owners be identified?</div>
+        <span class="q-ref" style="cursor:default;">Practică IT</span>
+      </div>
+      <details class="q-answer">
+        <summary>Vezi răspunsul</summary>
+        <div class="answer-content">
+          <div class="nist-quote">⚠️ Această întrebare NU are o secțiune NIST dedicată. Este o întrebare practică/operațională care testează cunoștințe de administrare rețea. Nu confunda cu §3.3.3 (Identifying the Attacking Hosts) — aceea e despre identificarea atacatorilor externi (IP spoofed, search engines), nu despre cine deține un laptop intern.<br><br>Cele mai aproape secțiuni: §3.1.1 (pregătire — „list of critical assets") și §3.2.5 (documentare — cine, ce, când, unde). Dar răspunsul concret vine din cunoștințe practice de sysadmin.</div>
+          <p><strong>Metode de identificare a proprietarilor interni:</strong></p>
+          <ul>
+            <li><strong>DHCP logs</strong> — ce MAC address avea acel IP la momentul incidentului</li>
+            <li><strong>Asset management database</strong> — MAC address → echipament → proprietar</li>
+            <li><strong>Switch port mappings</strong> — ce port fizic era conectat → locația fizică</li>
+            <li><strong>Network Access Control (NAC) logs</strong> — cine s-a autentificat pe rețea cu acel device</li>
+            <li><strong>Active Directory logs</strong> — ce user era logat pe acel IP</li>
+            <li>Colaborare cu <strong>echipa de administrare IT</strong> pentru identificarea locației fizice</li>
+            <li>Verificare dacă sunt <strong>laptopuri ale angajaților</strong> plecați din birou (weekend — incidentul e sâmbătă!)</li>
+          </ul>
+          <div class="conclusion-box">
+            <strong>Diferența cheie:</strong> Aici identificăm <em>cine deține</em> acele mașini (asset management intern), nu cine le-a atacat. Pentru identificarea atacatorului extern → §3.3.3.
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="simulare-examen.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Simulare Examen</a>
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Pagina principală →</a>
+  </div>
+</div>
+
+<script>
+// Scroll highlight nav
+const navLinks = document.querySelectorAll('.page-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => {
+  const id = a.getAttribute('href').slice(1);
+  const el = document.getElementById(id);
+  if (el) sections.push({ el, a });
+});
+window.addEventListener('scroll', () => {
+  let current = sections[0];
+  for (const s of sections) {
+    if (s.el.getBoundingClientRect().top <= 120) current = s;
+  }
+  navLinks.forEach(a => a.classList.remove('active'));
+  if (current) current.a.classList.add('active');
+}, { passive: true });
+</script>
+</body>
+</html>

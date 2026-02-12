@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenariu 10 — File Sharing Peer-to-Peer (Detaliat)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html { font-size: 140%; }
+    header { margin-left: 280px; }
+    .page-nav { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); overflow-y: auto; padding: 1rem 0; z-index: 100; }
+    .page-nav a { display: block; padding: 5px 18px; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; line-height: 1.4; }
+    .page-nav a:hover, .page-nav a.active { color: var(--primary); background: rgba(74,70,200,0.05); border-left-color: var(--primary); }
+    .page-nav .nav-title { padding: 6px 18px; font-weight: 700; font-size: 0.82rem; color: var(--text-primary); }
+    .page-nav .sep { padding: 10px 18px 3px; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+    .page-main { margin-left: 280px; padding: 1.5rem 2rem 3rem; max-width: 1100px; }
+    .back-link { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.82rem; }
+    .back-link:hover { text-decoration: underline; }
+    .scenario-box { background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01)); border-left: 4px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; font-size: 0.88rem; }
+    .phase-header { padding: 0.6rem 1rem; border-radius: 8px; color: white; font-weight: 700; font-size: 0.95rem; margin: 1.8rem 0 0.8rem; }
+    .phase-header-prep { background: var(--phase-prep); } .phase-header-detect { background: var(--phase-detect); } .phase-header-contain { background: var(--phase-contain); } .phase-header-post { background: var(--phase-lessons); }
+    .q-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+    .q-top { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.2rem; }
+    .q-question { flex: 1; font-weight: 600; color: var(--text-primary); font-size: 0.88rem; line-height: 1.5; }
+    .q-ref { flex-shrink: 0; background: rgba(74,70,200,0.1); color: var(--primary); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .q-ref:hover { background: rgba(74,70,200,0.2); }
+    .q-answer { border-top: 1px dashed var(--border); }
+    .q-answer summary { cursor: pointer; padding: 0.6rem 1.2rem; font-weight: 700; font-size: 0.78rem; color: var(--primary); list-style: none; user-select: none; display: flex; align-items: center; gap: 0.4rem; }
+    .q-answer summary::-webkit-details-marker { display: none; }
+    .q-answer summary::before { content: '▶'; font-size: 0.6rem; transition: transform 0.2s; }
+    .q-answer[open] summary::before { transform: rotate(90deg); }
+    .q-answer[open] summary { color: var(--phase-recover); }
+    .answer-content { padding: 0 1.2rem 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .answer-content p { margin: 0.3rem 0; } .answer-content ul { margin: 0.3rem 0 0.3rem 1.2rem; } .answer-content li { margin-bottom: 0.25rem; }
+    .answer-content table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content table th, .answer-content table td { padding: 0.4rem 0.6rem; border: 1px solid var(--border); text-align: left; }
+    .answer-content table th { background: rgba(74,70,200,0.05); font-weight: 700; }
+    .answer-content .nist-quote { background: rgba(241,196,15,0.08); border-left: 3px solid #f39c12; padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; font-style: italic; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content strong { color: var(--text-primary); }
+    .answer-content .conclusion-box { background: rgba(39,174,96,0.06); border-left: 3px solid var(--phase-recover); padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; margin: 0.5rem 0; }
+    .specific-section { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+    .specific-section h2 { font-size: 1rem; color: var(--text-primary); margin-bottom: 0.8rem; }
+    @media (max-width: 768px) { html { font-size: 112%; } .page-nav { display: none; } .page-main { margin-left: 0; padding: 1rem; } header { margin-left: 0; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Scenariul 10: File Sharing Peer-to-Peer</h1>
+  <p>Analiză detaliată — întrebare cu întrebare, cu referințe NIST și răspunsuri ascunse</p>
+</header>
+<nav class="page-nav">
+  <div class="nav-title">📖 Scenariu 10: P2P</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Secțiuni</div>
+  <a href="#scenario-text">📋 Enunțul scenariului</a>
+  <div class="sep">Întrebări Standard (A.1)</div>
+  <a href="#prep">🟣 Pregătire (2)</a>
+  <a href="#detect">🟠 Detecție & Analiză (6)</a>
+  <a href="#contain">🔴 Containment (5)</a>
+  <a href="#post">🟢 Post-Incident (3)</a>
+  <div class="sep">Specifice Scenariului</div>
+  <a href="#specific">❓ Întrebări specifice (3)</a>
+</nav>
+<div class="page-main">
+  <a href="index.html#scenariu-10" class="back-link">← Înapoi la pagina principală</a>
+  <div id="scenario-text" class="scenario-box">
+    The organization prohibits the use of peer-to-peer file sharing services. The organization's network intrusion detection sensors have signatures enabled that can detect the usage of several popular peer-to-peer file sharing services. On a Monday evening, an intrusion detection analyst notices that several file sharing alerts have occurred during the past three hours, all involving the same internal IP address.
+  </div>
+
+  <div class="phase-header phase-header-prep" id="prep">🟣 Preparation (Pregătire)</div>
+  <div class="q-card" id="p-q1">
+    <div class="q-top"><div class="q-question">1. Would the organization consider this activity to be an incident? If so, which of the organization's policies does this activity violate?</div><a href="nist-chapter2.html#nist-2.1" target="_blank" class="q-ref">§2.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Da, incident.</strong></p>
+      <p>Utilizarea P2P încalcă explicit <strong>politica de utilizare acceptabilă</strong>.</p>
+      <ul>
+        <li>Vector de atac: <strong>Improper Usage</strong> (§3.2.1)</li>
+        <li>Încălcare a politicilor organizației de către un utilizator autorizat</li>
+        <li>P2P expune organizația la: malware, pierdere date, probleme legale</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="p-q2">
+    <div class="q-top"><div class="q-question">2. What measures are in place to attempt to prevent this type of incident from occurring or to limit its impact?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Acceptable Use Policy:</strong> Interzicerea explicită a P2P</li>
+        <li><strong>IDS signatures:</strong> Detectare trafic P2P (funcționează!)</li>
+        <li><strong>Application whitelisting / GPO:</strong> Blocare instalare software neautorizat</li>
+        <li><strong>Firewall egress:</strong> Blocare porturi P2P cunoscute</li>
+        <li><strong>Non-admin accounts:</strong> Utilizatorul nu ar trebui să poată instala software</li>
+        <li><strong>Security awareness training:</strong> Riscurile P2P</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-detect" id="detect">🟠 Detection and Analysis (Detecție și Analiză)</div>
+  <div class="q-card" id="d-q1">
+    <div class="q-top"><div class="q-question">1. What precursors of the incident, if any, might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li>Descărcarea software-ului P2P (dacă monitorizat)</li>
+        <li>Tentative de instalare blocate de GPO</li>
+        <li>Trafic DNS către servere P2P tracker</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q2">
+    <div class="q-top"><div class="q-question">2. What indicators of the incident might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IDS alerts P2P</strong> (detectat! — multiple alerte, 3 ore, aceeași IP)</li>
+        <li><strong>Bandwidth usage</strong> anormal ridicat pe IP-ul respectiv</li>
+        <li><strong>Multiple conexiuni</strong> către IP-uri externe diverse (pattern P2P)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to detect this particular incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Deep packet inspection:</strong> Identificare trafic P2P criptat</li>
+        <li><strong>Application-aware firewall:</strong> Blocare la nivel de aplicație</li>
+        <li><strong>Endpoint monitoring:</strong> Ce aplicații rulează pe host</li>
+        <li><strong>DLP:</strong> Ce fișiere sunt partajate</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q4">
+    <div class="q-top"><div class="q-question">4. How would the incident response team analyze and validate this incident? What personnel would be involved?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li>Identificare utilizator (DHCP, asset management)</li>
+        <li>Ce fișiere sunt partajate? Conținut ilegal, proprietar, PII?</li>
+        <li>Este o încălcare repetată?</li>
+        <li>Există risc de malware prin P2P?</li>
+      </ul>
+      <p><strong>Personal:</strong> IR team, HR (acțiune disciplinară), legal (dacă conținut ilegal/PII), management direct al angajatului.</p>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q5">
+    <div class="q-top"><div class="q-question">5. To which people and groups within the organization would the team report the incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Supervisorul utilizatorului</strong></li>
+        <li><strong>HR:</strong> Acțiune disciplinară</li>
+        <li><strong>Legal:</strong> Dacă conținut ilegal sau PII partajat</li>
+        <li><strong>Law enforcement:</strong> Dacă conținut ilegal</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q6">
+    <div class="q-top"><div class="q-question">6. How would the team prioritize the handling of this incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <table>
+        <tr><th>Criteriu</th><th>Nivel</th><th>Justificare</th></tr>
+        <tr><td><strong>Functional Impact</strong></td><td>NONE/LOW</td><td>Un utilizator, bandwidth</td></tr>
+        <tr><td><strong>Information Impact</strong></td><td style="color:var(--phase-detect);">DEPINDE DE CONȚINUT</td><td>Ce fișiere sunt partajate?</td></tr>
+        <tr><td><strong>Recoverability</strong></td><td>REGULAR</td><td>Dezinstalare software, cleanup</td></tr>
+      </table>
+      <div class="conclusion-box"><strong>Prioritate: LOW-MEDIUM</strong> — Se escaladează la HIGH dacă conținut ilegal sau PII descoperit.</div>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-contain" id="contain">🔴 Containment, Eradication, and Recovery</div>
+  <div class="q-card" id="c-q1">
+    <div class="q-top"><div class="q-question">1. What strategy should the organization take to contain the incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Blocare trafic P2P</strong> la firewall/router</li>
+        <li><strong>Identificare utilizator</strong> (DHCP, asset management)</li>
+        <li><strong>Contactare utilizator + supervisor</strong></li>
+        <li><strong>Verificare ce fișiere au fost partajate</strong></li>
+        <li>Dacă <strong>PII pe computer</strong> → izolarea imediată</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q2">
+    <div class="q-top"><div class="q-question">2. What could happen if the incident were not contained?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Malware infection</strong> prin P2P (vector frecvent)</li>
+        <li><strong>Date organizaționale</strong> partajate public</li>
+        <li><strong>Probleme legale:</strong> Conținut protejat de copyright distribuit</li>
+        <li><strong>Bandwidth consumption:</strong> Afectarea performanței rețelei</li>
+        <li><strong>Alți utilizatori</strong> copiază comportamentul</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to respond to this particular incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>P2P file analysis:</strong> Ce a fost partajat</li>
+        <li><strong>Malware scanner:</strong> Verificare infecție</li>
+        <li><strong>DLP:</strong> Verificare date sensibile partajate</li>
+        <li><strong>Application removal tools:</strong> Dezinstalare completă P2P</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q4">
+    <div class="q-top"><div class="q-question">4. Which personnel would be involved in the containment, eradication, and/or recovery processes?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR team</strong></li>
+        <li><strong>Desktop support:</strong> Cleanup mașină</li>
+        <li><strong>HR:</strong> Acțiuni disciplinare</li>
+        <li><strong>Legal:</strong> Dacă implicații legale</li>
+        <li><strong>Supervisor utilizator</strong></li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q5">
+    <div class="q-top"><div class="q-question">5. What sources of evidence, if any, should the organization acquire?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.2.5, §3.3.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IDS logs:</strong> Alertele P2P</li>
+        <li><strong>Disk image</strong> (dacă conținut ilegal/PII)</li>
+        <li><strong>P2P application logs:</strong> Ce s-a distribuit</li>
+        <li><strong>Network logs:</strong> Volume transferate</li>
+        <li><strong>Signed AUP:</strong> Dovada că utilizatorul cunoștea politica</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-post" id="post">🟢 Post-Incident Activity</div>
+  <div class="q-card" id="pi-q1">
+    <div class="q-top"><div class="q-question">1. Who would attend the lessons learned meeting?</div><a href="nist-chapter3.html#nist-3.4" target="_blank" class="q-ref">§3.4.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR team</strong></li>
+        <li><strong>HR</strong></li>
+        <li><strong>Management IT</strong></li>
+        <li><strong>Desktop support</strong></li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q2">
+    <div class="q-top"><div class="q-question">2. What could be done to prevent similar incidents from occurring in the future?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Application whitelisting / GPO:</strong> Blocare instalare P2P</li>
+        <li><strong>Non-admin accounts:</strong> Utilizatorii nu pot instala software</li>
+        <li><strong>Firewall egress:</strong> Blocare porturi P2P</li>
+        <li><strong>Training awareness:</strong> Riscurile P2P</li>
+        <li><strong>AUP enforcement:</strong> Consecințe clare și aplicate</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q3">
+    <div class="q-top"><div class="q-question">3. What could be done to improve detection of similar incidents?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IDS signatures actualizate</strong> pentru noi servicii P2P</li>
+        <li><strong>Deep packet inspection</strong> pentru trafic criptat</li>
+        <li><strong>Endpoint monitoring:</strong> Detectare aplicații P2P instalate</li>
+        <li><strong>Bandwidth anomaly detection</strong></li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="specific-section" id="specific">
+    <h2>❓ Întrebări Specifice Scenariului (3)</h2>
+    <div class="q-card" id="s-q1">
+      <div class="q-top"><div class="q-question">1. What factors should be used to prioritize the handling of this incident (e.g., the apparent content of the files that are being shared)?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Factori de prioritizare:</strong></p>
+        <ul>
+          <li><strong>Conținutul fișierelor:</strong> Ilegal (pornografie infantilă, copyright)? PII? Date proprietare?</li>
+          <li><strong>Volumul partajat:</strong> Câte fișiere, ce dimensiune</li>
+          <li><strong>Durata:</strong> 3 ore = prima dată, sau activitate recurentă?</li>
+          <li><strong>Malware risk:</strong> P2P = vector frecvent de infecție</li>
+          <li><strong>Datele pe computer:</strong> Computer-ul conține date sensibile ale organizației?</li>
+          <li><strong>Rolul utilizatorului:</strong> Acces la sisteme/date critice?</li>
+          <li><strong>Istoric:</strong> Prima abatere sau recidivist?</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q2">
+      <div class="q-top"><div class="q-question">2. What privacy considerations may impact the handling of this incident?</div><a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Considerații de confidențialitate:</strong></p>
+        <ul>
+          <li><strong>Examinarea fișierelor personale:</strong> Fișierele partajate pot fi personale ale angajatului</li>
+          <li><strong>Legal department TREBUIE consultat</strong> înainte de examinarea conținutului</li>
+          <li><strong>Politica de monitoring:</strong> Angajatul a fost informat că activitatea pe rețea e monitorizată?</li>
+          <li><strong>Signed AUP:</strong> Angajatul a semnat politica de utilizare acceptabilă?</li>
+          <li><strong>Proporționalitate:</strong> Investigația trebuie proporțională cu gravitatea</li>
+          <li><strong>GDPR / privacy laws:</strong> Restricții pe ce poate fi examinat</li>
+        </ul>
+        <div class="nist-quote">Investigarea conținutului fișierelor ridică probleme de confidențialitate. Legal department consultat ÎNTOTDEAUNA înainte de examinare.</div>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q3">
+      <div class="q-top"><div class="q-question">3. How would the handling of this incident differ if the computer performing peer-to-peer file sharing also contains sensitive personally identifiable information?</div><a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>PII pe computerul cu P2P = risc major de breach:</strong></p>
+        <ul>
+          <li><strong>P2P partajează foldere!</strong> Dacă PII era într-un folder partajat → breach confirmat</li>
+          <li><strong>Izolarea imediată</strong> a computerului</li>
+          <li><strong>Verificare urgentă:</strong> Ce foldere erau partajate? PII-ul era accesibil?</li>
+          <li><strong>Breach notification</strong> dacă PII a fost expus</li>
+          <li><strong>Legal implicat</strong> imediat</li>
+          <li><strong>Prioritate escaladată</strong> dramatic — de la Low/Medium la <strong>HIGH/CRITICAL</strong></li>
+        </ul>
+        <div class="conclusion-box"><strong>Multe servicii P2P partajează implicit tot conținutul unui folder.</strong> Dacă utilizatorul a selectat un folder care conținea PII, datele pot fi deja distribuite public.</div>
+      </div></details>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="scenariu-9-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Scenariu 9</a>
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Pagina principală</a>
+    <a href="scenariu-11-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Scenariu 11 →</a>
+  </div>
+</div>
+<script>
+const navLinks = document.querySelectorAll('.page-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) sections.push({ el, a }); });
+window.addEventListener('scroll', () => { let current = sections[0]; for (const s of sections) { if (s.el.getBoundingClientRect().top <= 120) current = s; } navLinks.forEach(a => a.classList.remove('active')); if (current) current.a.classList.add('active'); }, { passive: true });
+</script>
+</body>
+</html>

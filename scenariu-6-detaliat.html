@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenariu 6 — Acces Neautorizat la Înregistrări Salarizare (Detaliat)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html { font-size: 140%; }
+    header { margin-left: 280px; }
+    .page-nav { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); overflow-y: auto; padding: 1rem 0; z-index: 100; }
+    .page-nav a { display: block; padding: 5px 18px; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; line-height: 1.4; }
+    .page-nav a:hover, .page-nav a.active { color: var(--primary); background: rgba(74,70,200,0.05); border-left-color: var(--primary); }
+    .page-nav .nav-title { padding: 6px 18px; font-weight: 700; font-size: 0.82rem; color: var(--text-primary); }
+    .page-nav .sep { padding: 10px 18px 3px; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+    .page-main { margin-left: 280px; padding: 1.5rem 2rem 3rem; max-width: 1100px; }
+    .back-link { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.82rem; }
+    .back-link:hover { text-decoration: underline; }
+    .scenario-box { background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01)); border-left: 4px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; font-size: 0.88rem; }
+    .phase-header { padding: 0.6rem 1rem; border-radius: 8px; color: white; font-weight: 700; font-size: 0.95rem; margin: 1.8rem 0 0.8rem; }
+    .phase-header-prep { background: var(--phase-prep); } .phase-header-detect { background: var(--phase-detect); } .phase-header-contain { background: var(--phase-contain); } .phase-header-post { background: var(--phase-lessons); }
+    .q-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+    .q-top { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.2rem; }
+    .q-question { flex: 1; font-weight: 600; color: var(--text-primary); font-size: 0.88rem; line-height: 1.5; }
+    .q-ref { flex-shrink: 0; background: rgba(74,70,200,0.1); color: var(--primary); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .q-ref:hover { background: rgba(74,70,200,0.2); }
+    .q-answer { border-top: 1px dashed var(--border); }
+    .q-answer summary { cursor: pointer; padding: 0.6rem 1.2rem; font-weight: 700; font-size: 0.78rem; color: var(--primary); list-style: none; user-select: none; display: flex; align-items: center; gap: 0.4rem; }
+    .q-answer summary::-webkit-details-marker { display: none; }
+    .q-answer summary::before { content: '▶'; font-size: 0.6rem; transition: transform 0.2s; }
+    .q-answer[open] summary::before { transform: rotate(90deg); }
+    .q-answer[open] summary { color: var(--phase-recover); }
+    .answer-content { padding: 0 1.2rem 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .answer-content p { margin: 0.3rem 0; } .answer-content ul { margin: 0.3rem 0 0.3rem 1.2rem; } .answer-content li { margin-bottom: 0.25rem; }
+    .answer-content table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content table th, .answer-content table td { padding: 0.4rem 0.6rem; border: 1px solid var(--border); text-align: left; }
+    .answer-content table th { background: rgba(74,70,200,0.05); font-weight: 700; }
+    .answer-content .nist-quote { background: rgba(241,196,15,0.08); border-left: 3px solid #f39c12; padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; font-style: italic; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content strong { color: var(--text-primary); }
+    .answer-content .conclusion-box { background: rgba(39,174,96,0.06); border-left: 3px solid var(--phase-recover); padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; margin: 0.5rem 0; }
+    .specific-section { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+    .specific-section h2 { font-size: 1rem; color: var(--text-primary); margin-bottom: 0.8rem; }
+    @media (max-width: 768px) { html { font-size: 112%; } .page-nav { display: none; } .page-main { margin-left: 0; padding: 1rem; } header { margin-left: 0; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Scenariul 6: Acces Neautorizat la Înregistrări Salarizare</h1>
+  <p>Analiză detaliată — întrebare cu întrebare, cu referințe NIST și răspunsuri ascunse</p>
+</header>
+<nav class="page-nav">
+  <div class="nav-title">📖 Scenariu 6: Salarizare</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Secțiuni</div>
+  <a href="#scenario-text">📋 Enunțul scenariului</a>
+  <div class="sep">Întrebări Standard (A.1)</div>
+  <a href="#prep">🟣 Pregătire (2)</a>
+  <a href="#detect">🟠 Detecție & Analiză (6)</a>
+  <a href="#contain">🔴 Containment (5)</a>
+  <a href="#post">🟢 Post-Incident (3)</a>
+  <div class="sep">Specifice Scenariului</div>
+  <a href="#specific">❓ Întrebări specifice (6)</a>
+</nav>
+<div class="page-main">
+  <a href="index.html#scenariu-6" class="back-link">← Înapoi la pagina principală</a>
+  <div id="scenario-text" class="scenario-box">
+    On a Wednesday evening, the organization's physical security team receives a call from a payroll administrator who saw an unknown person leave her office, run down the hallway, and exit the building. The administrator had left her workstation unlocked and unattended for only a few minutes. The payroll program is still logged in and on the main menu, as it was when she left it, but the administrator notices that the mouse appears to have been moved. The incident response team has been asked to acquire evidence related to the incident and to determine what actions were performed.
+  </div>
+
+  <div class="phase-header phase-header-prep" id="prep">🟣 Preparation (Pregătire)</div>
+  <div class="q-card" id="p-q1">
+    <div class="q-top"><div class="q-question">1. Would the organization consider this activity to be an incident? If so, which of the organization's policies does this activity violate?</div><a href="nist-chapter2.html#nist-2.1" target="_blank" class="q-ref">§2.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Da, incident.</strong></p>
+      <p>Acces fizic neautorizat + potențial acces la date de salarizare (PII):</p>
+      <ul>
+        <li><strong>Acces neautorizat</strong> la sisteme și date sensibile</li>
+        <li><strong>Breșă de securitate fizică</strong></li>
+        <li>Date salarizare = PII (numere de identificare, salarii, conturi bancare)</li>
+      </ul>
+      <p>Măsuri preventive necesare: <strong>screensaver cu parolă la blocare automată</strong>, badge access pe uși, sesiuni cu timeout, training angajați despre blocarea stațiilor.</p>
+    </div></details>
+  </div>
+  <div class="q-card" id="p-q2">
+    <div class="q-top"><div class="q-question">2. What measures are in place to attempt to prevent this type of incident from occurring or to limit its impact?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Screen lock with password:</strong> Auto-lock după 2-5 min inactivitate</li>
+        <li><strong>Badge/card access:</strong> Pe fiecare ușă, nu doar la intrare</li>
+        <li><strong>Session timeout:</strong> Aplicația de salarizare se deconectează automat</li>
+        <li><strong>Camere de supraveghere:</strong> Pe holuri și la ieșiri</li>
+        <li><strong>Training angajați:</strong> Blocare stație la plecare (Win+L)</li>
+        <li><strong>Physical security presence:</strong> Gardieni, receptie</li>
+        <li><strong>Application audit logging:</strong> Toate acțiunile în aplicație sunt loggate</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-detect" id="detect">🟠 Detection and Analysis (Detecție și Analiză)</div>
+  <div class="q-card" id="d-q1">
+    <div class="q-top"><div class="q-question">1. What precursors of the incident, if any, might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li>Tentative anterioare de acces fizic în birou</li>
+        <li>Tentative eșuate de login remote cu ID-ul administratorului</li>
+        <li>Social engineering — întrebări suspecte legate de proceduri, locația biroului</li>
+        <li>Persoana văzută pe camerele de supraveghere în alte zone restricționate anterior</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q2">
+    <div class="q-top"><div class="q-question">2. What indicators of the incident might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Observație directă:</strong> Administratorul a văzut persoana (indicator principal)</li>
+        <li><strong>Mouse-ul mișcat</strong> → cineva a interacționat cu computerul</li>
+        <li><strong>Audit logs aplicație:</strong> Navigare în meniuri, vizualizare înregistrări</li>
+        <li><strong>OS logs:</strong> Aplicații deschise, fișiere accesate</li>
+        <li><strong>USB device logs:</strong> Dispozitiv USB conectat?</li>
+        <li><strong>Camerele de supraveghere:</strong> Imaginea persoanei</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to detect this particular incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Forensic tools:</strong> Analiza completă a workstation-ului</li>
+        <li><strong>USB device history tools:</strong> Ce dispozitive au fost conectate</li>
+        <li><strong>Application audit review:</strong> Ce ecrane/meniuri au fost accesate</li>
+        <li><strong>Clipboard history tools:</strong> Ce text a fost copiat</li>
+        <li><strong>Browser forensics:</strong> Verificare email trimis, upload date</li>
+        <li><strong>Video surveillance review tools:</strong> Identificare persoana</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q4">
+    <div class="q-top"><div class="q-question">4. How would the incident response team analyze and validate this incident? What personnel would be involved?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Detecția:</strong> De la observație umană (administratorul), nu de la sisteme tehnice.</p>
+      <p><strong>Analiză necesară:</strong></p>
+      <ul>
+        <li>Examinare audit log-uri aplicație salarizare (ce ecrane au fost accesate, ce acțiuni)</li>
+        <li>Verificare log-uri OS (aplicații lansate, fișiere accesate, USB conectat?)</li>
+        <li>Camerele de supraveghere — identificare persoană</li>
+        <li>Verificare dacă s-au copiat date (clipboard history, fișiere temporare, email trimis)</li>
+        <li>Verificare browser history, recent files</li>
+      </ul>
+      <p><strong>Personal:</strong> IR team, physical security, HR, payroll admin, legal (dacă PII compromis).</p>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q5">
+    <div class="q-top"><div class="q-question">5. To which people and groups within the organization would the team report the incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Management:</strong> Breșă fizică + potențial acces PII</li>
+        <li><strong>HR:</strong> Date salarizare implicate</li>
+        <li><strong>Legal:</strong> Potențial breach notification pentru PII</li>
+        <li><strong>Physical security management:</strong> Revizuire controale fizice</li>
+        <li><strong>Law enforcement:</strong> Dacă persoana identificată (infracțiune)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q6">
+    <div class="q-top"><div class="q-question">6. How would the team prioritize the handling of this incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <table>
+        <tr><th>Criteriu</th><th>Nivel</th><th>Justificare</th></tr>
+        <tr><td><strong>Functional Impact</strong></td><td>NONE/LOW</td><td>Doar un workstation potențial compromis</td></tr>
+        <tr><td><strong>Information Impact</strong></td><td style="color:var(--phase-contain); font-weight:700;">POTENȚIAL PRIVACY BREACH</td><td>Date salarizare = PII</td></tr>
+        <tr><td><strong>Recoverability</strong></td><td style="color:var(--phase-detect);">DEPINDE</td><td>Dacă date copiate → nu se recuperează</td></tr>
+      </table>
+      <div class="conclusion-box"><strong>Prioritate:</strong> Depinde de ce s-a întâmplat efectiv. Dacă doar a privit pe ecran → Medium. Dacă a copiat date PII → High/Critical.</div>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-contain" id="contain">🔴 Containment, Eradication, and Recovery</div>
+  <div class="q-card" id="c-q1">
+    <div class="q-top"><div class="q-question">1. What strategy should the organization take to contain the incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Nu închide/reporni workstation-ul!</strong> (se pierd dovezi volatile)</li>
+        <li><strong>Captură memorie RAM</strong>, screenshot-uri sesiuni active</li>
+        <li><strong>Disk image complet</strong></li>
+        <li><strong>Securizare fizică:</strong> Blocare birou, restricționare acces</li>
+        <li><strong>Schimbare parola</strong> contului de salarizare imediat</li>
+        <li><strong>Verificare log-uri acces fizic</strong> (badge readers) pentru identificare persoană</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q2">
+    <div class="q-top"><div class="q-question">2. What could happen if the incident were not contained?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Dacă a instalat malware/keystroke logger</strong> → toate parolele tastate ulterior sunt compromise</li>
+        <li><strong>Dacă are credențiale</strong> → revenire la acces de la distanță</li>
+        <li><strong>Datele copiate</strong> → folosite pentru furt identitate, fraudă</li>
+        <li><strong>Repetarea atacului fizic</strong> dacă nu sunt corectate controalele de acces</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to respond to this particular incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Forensic imaging tools:</strong> Disk image, RAM dump</li>
+        <li><strong>USB forensics tools:</strong> Istoric dispozitive conectate</li>
+        <li><strong>Application-specific audit tools:</strong> Analiza log-urilor aplicației de salarizare</li>
+        <li><strong>Video surveillance:</strong> Revizuire camere</li>
+        <li><strong>Keystroke logger detection:</strong> Verificare dacă s-a instalat keylogger</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q4">
+    <div class="q-top"><div class="q-question">4. Which personnel would be involved in the containment, eradication, and/or recovery processes?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR team:</strong> Investigație forensic</li>
+        <li><strong>Physical security:</strong> Revizuire camere, identificare persoană</li>
+        <li><strong>HR:</strong> Acțiuni disciplinare dacă angajat/fost angajat</li>
+        <li><strong>Legal:</strong> Breach notification pentru PII</li>
+        <li><strong>Payroll admin:</strong> Verificare integritate date</li>
+        <li><strong>Law enforcement:</strong> Dacă intrus extern identificat</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q5">
+    <div class="q-top"><div class="q-question">5. What sources of evidence, if any, should the organization acquire?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.2.5, §3.3.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Memory dump</strong> (procese active, clipboard)</li>
+        <li><strong>Disk image</strong></li>
+        <li><strong>Application audit logs</strong> (salarizare)</li>
+        <li><strong>OS event logs</strong></li>
+        <li><strong>Video surveillance footage</strong></li>
+        <li><strong>Badge/access logs</strong></li>
+        <li><strong>USB connection history</strong></li>
+        <li><strong>Browser history + recent files</strong></li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-post" id="post">🟢 Post-Incident Activity</div>
+  <div class="q-card" id="pi-q1">
+    <div class="q-top"><div class="q-question">1. Who would attend the lessons learned meeting?</div><a href="nist-chapter3.html#nist-3.4" target="_blank" class="q-ref">§3.4.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR team</strong></li>
+        <li><strong>Physical security team</strong></li>
+        <li><strong>HR</strong></li>
+        <li><strong>Payroll department</strong></li>
+        <li><strong>Management</strong></li>
+        <li><strong>Legal</strong> (dacă PII compromis)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q2">
+    <div class="q-top"><div class="q-question">2. What could be done to prevent similar incidents from occurring in the future?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Screen lock obligatoriu</strong> — policy GPO: auto-lock 2 min</li>
+        <li><strong>Badge access pe fiecare ușă</strong>, nu doar la intrarea principală</li>
+        <li><strong>Session timeout</strong> pe aplicații sensibile</li>
+        <li><strong>Training angajați:</strong> Blocarea stației la plecare (Win+L)</li>
+        <li><strong>Proceduri offboarding</strong> — dacă fost angajat: revocare badge imediat</li>
+        <li><strong>Controale vizitatori:</strong> Escortă obligatorie</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q3">
+    <div class="q-top"><div class="q-question">3. What could be done to improve detection of similar incidents?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Camere de supraveghere</strong> pe holuri + birouri sensibile</li>
+        <li><strong>Alerte pe badge access</strong> — acces în zone restricționate din ID neautorizat</li>
+        <li><strong>Alerts pe aplicații:</strong> Acces la date sensibile loggate și monitorizate</li>
+        <li><strong>USB alerts:</strong> Conectare USB pe workstations sensibile → alertă SIEM</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="specific-section" id="specific">
+    <h2>❓ Întrebări Specifice Scenariului (6)</h2>
+    <div class="q-card" id="s-q1">
+      <div class="q-top"><div class="q-question">1. How would the team determine what actions had been performed?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li><strong>Application audit logs:</strong> Ce meniuri au fost accesate, ce record-uri vizualizate/editate</li>
+          <li><strong>OS event logs:</strong> Aplicații deschise, fișiere create/accesate</li>
+          <li><strong>USB logs:</strong> Dacă un dispozitiv USB a fost conectat</li>
+          <li><strong>Clipboard history:</strong> Ce a fost copiat</li>
+          <li><strong>Fișiere temporare:</strong> Recente downloads, temp files</li>
+          <li><strong>Browser history:</strong> S-a trimis email? S-a accesat cloud storage?</li>
+          <li><strong>Print logs:</strong> S-a printat ceva?</li>
+          <li><strong>Screenshot din memoria RAM:</strong> Procesele active la momentul captării</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q2">
+      <div class="q-top"><div class="q-question">2. How would the handling of this incident differ if the payroll administrator had recognized the person leaving her office as a former payroll department employee?</div><a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Fostul angajat știe:</strong></p>
+        <ul>
+          <li>Cum funcționează aplicația de salarizare (ce meniuri, ce date)</li>
+          <li>Unde sunt datele sensibile</li>
+          <li>Poate avea cunoștințe despre parole/proceduri</li>
+        </ul>
+        <p><strong>Acțiuni suplimentare:</strong></p>
+        <ul>
+          <li>Verificare <strong>proceduri de offboarding</strong> — badge revocat? Acces la sisteme dezactivat?</li>
+          <li><strong>HR implicat</strong> — informații despre fostul angajat</li>
+          <li><strong>Law enforcement</strong> — intruziune fizică cu identitatea cunoscută</li>
+          <li>Prioritate <strong>mai ridicată</strong> — acces intenționat, targetat</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q3">
+      <div class="q-top"><div class="q-question">3. How would the handling of this incident differ if the team had reason to believe that the person was a current employee?</div><a href="nist-chapter2.html#nist-2.3" target="_blank" class="q-ref">§2.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li><strong>HR implicat direct</strong> — proceduri disciplinare</li>
+          <li>Verificare <strong>motivația:</strong> curiozitate, răzbunare, spionaj industrial?</li>
+          <li><strong>Legal mai complex:</strong> Drepturi angajat vs. investigație</li>
+          <li>Verificare dacă angajatul <strong>avea autorizare</strong> pentru zona respectivă</li>
+          <li>Monitorizare <strong>activitatea angajatului</strong> pe sisteme</li>
+          <li>Posibil: <strong>suspendare temporară</strong> pe durata investigației</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q4">
+      <div class="q-top"><div class="q-question">4. How would the handling of this incident differ if the physical security team determined that the person had used social engineering techniques to gain physical access to the building?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li><strong>Social engineering awareness training</strong> obligatoriu pentru toți angajații</li>
+          <li>Revizuire <strong>proceduri de acces fizic</strong> — cum a trecut de controale?</li>
+          <li>Verificare dacă au fost <strong>alte victime</strong> ale social engineering (câți angajați a contactat)</li>
+          <li><strong>Attack may be more sophisticated</strong> — posibil parte dintr-un atac coordonat</li>
+          <li>Verificare dacă <strong>alte zone/birouri</strong> au fost vizitate</li>
+          <li><strong>Update politici:</strong> verificare identitate la intrare, escortă vizitatori, badge visible</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q5">
+      <div class="q-top"><div class="q-question">5. How would the handling of this incident differ if logs from the previous week showed an unusually large number of failed remote login attempts using the payroll administrator's user ID?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Atacul fizic este planul B!</strong></p>
+        <ul>
+          <li>Tentativele de login eșuate = atacatorul a încercat <strong>mai întâi acces remote</strong></li>
+          <li>Când nu a reușit → a trecut la <strong>acces fizic</strong></li>
+          <li>Indica <strong>atac persistent și targeta</strong> (nu oportunist)</li>
+          <li>Verificare <strong>sursa IP</strong> a tentativelor de login — corelare cu persoana fizică?</li>
+          <li><strong>Prioritate crescută:</strong> Atacator determinat, motivat, resurse</li>
+          <li>Posibil alte <strong>vectori de atac</strong> încercați (phishing, social engineering)</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q6">
+      <div class="q-top"><div class="q-question">6. How would the handling of this incident differ if the incident response team discovered that a keystroke logger was installed on the computer two weeks earlier?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Compromitere totală a credențialelor:</strong></p>
+        <ul>
+          <li><strong>TOATE parolele tastate</strong> în 2 săptămâni sunt compromise</li>
+          <li><strong>Schimbare TOATE credențialele</strong> folosite pe acel computer</li>
+          <li><strong>Rebuild complet</strong> al workstation-ului</li>
+          <li>Verificare <strong>ce date au fost transmise</strong> (log-urile keylogger-ului — unde trimit datele?)</li>
+          <li>Verificare <strong>accesul la alte sisteme</strong> cu credențialele capturate</li>
+          <li>Incidentul este <strong>mult mai vechi</strong> decât se credea — 2 săptămâni, nu minute</li>
+          <li><strong>Cine a instalat keylogger-ul?</strong> Aceeași persoană? → atac planificat pe termen lung</li>
+        </ul>
+        <div class="conclusion-box"><strong>Concluzie:</strong> Prezența keylogger-ului transformă un incident aparent fizic/oportunist într-un atac sofisticat, planificat, în mai multe etape.</div>
+      </div></details>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="scenariu-5-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Scenariu 5</a>
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Pagina principală</a>
+    <a href="scenariu-7-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Scenariu 7 →</a>
+  </div>
+</div>
+<script>
+const navLinks = document.querySelectorAll('.page-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) sections.push({ el, a }); });
+window.addEventListener('scroll', () => { let current = sections[0]; for (const s of sections) { if (s.el.getBoundingClientRect().top <= 120) current = s; } navLinks.forEach(a => a.classList.remove('active')); if (current) current.a.classList.add('active'); }, { passive: true });
+</script>
+</body>
+</html>

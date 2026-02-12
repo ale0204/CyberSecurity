@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenariu 5 — Exfiltrare Necunoscută (Detaliat)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html { font-size: 140%; }
+    header { margin-left: 280px; }
+    .page-nav { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); overflow-y: auto; padding: 1rem 0; z-index: 100; }
+    .page-nav a { display: block; padding: 5px 18px; color: var(--text-secondary); text-decoration: none; font-size: 0.78rem; border-left: 3px solid transparent; transition: all 0.2s; line-height: 1.4; }
+    .page-nav a:hover, .page-nav a.active { color: var(--primary); background: rgba(74,70,200,0.05); border-left-color: var(--primary); }
+    .page-nav .nav-title { padding: 6px 18px; font-weight: 700; font-size: 0.82rem; color: var(--text-primary); }
+    .page-nav .sep { padding: 10px 18px 3px; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+    .page-main { margin-left: 280px; padding: 1.5rem 2rem 3rem; max-width: 1100px; }
+    .back-link { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.82rem; }
+    .back-link:hover { text-decoration: underline; }
+    .scenario-box { background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01)); border-left: 4px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem; font-style: italic; color: var(--text-secondary); line-height: 1.6; font-size: 0.88rem; }
+    .phase-header { padding: 0.6rem 1rem; border-radius: 8px; color: white; font-weight: 700; font-size: 0.95rem; margin: 1.8rem 0 0.8rem; }
+    .phase-header-prep { background: var(--phase-prep); } .phase-header-detect { background: var(--phase-detect); } .phase-header-contain { background: var(--phase-contain); } .phase-header-post { background: var(--phase-lessons); }
+    .q-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+    .q-top { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.2rem; }
+    .q-question { flex: 1; font-weight: 600; color: var(--text-primary); font-size: 0.88rem; line-height: 1.5; }
+    .q-ref { flex-shrink: 0; background: rgba(74,70,200,0.1); color: var(--primary); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .q-ref:hover { background: rgba(74,70,200,0.2); }
+    .q-answer { border-top: 1px dashed var(--border); }
+    .q-answer summary { cursor: pointer; padding: 0.6rem 1.2rem; font-weight: 700; font-size: 0.78rem; color: var(--primary); list-style: none; user-select: none; display: flex; align-items: center; gap: 0.4rem; }
+    .q-answer summary::-webkit-details-marker { display: none; }
+    .q-answer summary::before { content: '▶'; font-size: 0.6rem; transition: transform 0.2s; }
+    .q-answer[open] summary::before { transform: rotate(90deg); }
+    .q-answer[open] summary { color: var(--phase-recover); }
+    .answer-content { padding: 0 1.2rem 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .answer-content p { margin: 0.3rem 0; } .answer-content ul { margin: 0.3rem 0 0.3rem 1.2rem; } .answer-content li { margin-bottom: 0.25rem; }
+    .answer-content table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content table th, .answer-content table td { padding: 0.4rem 0.6rem; border: 1px solid var(--border); text-align: left; }
+    .answer-content table th { background: rgba(74,70,200,0.05); font-weight: 700; }
+    .answer-content .nist-quote { background: rgba(241,196,15,0.08); border-left: 3px solid #f39c12; padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; font-style: italic; margin: 0.5rem 0; font-size: 0.82rem; }
+    .answer-content strong { color: var(--text-primary); }
+    .answer-content .conclusion-box { background: rgba(39,174,96,0.06); border-left: 3px solid var(--phase-recover); padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; margin: 0.5rem 0; }
+    .specific-section { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+    .specific-section h2 { font-size: 1rem; color: var(--text-primary); margin-bottom: 0.8rem; }
+    @media (max-width: 768px) { html { font-size: 112%; } .page-nav { display: none; } .page-main { margin-left: 0; padding: 1rem; } header { margin-left: 0; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Scenariul 5: Exfiltrare Necunoscută</h1>
+  <p>Analiză detaliată — întrebare cu întrebare, cu referințe NIST și răspunsuri ascunse</p>
+</header>
+<nav class="page-nav">
+  <div class="nav-title">📖 Scenariu 5: Exfiltrare</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Secțiuni</div>
+  <a href="#scenario-text">📋 Enunțul scenariului</a>
+  <div class="sep">Întrebări Standard (A.1)</div>
+  <a href="#prep">🟣 Pregătire (2)</a>
+  <a href="#detect">🟠 Detecție & Analiză (6)</a>
+  <a href="#contain">🔴 Containment (5)</a>
+  <a href="#post">🟢 Post-Incident (3)</a>
+  <div class="sep">Specifice Scenariului</div>
+  <a href="#specific">❓ Întrebări specifice (3)</a>
+</nav>
+<div class="page-main">
+  <a href="index.html#scenariu-5" class="back-link">← Înapoi la pagina principală</a>
+  <div id="scenario-text" class="scenario-box">
+    On a Sunday night, one of the organization's network intrusion detection sensors alerts on anomalous outbound network activity involving large file transfers. The intrusion analyst reviews the alerts; it appears that thousands of .RAR files are being copied from an internal host to an external host, and the external host is located in another country. The analyst contacts the incident response team so that it can investigate the activity further. The team is unable to see what the .RAR files hold because their contents are encrypted. Analysis of the internal host containing the .RAR files shows signs of a bot installation.
+  </div>
+
+  <div class="phase-header phase-header-prep" id="prep">🟣 Preparation (Pregătire)</div>
+  <div class="q-card" id="p-q1">
+    <div class="q-top"><div class="q-question">1. Would the organization consider this activity to be an incident? If so, which of the organization's policies does this activity violate?</div><a href="nist-chapter2.html#nist-2.1" target="_blank" class="q-ref">§2.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Da, incident critic.</strong></p>
+      <p>Exfiltrare de date criptate către o țară externă prin intermediul unui bot:</p>
+      <ul>
+        <li><strong>Acces neautorizat</strong> la sisteme (bot instalat)</li>
+        <li><strong>Exfiltrare de date</strong> — mii de fișiere transferate</li>
+        <li><strong>Instalare malware</strong> (bot)</li>
+        <li><strong>Compromiterea confidențialității</strong> — date probabil sensibile</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="p-q2">
+    <div class="q-top"><div class="q-question">2. What measures are in place to attempt to prevent this type of incident from occurring or to limit its impact?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>DLP (Data Loss Prevention):</strong> Detectare transferuri masive de date</li>
+        <li><strong>IDS/IPS outbound:</strong> Monitorizare trafic de ieșire (ceea ce a funcționat aici!)</li>
+        <li><strong>Endpoint protection:</strong> Anti-malware, anti-bot</li>
+        <li><strong>Network segmentation:</strong> Limitarea accesului la date sensibile</li>
+        <li><strong>Wireless security:</strong> WPA3, segmentare wireless</li>
+        <li><strong>Firewall egress rules:</strong> Restricționare conexiuni outbound</li>
+        <li><strong>Application whitelisting:</strong> Prevenire instalare programe neautorizate</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-detect" id="detect">🟠 Detection and Analysis (Detecție și Analiză)</div>
+  <div class="q-card" id="d-q1">
+    <div class="q-top"><div class="q-question">1. What precursors of the incident, if any, might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li>Tentative de exploatare rețea wireless (vectorul inițial)</li>
+        <li>Comunicare C2 (command & control) de la bot înainte de exfiltrare</li>
+        <li>Scanări de rețea internă (botul caută date de exfiltrat)</li>
+        <li>Activitate neobișnuită pe host (instalare software necunoscut)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q2">
+    <div class="q-top"><div class="q-question">2. What indicators of the incident might the organization detect?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.2, §3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Alerte IDS</strong> pe trafic outbound anormal (detectat!)</li>
+        <li><strong>Volum mare de date</strong> transferate — mii de .RAR files</li>
+        <li><strong>Fișiere criptate</strong> (tentativă de ascundere conținut)</li>
+        <li><strong>Conexiune persistentă</strong> cu host extern dintr-o altă țară</li>
+        <li><strong>Bot instalat pe host</strong> — procese, conexiuni, fișiere suspecte</li>
+        <li><strong>Adresă IP externă</strong> potențial pe liste de threat intelligence</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to detect this particular incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.3</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>DLP system:</strong> Ar clasifica tipurile de date transferate</li>
+        <li><strong>NetFlow analysis:</strong> Vizualizare pattern-uri de trafic</li>
+        <li><strong>Endpoint Detection & Response (EDR):</strong> Detectare bot pe host</li>
+        <li><strong>Threat intelligence feeds:</strong> Identificare IP extern cunoscut</li>
+        <li><strong>Wireless intrusion detection:</strong> Detectare compromitere wireless</li>
+        <li><strong>File analysis sandbox:</strong> Analiza fișierelor .RAR (dacă se poate decripta)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q4">
+    <div class="q-top"><div class="q-question">4. How would the incident response team analyze and validate this incident? What personnel would be involved?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <p><strong>Analiză:</strong></p>
+      <ul>
+        <li>Ce conțineau fișierele .RAR? Verificare directoare sursă de pe host</li>
+        <li>Cât de mult s-a exfiltrat? Pe ce perioadă?</li>
+        <li>Cum a fost compromis hostul intern? (wireless card?)</li>
+        <li>Este hostul un staging point pentru date de pe alte sisteme?</li>
+        <li>Cine e proprietarul hostului extern? (WHOIS, threat intelligence)</li>
+      </ul>
+      <p><strong>Personal:</strong> IR team, network analysts, forensic analysts, wireless security team, management.</p>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q5">
+    <div class="q-top"><div class="q-question">5. To which people and groups within the organization would the team report the incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.7</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>CISO:</strong> Exfiltrare de date în afara țării</li>
+        <li><strong>Management executiv:</strong> Potențial pierdere proprietate intelectuală</li>
+        <li><strong>Legal:</strong> Implicații legale, posibilă breach notification</li>
+        <li><strong>Departamentele ale căror date au fost exfiltrate</strong></li>
+        <li><strong>US-CERT / autorități:</strong> Transferuri internaționale suspecte</li>
+        <li><strong>Law enforcement:</strong> Dacă date clasificate/sensibile</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="d-q6">
+    <div class="q-top"><div class="q-question">6. How would the team prioritize the handling of this incident?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.6</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <table>
+        <tr><th>Criteriu</th><th>Nivel</th><th>Justificare</th></tr>
+        <tr><td><strong>Functional Impact</strong></td><td style="color:var(--phase-detect);">MEDIUM</td><td>Un host compromis</td></tr>
+        <tr><td><strong>Information Impact</strong></td><td style="color:var(--phase-contain); font-weight:700;">PROBABIL PRIVACY/PROPRIETARY BREACH</td><td>Mii de fișiere exfiltrate</td></tr>
+        <tr><td><strong>Recoverability</strong></td><td style="color:var(--phase-contain); font-weight:700;">POTENTIALLY NOT RECOVERABLE</td><td>Datele au părăsit rețeaua</td></tr>
+      </table>
+      <div class="conclusion-box"><strong>Prioritate: CRITICĂ</strong> — Datele au fost deja exfiltrate. Nu se pot „recupera" date care au ajuns în altă țară. Focus pe limitarea daunelor și identificarea exactă a ce s-a pierdut.</div>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-contain" id="contain">🔴 Containment, Eradication, and Recovery</div>
+  <div class="q-card" id="c-q1">
+    <div class="q-top"><div class="q-question">1. What strategy should the organization take to contain the incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Deconectare host intern de la rețea</strong> (oprire exfiltrare imediată)</li>
+        <li><strong>Blocare IP extern</strong> la firewall/router de frontieră</li>
+        <li><strong>Captură RAM și disk image</strong> ÎNAINTE de oprire</li>
+        <li><strong>Verificare alte hosturi</strong> pentru compromitere similară</li>
+        <li><strong>Blocare comunicare</strong> cu IP-uri asociate botnet-ului</li>
+        <li><strong>Dacă compromis prin wireless</strong> → verificare securitatea rețelei wireless</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q2">
+    <div class="q-top"><div class="q-question">2. What could happen if the incident were not contained?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Exfiltrare continuă</strong> — mai multe date transferate</li>
+        <li><strong>Botul se răspândește</strong> la alte sisteme</li>
+        <li><strong>Alte hosturi</strong> folosite ca staging points</li>
+        <li><strong>Pierdere masivă de date</strong> proprietare/confidențiale</li>
+        <li><strong>Serverul folosit pentru atacuri</strong> (botnet) împotriva altor organizații</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q3">
+    <div class="q-top"><div class="q-question">3. What additional tools might be needed to respond to this particular incident?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Forensic tools:</strong> Memory dump, disk imaging</li>
+        <li><strong>Malware analysis sandbox:</strong> Analiza botului</li>
+        <li><strong>Wireless security tools:</strong> Verificare rețea wireless</li>
+        <li><strong>DLP system:</strong> Clasificarea datelor exfiltrate</li>
+        <li><strong>Network monitoring tools:</strong> Verificare alte conexiuni suspecte</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q4">
+    <div class="q-top"><div class="q-question">4. Which personnel would be involved in the containment, eradication, and/or recovery processes?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1, §3.3.4</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR Team:</strong> Coordonare investigație</li>
+        <li><strong>Network team:</strong> Blocare trafic, izolarea segmentelor</li>
+        <li><strong>Forensic analysts:</strong> Analiza bot, disk image</li>
+        <li><strong>Wireless security team:</strong> Investigare vector wireless</li>
+        <li><strong>Legal:</strong> Breach notification, law enforcement</li>
+        <li><strong>Departamentele afectate:</strong> Evaluare impact pe business</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="c-q5">
+    <div class="q-top"><div class="q-question">5. What sources of evidence, if any, should the organization acquire?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.2.5, §3.3.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>Memory dump</strong> de pe hostul compromis</li>
+        <li><strong>Disk image</strong> complet</li>
+        <li><strong>IDS alerts</strong> și log-uri</li>
+        <li><strong>Firewall logs</strong> — conexiuni outbound</li>
+        <li><strong>NetFlow data</strong> — volumul transferat</li>
+        <li><strong>Directoarele sursă</strong> ale fișierelor .RAR (pe host)</li>
+        <li><strong>Wireless logs</strong> — dacă vectorul inițial a fost wireless</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="phase-header phase-header-post" id="post">🟢 Post-Incident Activity</div>
+  <div class="q-card" id="pi-q1">
+    <div class="q-top"><div class="q-question">1. Who would attend the lessons learned meeting?</div><a href="nist-chapter3.html#nist-3.4" target="_blank" class="q-ref">§3.4.1</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IR Team complet</strong></li>
+        <li><strong>Network team</strong></li>
+        <li><strong>Wireless security team</strong></li>
+        <li><strong>DBA / data owners</strong> pentru datele exfiltrate</li>
+        <li><strong>Management / CISO</strong></li>
+        <li><strong>Legal</strong> (dacă breach notification)</li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q2">
+    <div class="q-top"><div class="q-question">2. What could be done to prevent similar incidents from occurring in the future?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>DLP implementat</strong> — detectare transferuri masive</li>
+        <li><strong>Securitate wireless îmbunătățită</strong> — WPA3, segmentare</li>
+        <li><strong>Egress filtering strict</strong> — restricționare conexiuni outbound</li>
+        <li><strong>EDR pe toate endpoint-urile</strong></li>
+        <li><strong>Verificare dispozitive wireless</strong> ale angajaților</li>
+        <li><strong>Threat intelligence integration</strong></li>
+      </ul>
+    </div></details>
+  </div>
+  <div class="q-card" id="pi-q3">
+    <div class="q-top"><div class="q-question">3. What could be done to improve detection of similar incidents?</div><a href="nist-chapter3.html#nist-3.1" target="_blank" class="q-ref">§3.1.2</a></div>
+    <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+      <ul>
+        <li><strong>IDS outbound</strong> funcționează bine (a detectat incidentul!)</li>
+        <li><strong>DLP</strong> — ar detecta tipul de date transferate</li>
+        <li><strong>Monitorizare volume de trafic</strong> — anomaly detection pe volum outbound</li>
+        <li><strong>Threat intelligence</strong> — IP extern cunoscut?</li>
+        <li><strong>Wireless IDS</strong> — detecție compromitere rețea wireless</li>
+      </ul>
+    </div></details>
+  </div>
+
+  <div class="specific-section" id="specific">
+    <h2>❓ Întrebări Specifice Scenariului (3)</h2>
+    <div class="q-card" id="s-q1">
+      <div class="q-top"><div class="q-question">1. How would the team determine what was most likely inside the .RAR files? Which other teams might assist the incident response team?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Determinarea conținutului:</strong></p>
+        <ul>
+          <li>Verificare <strong>directoarele sursă</strong> de pe host — de unde au fost create fișierele .RAR</li>
+          <li>Analiza <strong>file access logs</strong> — ce fișiere au fost accesate înainte de compresie</li>
+          <li>Verificare <strong>dimensiunile fișierelor</strong> originale vs. .RAR-uri</li>
+          <li>Dacă pasword-ul de criptare este găsit pe host → decriptare directă</li>
+          <li>Analiza <strong>metadata</strong> din fișierele .RAR (chiar și criptate, pot lista filenames)</li>
+        </ul>
+        <p><strong>Echipe care pot asista:</strong></p>
+        <ul>
+          <li><strong>Data owners</strong> — identifică ce date sensibile existau pe host</li>
+          <li><strong>DBA team</strong> — dacă datele provin din baze de date</li>
+          <li><strong>Legal</strong> — determinarea obligațiilor de raportare</li>
+          <li><strong>Malware analysis team</strong> — analiza botului pentru cheia de criptare</li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q2">
+      <div class="q-top"><div class="q-question">2. If the incident response team determined that the initial compromise had been performed through a wireless network card in the internal host, how would the team further investigate this activity?</div><a href="nist-chapter3.html#nist-3.2" target="_blank" class="q-ref">§3.2.4</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <ul>
+          <li><strong>Audit rețeaua wireless</strong> — AP-uri neautorizate (rogue AP)?</li>
+          <li>Verificare <strong>configurare wireless (WEP? WPA? WPA2?)</strong> — vulnerabilități cunoscute?</li>
+          <li>Scanare <strong>alte hosturi cu wireless</strong> pentru compromitere similară</li>
+          <li>Verificare <strong>cine avea acces fizic</strong> în raza rețelei wireless</li>
+          <li>Analiza <strong>log-urilor WiFi controller</strong> — conexiuni suspecte</li>
+          <li>Patch <strong>vulnerabilitatea wireless</strong> exploatată</li>
+          <li>Implementare <strong>WPA3 + segmentare wireless</strong></li>
+        </ul>
+      </div></details>
+    </div>
+    <div class="q-card" id="s-q3">
+      <div class="q-top"><div class="q-question">3. If the incident response team determined that the internal host was being used to stage sensitive files from other hosts within the enterprise, how would the team further investigate this activity?</div><a href="nist-chapter3.html#nist-3.3" target="_blank" class="q-ref">§3.3.1</a></div>
+      <details class="q-answer"><summary>Vezi răspunsul</summary><div class="answer-content">
+        <p><strong>Incidentul se extinde masiv:</strong></p>
+        <ul>
+          <li><strong>Identificare TOATE hosturile sursă</strong> din care s-au copiat fișiere</li>
+          <li><strong>Verificare fiecare host sursă</strong> pentru compromitere (bot, backdoor, acces neautorizat)</li>
+          <li><strong>Network forensics:</strong> Analiza traficului intern host-to-host</li>
+          <li><strong>Determinare amploare:</strong> Câte hosturi, ce date, pe ce perioadă?</li>
+          <li><strong>Containment extins:</strong> Izolarea tuturor hosturilor compromise</li>
+          <li><strong>Verificare lateral movement:</strong> Cum s-a deplasat atacatorul de la un host la altul?</li>
+          <li><strong>Centralizare dovezi:</strong> Disk image + RAM dump pentru fiecare host compromis</li>
+        </ul>
+        <div class="conclusion-box"><strong>Concluzie:</strong> Dacă hostul era staging point, avem de-a face cu un <strong>advanced persistent threat (APT)</strong> — sofisticare ridicată, multiple sisteme compromise.</div>
+      </div></details>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="scenariu-4-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Scenariu 4</a>
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Pagina principală</a>
+    <a href="scenariu-6-detaliat.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Scenariu 6 →</a>
+  </div>
+</div>
+<script>
+const navLinks = document.querySelectorAll('.page-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) sections.push({ el, a }); });
+window.addEventListener('scroll', () => { let current = sections[0]; for (const s of sections) { if (s.el.getBoundingClientRect().top <= 120) current = s; } navLinks.forEach(a => a.classList.remove('active')); if (current) current.a.classList.add('active'); }, { passive: true });
+</script>
+</body>
+</html>

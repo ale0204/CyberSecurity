@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIST §2 — Organizarea Capabilității de Răspuns la Incidente</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 60px);
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1rem 0;
+      z-index: 100;
+    }
+    .chapter-nav a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .chapter-nav a:hover,
+    .chapter-nav a.active {
+      color: var(--primary);
+      background: rgba(74,70,200,0.05);
+      border-left-color: var(--primary);
+    }
+    .chapter-nav .nav-title {
+      padding: 8px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .chapter-nav .sub { padding-left: 36px; font-size: 0.8rem; }
+    .chapter-nav .sub2 { padding-left: 52px; font-size: 0.78rem; }
+
+    html { font-size: 130%; }
+    .chapter-main {
+      margin-left: 260px;
+      padding: 2rem 2.5rem 4rem;
+      max-width: 1200px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .section-block {
+      margin-bottom: 2.5rem;
+      padding: 1.5rem 1.8rem;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .section-block h2 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+    }
+    .section-block h3 {
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      margin-top: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .section-block h4 {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-top: 1rem;
+      margin-bottom: 0.4rem;
+    }
+    .section-block ul, .section-block ol {
+      margin-left: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .section-block li { margin-bottom: 0.35rem; line-height: 1.6; }
+    .section-block p { line-height: 1.7; margin-bottom: 0.7rem; }
+    .section-block .quote {
+      border-left: 4px solid var(--primary);
+      padding: 0.8rem 1rem;
+      background: rgba(74,70,200,0.05);
+      font-style: italic;
+      margin: 0.8rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .section-block table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.9rem;
+    }
+    .section-block th, .section-block td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .section-block th {
+      background: var(--primary);
+      color: #fff;
+    }
+    .key-point {
+      background: linear-gradient(135deg, rgba(74,70,200,0.08), rgba(74,70,200,0.02));
+      border: 1px solid rgba(74,70,200,0.2);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 0;
+    }
+    .key-point strong { color: var(--primary); }
+
+    .pdf-link {
+      display: inline-block;
+      margin-top: 0.3rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    .pdf-link:hover { color: var(--primary); }
+
+    @media (max-width: 768px) {
+      html { font-size: 112%; }
+      .chapter-nav { display: none; }
+      .chapter-main { margin-left: 0; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <h1>📘 NIST §2 — Organizarea Răspunsului la Incidente</h1>
+</header>
+
+<!-- CHAPTER NAV -->
+<nav class="chapter-nav">
+  <div class="nav-title">📘 Capitol 2 — Cuprins</div>
+  <a href="#nist-2.1">§2.1 Events and Incidents</a>
+  <a href="#nist-2.2">§2.2 Need for Incident Response</a>
+  <a href="#nist-2.3">§2.3 Policy, Plan, Procedure</a>
+  <a href="#nist-2.3.1" class="sub">§2.3.1 Policy Elements</a>
+  <a href="#nist-2.3.2" class="sub">§2.3.2 Plan Elements</a>
+  <a href="#nist-2.3.3" class="sub">§2.3.3 Procedure Elements</a>
+  <a href="#nist-2.3.4" class="sub">§2.3.4 Sharing with Outside Parties</a>
+  <a href="#nist-2.3.4.1" class="sub2">§2.3.4.1 Media</a>
+  <a href="#nist-2.3.4.2" class="sub2">§2.3.4.2 Law Enforcement</a>
+  <a href="#nist-2.3.4.3" class="sub2">§2.3.4.3 Incident Reporting Orgs</a>
+  <a href="#nist-2.3.4.4" class="sub2">§2.3.4.4 Other Outside Parties</a>
+  <a href="#nist-2.4">§2.4 Team Structure</a>
+  <a href="#nist-2.4.1" class="sub">§2.4.1 Team Models</a>
+  <a href="#nist-2.4.2" class="sub">§2.4.2 Model Selection</a>
+  <a href="#nist-2.4.3" class="sub">§2.4.3 Personnel</a>
+  <a href="#nist-2.4.4" class="sub">§2.4.4 Dependencies</a>
+  <a href="#nist-2.5">§2.5 Team Services</a>
+  <a href="#nist-2.6">§2.6 Recommendations</a>
+  <hr style="margin:8px 20px; border-color:var(--border)">
+  <a href="index.html" style="color:var(--primary);font-weight:600;">← Înapoi la pagina principală</a>
+  <a href="nist-chapter3.html" style="color:var(--phase-detect);font-weight:600;">→ Capitol 3: Handling</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="chapter-main">
+  <a href="index.html" class="back-link">← Înapoi la pagina principală</a>
+
+  <div class="section-block" id="nist-2.1">
+    <h2>§2.1 — Events and Incidents</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=16" target="_blank">PDF p.16</a></span>
+
+    <div class="quote">"An event is any observable occurrence in a system or network."</div>
+    <div class="quote">"A computer security incident is a violation or imminent threat of violation of computer security policies, acceptable use policies, or standard security practices."</div>
+
+    <h3>Definiții cheie</h3>
+    <ul>
+      <li><strong>Eveniment (Event)</strong> — orice apariție observabilă într-un sistem sau rețea. Exemple: un user se conectează la un share, un server primește o cerere web, un firewall blochează o conexiune.</li>
+      <li><strong>Eveniment advers (Adverse Event)</strong> — eveniment cu consecință negativă: crash de sistem, flood de pachete, acces neautorizat, execuție malware.</li>
+      <li><strong>Incident de securitate informatică</strong> — o încălcare sau o amenințare iminentă de încălcare a politicilor de securitate, politicilor de utilizare acceptabilă, sau practicilor standard de securitate.</li>
+    </ul>
+
+    <h3>Exemple de incidente</h3>
+    <ul>
+      <li>Un atacator comandă un botnet să trimită volume mari de cereri pentru a crasha un web server (DoS/DDoS)</li>
+      <li>Utilizatori sunt păcăliți să deschidă un „raport trimestrial" care este de fapt malware — se instalează conexiuni cu un host extern</li>
+      <li>Un atacator obține date sensibile și amenință cu publicarea lor dacă nu se plătește o sumă (extortion/ransomware)</li>
+      <li>Un user expune informații sensibile prin servicii de file sharing P2P</li>
+    </ul>
+
+    <div class="key-point">
+      <strong>Criteriu pentru examen:</strong> Nu tipul atacului contează, ci dacă există o <em>încălcare sau amenințare iminentă</em> la adresa politicilor. Orice afectare a CIA (Confidentiality, Integrity, Availability) califică evenimentul ca incident.
+    </div>
+  </div>
+
+  <div class="section-block" id="nist-2.2">
+    <h2>§2.2 — Need for Incident Response</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=16" target="_blank">PDF p.16</a></span>
+
+    <p>Atacurile compromit frecvent date personale și de business. Răspunsul rapid și eficient este critic. Beneficiile unei capabilități de răspuns la incidente:</p>
+    <ul>
+      <li><strong>Răspuns sistematic</strong> — o metodologie consistentă de gestionare a incidentelor, astfel încât acțiunile potrivite sunt luate</li>
+      <li><strong>Minimizarea pierderii</strong> — reduce pierderea sau furtul de informații și întreruperea serviciilor cauzate de incidente</li>
+      <li><strong>Lecții învățate</strong> — informațiile acumulate din incident handling ajută la prevenirea viitoarelor incidente și la protecția mai puternică</li>
+      <li><strong>Aspecte legale</strong> — ajută la gestionarea adecvată a aspectelor juridice (colectare dovezi, conformitate)</li>
+    </ul>
+
+    <h3>Cerințe legale și regulatorii</h3>
+    <ul>
+      <li><strong>OMB Circular A-130</strong> — agenții federale trebuie să aibă capabilitate de asistență la incidente și partajarea informațiilor</li>
+      <li><strong>FISMA (2002)</strong> — obligă proceduri de detected, reporting și responding la incidente; stabilește centru federal de incident response</li>
+      <li><strong>FIPS 200</strong> — cerințe minime de securitate incluzând incident response</li>
+      <li><strong>OMB M-07-16</strong> — ghid pentru raportarea incidentelor ce implică PII (Personally Identifiable Information)</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="nist-2.3">
+    <h2>§2.3 — Incident Response Policy, Plan, and Procedure</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=17" target="_blank">PDF p.17</a></span>
+
+    <p>Trei documente fundamentale stau la baza capabilității de răspuns la incidente:</p>
+
+    <div class="key-point">
+      <strong>Policy</strong> = CE trebuie făcut și DE CE<br>
+      <strong>Plan</strong> = CUM va fi implementat (foaia de parcurs)<br>
+      <strong>Procedures (SOP)</strong> = PAȘII EXACTI, pas cu pas
+    </div>
+
+    <div id="nist-2.3.1">
+      <h3>§2.3.1 — Policy Elements</h3>
+      <p>Politica de răspuns la incidente este fundația programului. Deși este individualizată, majoritatea includ aceleași elemente cheie:</p>
+      <ul>
+        <li><strong>Declarație de angajament al managementului</strong> — demonstrează suport organizațional</li>
+        <li><strong>Scopul și obiectivele politicii</strong> — ce se urmărește prin program</li>
+        <li><strong>Sfera de aplicare</strong> — la cine și la ce se aplică, în ce circumstanțe</li>
+        <li><strong>Definiția incidentelor</strong> și a termenilor înrudiți</li>
+        <li><strong>Structură organizațională</strong> — roluri, responsabilități, niveluri de autoritate:
+          <ul>
+            <li>Autoritatea echipei de a confisca/deconecta echipamente</li>
+            <li>Autoritatea de a monitoriza activitate suspectă</li>
+            <li>Cerințe de raportare pentru anumite tipuri de incidente</li>
+            <li>Ghiduri pentru comunicări externe și partajare info</li>
+            <li>Puncte de escaladare</li>
+          </ul>
+        </li>
+        <li><strong>Prioritizare/clasificare severitate</strong> a incidentelor</li>
+        <li><strong>Metrici de performanță</strong></li>
+        <li><strong>Formulare</strong> de raportare și contact</li>
+      </ul>
+    </div>
+
+    <div id="nist-2.3.2">
+      <h3>§2.3.2 — Plan Elements</h3>
+      <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=18" target="_blank">PDF p.18</a></span>
+      <p>Planul de răspuns la incidente oferă <strong>foaia de parcurs</strong> pentru implementarea capabilității. Trebuie să fie specific organizației.</p>
+      <p>Elemente obligatorii ale planului:</p>
+      <ul>
+        <li><strong>Misiune</strong> — declararea scopului echipei</li>
+        <li><strong>Strategii și obiective</strong> — pe termen scurt și lung</li>
+        <li><strong>Aprobare management senior</strong> — fără aceasta, planul nu are autoritate</li>
+        <li><strong>Abordare organizațională</strong> — cum se integrează echipa de IR în structura organizației</li>
+        <li><strong>Mecanisme de comunicare</strong> — cum comunică echipa cu restul organizației și cu externe</li>
+        <li><strong>Metrici de măsurare</strong> — cum se evaluează capabilitatea de IR și eficacitatea ei</li>
+        <li><strong>Foaia de parcurs pentru maturizare</strong> — evoluția în timp a capabilității</li>
+        <li><strong>Fit-ul cu organizația</strong> — cum se potrivește programul în ansamblul organizațional</li>
+      </ul>
+      <p>Revizuit cel puțin <strong>anual</strong> pentru a se asigura urmarea foii de parcurs.</p>
+    </div>
+
+    <div id="nist-2.3.3">
+      <h3>§2.3.3 — Procedure Elements (SOPs)</h3>
+      <p>Standard Operating Procedures (SOPs) = procese tehnice specifice, tehnici, checklist-uri și formulare. Caracteristici:</p>
+      <ul>
+        <li>Bazate pe politică și plan</li>
+        <li>Comprehensive și detaliate — reflectă prioritățile organizației</li>
+        <li>Urmărirea lor minimizează erorile (mai ales sub stres)</li>
+        <li>Trebuie <strong>testate</strong> pentru a valida acuratețea</li>
+        <li>Distribuite tuturor membrilor echipei</li>
+        <li>Training obligatoriu pentru utilizatori</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-block" id="nist-2.3.4">
+    <h2>§2.3.4 — Sharing Information With Outside Parties</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=19" target="_blank">PDF p.19</a></span>
+
+    <p>Organizațiile trebuie adesea să comunice cu părți externe despre un incident. Este esențial să se stabilească <strong>politici și proceduri de partajare a informațiilor ÎNAINTE</strong> ca un incident să apară.</p>
+
+    <div class="key-point">
+      <strong>Regula de bază:</strong> Discutați cu departamentul juridic și public affairs ÎNAINTE de orice comunicare externă. Documentați TOATE contactele cu părțile externe.
+    </div>
+
+    <div id="nist-2.3.4.1">
+      <h4>§2.3.4.1 — Media</h4>
+      <p>Recomandări pentru interacțiunea cu media:</p>
+      <ul>
+        <li>Desemnați un <strong>singur punct de contact (POC)</strong> și cel puțin un backup</li>
+        <li>Conducte training-uri despre interacțiunea cu media privind incidentele</li>
+        <li><strong>Nu dezvăluiți detalii tehnice</strong> ale contramăsurilor (ar putea ajuta alte atacuri)</li>
+        <li>Stabiliți proceduri de briefing înainte de discuții cu media</li>
+        <li>Mențineți o <strong>declarație actualizată</strong> a statusului incidentului</li>
+        <li>Amintiți tuturor procedurile generale de interacțiune cu media</li>
+        <li>Organizați <strong>interviuri mock și conferințe de presă</strong> în cadrul exercițiilor</li>
+      </ul>
+      <p>Întrebări tipice din partea presei: Cine v-a atacat? Când? Cum? Aveți practici proaste de securitate? Cât de răspândit este? Ce PII a fost expus? Care e costul estimat?</p>
+    </div>
+
+    <div id="nist-2.3.4.2">
+      <h4>§2.3.4.2 — Law Enforcement</h4>
+      <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=19" target="_blank">PDF p.19</a></span>
+      <p>Contactarea law enforcement este esențială pentru incidente cu potențial infracțional, dar multe incidente nu ajung la condamnare din cauza contactării inadecvate.</p>
+      <ul>
+        <li><strong>Nivele de law enforcement</strong>: Federal (FBI, Secret Service), state, local, OIG (Office of Inspector General).</li>
+        <li><strong>Familiarizare prealabilă</strong> — discutați ÎNAINTE de incident: condiții de raportare, cum se raportează, ce dovezi și cum se colectează</li>
+        <li>Desemnați <strong>un singur POC</strong> pentru law enforcement din echipa IR</li>
+        <li><strong>Nu contactați mai multe agenții simultan</strong> — poate crea conflicte jurisdicționale</li>
+        <li>Înțelegeți problemele jurisdicționale (organizație într-un stat, server în altul, atacator din al treilea)</li>
+      </ul>
+
+      <div class="key-point">
+        <strong>Atenție:</strong> Implicarea law enforcement poate întârzia recuperarea. Este nevoie de un echilibru între investigarea incidentului și restaurarea operațiunilor.
+      </div>
+    </div>
+
+    <div id="nist-2.3.4.3">
+      <h4>§2.3.4.3 — Incident Reporting Organizations</h4>
+      <p>FISMA obligă agențiile federale să raporteze la <strong>US-CERT</strong>:</p>
+      <ul>
+        <li>US-CERT nu înlocuiește echipele existente, ci le augmentează</li>
+        <li>Analizează informațiile de la agenții pentru a identifica <strong>tendințe și indicatori</strong></li>
+        <li>Fiecare agenție desemnează POC primar și secundar</li>
+        <li>Celelalte organizații pot raporta la <strong>ISACs</strong> (Information Sharing and Analysis Centers) — există pentru: Communications, Electric Sector, Financial Services, IT, Research & Education</li>
+      </ul>
+    </div>
+
+    <div id="nist-2.3.4.4">
+      <h4>§2.3.4.4 — Other Outside Parties</h4>
+      <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=19" target="_blank">PDF p.19</a></span>
+      <p>Alte părți externe cu care echipa poate comunica:</p>
+      <ul>
+        <li><strong>ISP-ul organizației</strong> — pentru blocarea atacurilor de rețea majore sau traceuirea originii</li>
+        <li><strong>Proprietarii adreselor atacatoare</strong> — alertarea contactelor de securitate; coordonare prin US-CERT/ISAC</li>
+        <li><strong>Vendori software</strong> — despre activitate suspectă, log entries, false positives, vulnerabilități necunoscute</li>
+        <li><strong>Alte echipe IR</strong> — partajare proactivă, FIRST, GFIRST, APWG</li>
+        <li><strong>Părți externe afectate</strong> — organizații externe sau utilizatori afectați de incident</li>
+      </ul>
+
+      <div class="key-point">
+        <strong>PII Breach (OMB M-07-16):</strong> Dacă PII este compromis → <strong>notificare obligatorie</strong>. Include: notificarea persoanelor afectate, US-CERT (în 1 oră pentru agenții federale), media (dacă breach semnificativ). Se documentează exact ce date au fost compromise, câte persoane sunt afectate, ce remediere se oferă. Implementarea unei politici de notificare breach este obligatorie.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="nist-2.4">
+    <h2>§2.4 — Incident Response Team Structure</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=23" target="_blank">PDF p.23</a></span>
+
+    <p>Echipa de răspuns la incidente trebuie să fie disponibilă pentru oricine descoperă sau suspectează un incident. Succesul depinde de participarea și cooperarea indivizilor din toată organizația.</p>
+
+    <div id="nist-2.4.1">
+      <h3>§2.4.1 — Team Models (Modele de echipă)</h3>
+      <table>
+        <tr><th>Model</th><th>Descriere</th><th>Când se folosește</th></tr>
+        <tr>
+          <td><strong>Central</strong></td>
+          <td>O singură echipă IR gestionează incidentele din toată organizația</td>
+          <td>Organizații mici; diversitate geografică minimă</td>
+        </tr>
+        <tr>
+          <td><strong>Distributed</strong></td>
+          <td>Mai multe echipe IR, fiecare responsabilă de un segment logic/fizic</td>
+          <td>Organizații mari; resurse de calcul distribuite geografic</td>
+        </tr>
+        <tr>
+          <td><strong>Coordinating</strong></td>
+          <td>Echipă care oferă consiliere altor echipe FĂRĂ autoritate directă</td>
+          <td>„CSIRT pentru CSIRTs" — coordonare la nivel de departament</td>
+        </tr>
+      </table>
+
+      <h4>Modele de staffing</h4>
+      <table>
+        <tr><th>Model</th><th>Descriere</th></tr>
+        <tr>
+          <td><strong>Employees</strong></td>
+          <td>Toată munca IR este internă, cu suport limitat de la contractori</td>
+        </tr>
+        <tr>
+          <td><strong>Partially Outsourced</strong></td>
+          <td>Cele mai frecvente: MSSP monitorizare 24/7, sau contractor-i pentru incidente majore. Organizația menține controlul decizional.</td>
+        </tr>
+        <tr>
+          <td><strong>Fully Outsourced</strong></td>
+          <td>Complet externalizat, de obicei cu contractori onsite. Organizația supraveghează.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-block" id="nist-2.4.2">
+    <h2>§2.4.2 — Team Model Selection (Factori de decizie)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=24" target="_blank">PDF p.24</a></span>
+
+    <h3>Factori de selecție a modelului</h3>
+    <ul>
+      <li><strong>Disponibilitate 24/7</strong> — majoritatea organizațiilor au nevoie de personal IR disponibil non-stop. Minimum: contact telefonic. Ideal: prezență onsite. Cu cât un incident durează mai mult, cu atât potențialul de daune crește.</li>
+      <li><strong>Full-time vs Part-time</strong> — organizațiile cu resurse limitate pot avea echipe IR part-time (ca o „unitate voluntară de pompieri"). IT help desk ca prim punct de contact.</li>
+      <li><strong>Moralul angajaților</strong> — munca IR este foarte stresantă. Regimul on-call adaugă presiune. Segregarea rolurilor (reducerea muncii administrative) ajută.</li>
+      <li><strong>Cost</strong> — trebuie bugetat: training, instrumente, spațiu fizic securizat, comunicații securizate. Costurile specifice IR sunt adesea omise din buget.</li>
+      <li><strong>Expertiza staffului</strong> — IR necesită cunoștințe specialistice vaste: intrusion detection, forensics, vulnerabilități, exploituri. MSSPs pot avea cunoștințe mai profunde, dar personalul intern cunoaște mai bine mediul organizației.</li>
+    </ul>
+
+    <h3>Considerații pentru outsourcing</h3>
+    <ul>
+      <li><strong>Calitatea curentă și viitoare</strong> — cum garantezi calitatea pe termen lung? Training, retenție personal.</li>
+      <li><strong>Diviziunea responsabilităților</strong> — rare sunt organizațiile care dau outsourcer-ului autoritate operațională completă. Se documentează punctele de decizie.</li>
+      <li><strong>Informații sensibile</strong> — NDAs, limitarea accesului la informații sensibile. Segregarea: outsourcer-ul vede user ID, nu identitatea persoanei.</li>
+      <li><strong>Lipsa cunoștințelor specifice organizației</strong> — outsourcer-ul trebuie să primească documente actualizate regulat despre mediul organizației.</li>
+      <li><strong>Lipsa corelației</strong> — outsourcer-ul trebuie să aibă acces la log-urile relevante pentru a determina dacă un atac a fost reușit.</li>
+      <li><strong>Multiple locații</strong> — cât de repede poate fi echipa externă la fața locului?</li>
+      <li><strong>Menținerea abilităților interne</strong> — chiar și cu full outsourcing, se mențin abilități IR de bază intern.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="nist-2.4.3">
+    <h2>§2.4.3 — Incident Response Personnel</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=26" target="_blank">PDF p.26</a></span>
+
+    <h3>Structura echipei</h3>
+    <ul>
+      <li><strong>Team Manager</strong> — coordonează echipa, liaison cu managementul și alte echipe, defuzează situații de criză, asigură resursele necesare. Trebuie să fie adept tehnic cu comunicare excelentă.</li>
+      <li><strong>Deputy/Alternates</strong> — preiau autoritatea în absența managerului</li>
+      <li><strong>Technical Lead</strong> — răspunde de calitatea muncii tehnice a echipei</li>
+      <li><strong>Incident Lead</strong> — POC primar pentru un incident specific; coordonează handlerse, adună informații, oferă update-uri</li>
+    </ul>
+
+    <h3>Competențe necesare</h3>
+    <table>
+      <tr><th>Categorie</th><th>Competențe</th></tr>
+      <tr><td>Tehnice</td><td>Administrare sistem, administrare rețea, programare, suport tehnic, intrusion detection, forensics, malware analysis</td></tr>
+      <tr><td>Non-tehnice</td><td>Rezolvare probleme, gândire critică, lucru în echipă, comunicare (scris și verbal)</td></tr>
+    </table>
+
+    <h3>Dezvoltarea și retenția abilităților</h3>
+    <ul>
+      <li>Buget suficient pentru training continuu (conferințe, referințe tehnice, experți externi)</li>
+      <li>Oportunități diverse: crearea de materiale educative, workshop-uri de awareness, cercetare</li>
+      <li>Rotația staffului în și din echipa IR pentru skills noi</li>
+      <li>Timp liber neîntrerupt (vacanțe!) — previne burnout-ul</li>
+      <li>Program de mentoring: seniori ajută juniorii</li>
+      <li>Exerciții de scenarii (Appendix A) — discuții „ce ai face dacă..."</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="nist-2.4.4">
+    <h2>§2.4.4 — Dependencies within Organizations</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=27" target="_blank">PDF p.27</a></span>
+
+    <p>Echipa IR depinde de cooperarea mai multor departamente. Este esențial să se solicite această cooperare <strong>înainte</strong> de a fi necesară.</p>
+
+    <table>
+      <tr><th>Departament</th><th>Rol în incident response</th></tr>
+      <tr><td><strong>Management</strong></td><td>Stabilește politici, buget, staffing. Responsabil final de coordonarea răspunsului. Raportează către Congress, OMB, GAO.</td></tr>
+      <tr><td><strong>Information Assurance</strong></td><td>Modifică controale de securitate (reguli firewall, IDS) în fazele de prevenire, containment, eradication și recovery.</td></tr>
+      <tr><td><strong>IT Support</strong></td><td>Experți tehnici (sys admins, network admins) — înțeleg tehnologia gestionată zilnic. Decizii critice: deconectare sau nu a unui sistem atacat.</td></tr>
+      <tr><td><strong>Legal Department</strong></td><td>Revizuiește planuri IR, asigură conformitate legală, consiliere pentru colectare dovezi, prosecution, MOU-uri, limitări de răspundere.</td></tr>
+      <tr><td><strong>Public Affairs / Media Relations</strong></td><td>Comunicare cu media și publicul. Informează public de impactul incidentului.</td></tr>
+      <tr><td><strong>Human Resources</strong></td><td>Implicat dacă angajat este suspectat: disciplinare, investigații interne.</td></tr>
+      <tr><td><strong>Business Continuity Planning</strong></td><td>Coordonare cu planurile de continuitate a afacerii. Expertiză în minimizarea întreruperii operaționale sub circumstanțe severe (ex: DoS).</td></tr>
+      <tr><td><strong>Physical Security & Facilities</strong></td><td>Incidente ce implică breșe fizice sau atacuri coordonate logic+fizic. Acces la facilități (ex: workstation dintr-un birou închis).</td></tr>
+    </table>
+  </div>
+
+  <div class="section-block" id="nist-2.5">
+    <h2>§2.5 — Incident Response Team Services</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=28" target="_blank">PDF p.28</a></span>
+
+    <p>Pe lângă incident response, echipa oferă și alte servicii:</p>
+    <ul>
+      <li><strong>Intrusion Detection</strong> — echipa IR preia adesea responsabilitatea tier 1 de monitorizare IDS/IDPS, beneficiind de cunoștințele acumulate</li>
+      <li><strong>Advisory Distribution</strong> — distribuirea de advisories despre vulnerabilități și amenințări noi (prin RSS, email, NVD). Un singur grup trebuie să le distribuie pentru a evita duplicarea.</li>
+      <li><strong>Education and Awareness</strong> — multiplicator de resurse: cu cât userii și stafful tehnic știu mai mult, cu atât echipa IR este mai puțin solicitată. Canale: workshops, website, newsletters, postere, stickere pe laptopuri.</li>
+      <li><strong>Information Sharing</strong> — participare la grupuri de partajare (ISACs, parteneriate regionale), agregare și distribuire informații interne/externe despre incidente.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="nist-2.6">
+    <h2>§2.6 — Recomandări Cheie Capitol 2</h2>
+
+    <ol>
+      <li><strong>Stabilește o capabilitate formală de IR</strong> — pregătire rapidă și eficientă pentru breșe de securitate</li>
+      <li><strong>Creează o politică de IR</strong> — fundația programului: evenimente considerate incidente, structura organizațională, roluri, cerințe raportare</li>
+      <li><strong>Dezvoltă un plan de IR</strong> — foaia de parcurs cu obiective pe termen scurt/lung, metrici, cerințe training</li>
+      <li><strong>Dezvoltă proceduri IR</strong> — pași detaliați pentru fiecare fază, bazate pe politică și plan</li>
+      <li><strong>Stabilește politici de partajare a informațiilor</strong> — cu media, law enforcement, organizații de raportare. Aprobat de legal și public affairs.</li>
+      <li><strong>Raportează incidentele</strong> la US-CERT (obligatoriu pt federal) sau ISAC-ul relevant</li>
+      <li><strong>Alege modelul de echipă potrivit</strong> — evaluează avantaje/dezavantaje în contextul organizației</li>
+      <li><strong>Selectează personal cu abilități potrivite</strong> — tehnice (sys admin, network, programming, IDS) + comunicare + gândire critică</li>
+      <li><strong>Identifică alte grupuri necesare</strong> — management, IA, IT, legal, public affairs, facilities</li>
+      <li><strong>Determină serviciile echipei</strong> — pe lângă IR: IDS, advisories, education, information sharing</li>
+    </ol>
+  </div>
+
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="nist-chapter3.html" class="back-link" style="font-size:1.1rem;">→ Continue cu Capitol 3: Handling an Incident</a>
+  </div>
+</div>
+
+<script>
+// Active nav highlight
+const sections = document.querySelectorAll('.section-block[id]');
+const navLinksC = document.querySelectorAll('.chapter-nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinksC.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exerciții Incidente de Securitate — Scenarii NIST</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 60px);
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1rem 0;
+      z-index: 100;
+    }
+    .chapter-nav a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .chapter-nav a:hover,
+    .chapter-nav a.active {
+      color: var(--primary);
+      background: rgba(74,70,200,0.05);
+      border-left-color: var(--primary);
+    }
+    .chapter-nav .nav-title {
+      padding: 8px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .chapter-nav .sep {
+      padding: 10px 20px 4px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    html { font-size: 130%; }
+    .chapter-main {
+      margin-left: 260px;
+      padding: 2rem 2.5rem 4rem;
+      max-width: 1200px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .section-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .section-block h2 {
+      font-size: 1.4rem;
+      margin: 0 0 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+    }
+    .section-block h3 {
+      font-size: 1.15rem;
+      margin: 1.5rem 0 0.8rem;
+      color: var(--text-primary);
+    }
+    .section-block h4 {
+      font-size: 1rem;
+      margin: 1.2rem 0 0.6rem;
+      color: var(--phase-detect);
+    }
+
+    .scenario-desc {
+      background: linear-gradient(135deg, rgba(74,70,200,0.06), rgba(74,70,200,0.01));
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.2rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .q-block {
+      margin-bottom: 1rem;
+    }
+    .q-block summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-primary);
+      padding: 0.6rem 0;
+      list-style: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .q-block summary::before {
+      content: '▶';
+      font-size: 0.7rem;
+      color: var(--primary);
+      margin-top: 0.3rem;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .q-block[open] summary::before {
+      transform: rotate(90deg);
+    }
+    .q-block summary::-webkit-details-marker { display: none; }
+
+    .q-answer {
+      padding: 0.8rem 1rem 0.8rem 1.5rem;
+      background: rgba(74,70,200,0.03);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 6px 6px 0;
+      margin: 0.3rem 0 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .q-answer ul { margin: 0.3rem 0 0 1rem; }
+    .q-answer li { margin-bottom: 0.3rem; }
+
+    .nist-ref-tag {
+      display: inline-block;
+      background: rgba(74,70,200,0.1);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nist-ref-tag:hover {
+      background: rgba(74,70,200,0.2);
+    }
+
+    .think-box {
+      background: linear-gradient(135deg, rgba(39,174,96,0.08), rgba(39,174,96,0.02));
+      border: 1px solid rgba(39,174,96,0.25);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0;
+    }
+    .think-box .think-title {
+      font-weight: 700;
+      color: var(--phase-recover);
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+    .think-box p, .think-box ul {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin: 0.3rem 0;
+    }
+    .think-box ul { margin-left: 1rem; }
+
+    .general-questions-intro {
+      background: linear-gradient(135deg, rgba(230,126,34,0.08), rgba(230,126,34,0.02));
+      border: 1px solid rgba(230,126,34,0.25);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .general-questions-intro h3 {
+      color: var(--phase-detect);
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+    }
+    .general-questions-intro p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      html { font-size: 112%; }
+      .chapter-nav { display: none; }
+      .chapter-main { margin-left: 0; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <h1>🛡️ Exerciții Incidente de Securitate</h1>
+  <p>Scenarii practice + Întrebări standard din NIST SP 800-61r2 Appendix A</p>
+</header>
+
+<!-- Sidebar Nav -->
+<nav class="chapter-nav">
+  <div class="nav-title">📝 Exerciții</div>
+  <a href="index.html">← Pagina principală</a>
+  <div class="sep" style="margin-top:0.5rem;">Structură</div>
+  <a href="#intrebari-standard">Întrebările Standard</a>
+  <div class="sep">Scenarii</div>
+  <a href="#ex-exfiltration">1. Unknown Exfiltration</a>
+  <a href="#ex-payroll">2. Unauthorized Access Payroll</a>
+  <a href="#ex-p2p">3. Peer-to-Peer File Sharing</a>
+  <a href="#ex-worm">4. Worm & DDoS Agent</a>
+  <a href="#ex-stolen">5. Stolen Documents</a>
+  <a href="#ex-database">6. Compromised Database</a>
+  <a href="#ex-threat">7. Anonymous Threat</a>
+</nav>
+
+<div class="chapter-main">
+  <a href="index.html" class="back-link">← Înapoi la pagina principală</a>
+
+  <!-- ============================================================ -->
+  <!-- ÎNTREBĂRI STANDARD (A.1) -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="intrebari-standard">
+    <h2>📋 Întrebările Standard — Aplicabile la ORICE Scenariu</h2>
+    <p>Conform NIST SP 800-61r2, Appendix A.1, aceste întrebări trebuie parcurse pentru <strong>fiecare scenariu</strong>. Sunt organizate pe fazele ciclului de viață al incidentelor.</p>
+
+    <div class="general-questions-intro">
+      <h3>💡 Cum să gândești răspunsurile</h3>
+      <p>Pentru fiecare scenariu, parcurge aceste întrebări în ordine. Fiecare întrebare are referința NIST exactă — click pe tag-ul de secțiune pentru a vedea detaliile în rezumatul NIST.</p>
+    </div>
+
+    <!-- PREPARATION -->
+    <h3>🟣 Preparation</h3>
+
+    <details class="q-block">
+      <summary>1. Organizația ar considera această activitate un incident? Dacă da, ce politici încalcă? <a href="nist-chapter2.html#nist-2.1" target="_blank" class="nist-ref-tag">§2.1</a></summary>
+      <div class="q-answer">
+        <p>Verifică definiția NIST: un incident = încălcare sau amenințare iminentă la politicile de securitate, politicile de utilizare acceptabilă sau practicile standard de securitate.</p>
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <ul>
+            <li>Există o <strong>încălcare CIA</strong> (Confidentiality, Integrity, Availability)?</li>
+            <li>Ce politici specifice ale organizației sunt afectate?</li>
+            <li>Este doar un <strong>eveniment</strong> (observabil) sau un <strong>incident</strong> (încălcare)?</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>2. Ce măsuri preventive existau pentru acest tip de incident? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1.2</a></summary>
+      <div class="q-answer">
+        <p>Analizează ce controale ar fi putut preveni sau limita incidentul.</p>
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <ul>
+            <li>Risk assessments efectuate?</li>
+            <li>Host security: hardening, patch-uri, least privilege?</li>
+            <li>Network security: reguli firewall, deny-all?</li>
+            <li>Malware prevention: AV aggiornato?</li>
+            <li>User awareness: training, politici acceptare?</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- DETECTION AND ANALYSIS -->
+    <h3>🟠 Detection and Analysis</h3>
+
+    <details class="q-block">
+      <summary>1. Ce precursori ar putea detecta organizația? Ar lua acțiune preventivă? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.2</a> <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.3</a></summary>
+      <div class="q-answer">
+        <p>Precursor = semn că un incident <em>ar putea</em> avea loc. Sunt rari dar permit acțiune preventivă.</p>
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <ul>
+            <li>Scanări de vulnerabilități în log-uri?</li>
+            <li>Anunțuri de exploit-uri noi relevante?</li>
+            <li>Amenințări directe primite?</li>
+            <li>Activitate de recunoaștere detectată?</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>2. Ce indicatori ar putea detecta organizația? Ce indică un incident? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.2</a> <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.3</a></summary>
+      <div class="q-answer">
+        <p>Indicator = semn că un incident <em>a avut loc</em> sau <em>are loc acum</em>. Mult mai comun decât precursorii.</p>
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <ul>
+            <li>Alerte IDS/IPS, SIEM, AV?</li>
+            <li>Log-uri anormale (login-uri eșuate, trafic neobișnuit)?</li>
+            <li>Fișiere modificate sau cu caractere ciudate?</li>
+            <li>Raportări de la utilizatori sau personal extern?</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>3. Ce instrumente/unelte suplimentare ar fi necesare pentru detecție? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.3</a></summary>
+      <div class="q-answer">
+        <p>Gândește-te la surse: alerte (IDPS, SIEM, AV), log-uri (OS, rețea, flows), informații publice (NVD), oameni.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>4. Cum ar analiza și valida echipa incidentul? Cine participă? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.4</a></summary>
+      <div class="q-answer">
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <ul>
+            <li>Profilare rețea/sisteme — comparație cu baseline</li>
+            <li>Corelarea evenimentelor din surse multiple</li>
+            <li>Sincronizarea ceasurilor (NTP)</li>
+            <li>Căutare Internet pentru indicatori necunoscuți</li>
+            <li>Packet sniffer-e pentru date suplimentare</li>
+            <li>Cerere asistență când e nevoie</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>5. Cui i se raportează incidentul în organizație? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.7</a></summary>
+      <div class="q-answer">
+        <p>Ordinea: CIO → Head of InfoSec → System Owner → HR (dacă angajat implicat) → Public Affairs → Legal → US-CERT → Law enforcement.</p>
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <p>Comunicarea trebuie <strong>securizată</strong> — atacatorul poate monitoriza rețeaua. Folosește mecanisme pre-definite.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>6. Cum se prioritizează incidentul? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.6</a></summary>
+      <div class="q-answer">
+        <p>Trei factori de prioritizare:</p>
+        <table style="width:100%; font-size:0.85rem; margin:0.5rem 0;">
+          <tr><th>Factor</th><th>Nivele</th></tr>
+          <tr><td><strong>Functional Impact</strong></td><td>None → Low → Medium → High</td></tr>
+          <tr><td><strong>Information Impact</strong></td><td>None → Privacy → Proprietary → Integrity Loss</td></tr>
+          <tr><td><strong>Recoverability</strong></td><td>Regular → Supplemented → Extended → Not Recoverable</td></tr>
+        </table>
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <p><strong>NU prioritiza doar pe baza tipului de atac!</strong> Impactul real contează. Un DDoS poate fi mai puțin prioritar decât un acces neautorizat la date sensibile.</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- CONTAINMENT, ERADICATION, RECOVERY -->
+    <h3>🔴 Containment, Eradication, and Recovery</h3>
+
+    <details class="q-block">
+      <summary>1. Ce strategie de containment ar trebui folosită? De ce? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a></summary>
+      <div class="q-answer">
+        <div class="think-box">
+          <div class="think-title">🧠 Criterii de alegere</div>
+          <ul>
+            <li>Potențial daune și furt de resurse</li>
+            <li>Necesitate preservare dovezi</li>
+            <li>Disponibilitate servicii (impact business)</li>
+            <li>Timp și resurse pentru implementare</li>
+            <li>Eficacitate (parțială vs completă)</li>
+            <li>Durată soluție (temporară vs permanentă)</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>2. Ce s-ar întâmpla dacă incidentul NU ar fi containut? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a></summary>
+      <div class="q-answer">
+        <p>Gândește-te la escalare: răspândire malware, exfiltrare date continue, pierdere acces la sisteme, daune reputaționale. Containment întârziat = atacatorul poate escalada privilegii.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>3. Ce instrumente suplimentare sunt necesare pentru răspuns? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a> <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.4</a></summary>
+      <div class="q-answer">
+        <p>Instrumente forensic, workstation dedicat, packet sniffers, software de rebuild, backup-uri curate.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>4. Cine participă la containment/eradication/recovery? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a> <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.4</a></summary>
+      <div class="q-answer">
+        <p>Team manager + analiști tehnici + specialiști (forensics, malware) + IT support (cunoașterea sistemelor) + legal (dacă dovezi necesare).</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>5. Ce dovezi trebuie colectate? Cum, unde, cât timp? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.5</a> <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.2</a> <a href="nist-chapter3.html#nist-3.4" target="_blank" class="nist-ref-tag">§3.4.3</a></summary>
+      <div class="q-answer">
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <ul>
+            <li><strong>Conform procedurilor legale</strong> (admisibil în instanță)</li>
+            <li><strong>Chain of custody</strong>: cine, când, unde, transferuri</li>
+            <li>Snapshot cât mai devreme (disk image > file backup)</li>
+            <li>Date volatile: conexiuni active, procese, memorie</li>
+            <li>Retenție: min 2-3 ani; dacă legal → indefinit</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- POST-INCIDENT ACTIVITY -->
+    <h3>🟢 Post-Incident Activity</h3>
+
+    <details class="q-block">
+      <summary>1. Cine participă la ședința de lessons learned? <a href="nist-chapter3.html#nist-3.4" target="_blank" class="nist-ref-tag">§3.4.1</a></summary>
+      <div class="q-answer">
+        <p>Obligatorie pentru incidente majore. Participă: echipa IR, management, IT, legal, alte departamente implicate. Se discută: ce s-a întâmplat, ce a funcționat, ce nu, ce trebuie îmbunătățit.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>2. Ce se poate face pentru a preveni incidente similare pe viitor? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1.2</a></summary>
+      <div class="q-answer">
+        <p>Patch-uri, hardening, training, politici actualizate, monitorizare îmbunătățită, reguli firewall, acces mai restricționat.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>3. Ce se poate face pentru a îmbunătăți detecția pe viitor? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1.2</a></summary>
+      <div class="q-answer">
+        <p>Noi reguli IDPS, monitorizare suplimentară, indicatori noi de urmărit, alertare pe pattern-uri specifice, log-uri suplimentare.</p>
+      </div>
+    </details>
+
+    <!-- GENERAL -->
+    <h3>⚙️ General</h3>
+
+    <details class="q-block">
+      <summary>1. Câți membri ai echipei IR participă? <a href="nist-chapter2.html#nist-2.4" target="_blank" class="nist-ref-tag">§2.4.3</a></summary>
+      <div class="q-answer">
+        <p>Depinde de complexitate. Minim: coordonator + analist tehnic. Incidente majore: echipă completă cu specialiști forensics, malware analysis, etc.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>2. Ce alte grupuri din organizație sunt implicate? <a href="nist-chapter2.html#nist-2.4" target="_blank" class="nist-ref-tag">§2.4.4</a></summary>
+      <div class="q-answer">
+        <p>Management, IT Support, Legal, HR, Public Affairs, Information Assurance, Business Continuity, Physical Security.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>3. Căror entități externe se raportează? Când, cum, ce info? <a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4</a></summary>
+      <div class="q-answer">
+        <div class="think-box">
+          <div class="think-title">🧠 Cum să gândești</div>
+          <ul>
+            <li><strong>Cine:</strong> US-CERT, law enforcement, ISP-uri, ISAC-uri</li>
+            <li><strong>Când:</strong> Imediat ce confirmat (1h pt agenții federale dacă PII)</li>
+            <li><strong>Cum:</strong> Canal securizat, protocol pre-stabilit</li>
+            <li><strong>Ce:</strong> Minimizează info partajată. Discută cu legal înainte.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>4. Ce alte comunicări externe pot apărea? <a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4</a></summary>
+      <div class="q-answer">
+        <p>Media (prin Public Affairs), alte organizații afectate, vendori software/hardware, furnizori de servicii de securitate.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>5. Ce instrumente și resurse folosește echipa? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1.1</a></summary>
+      <div class="q-answer">
+        <p>Comunicații (telefon, email criptat, war room), hardware forensic (workstation, laptop), software (packet sniffer, forensic tools), jump kit, diagrame rețea, baseline-uri.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>6. Ce ar fi diferit dacă incidentul era într-o altă zi/oră? <a href="nist-chapter2.html#nist-2.4" target="_blank" class="nist-ref-tag">§2.4.2</a></summary>
+      <div class="q-answer">
+        <p>Off-hours: timp de răspuns mai mare, personal redus, posibil outsourcing 24/7. On-hours: răspuns mai rapid, coordonare directă, dar mai mulți utilizatori afectați.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>7. Ce ar fi diferit dacă era într-o altă locație fizică? <a href="nist-chapter2.html#nist-2.4" target="_blank" class="nist-ref-tag">§2.4.2</a></summary>
+      <div class="q-answer">
+        <p>Offsite: echipa distribuită, comunicare la distanță, acces fizic limitat. Onsite: acces direct la echipamente, camere de supraveghere, coordonare mai ușoară.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCENARIU 1: Unknown Exfiltration -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="ex-exfiltration">
+    <h2>🔴 Scenariu 1: Unknown Exfiltration</h2>
+
+    <div class="scenario-desc">
+      Într-o seară de sâmbătă, un senzor de detecție a intruziunilor la nivelul rețelei organizației avertizează asupra unei activități anormale — transferuri mari de fișiere. Analistul descoperă că mii de fișiere .RAR sunt copiate de pe o stație internă pe o stație externă, în altă țară. Conținutul fișierelor este criptat. După analiză complexă, pe stația internă au fost descoperite urme de existență a unui bot.
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">🧠 Contextul NIST</div>
+      <p>Acesta este un incident de <strong>exfiltrare de date</strong> — vector: probabil External/Removable Media sau Web (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.1</a>). Indicatorii sunt alertele IDS pentru trafic anormal (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.2</a>). Botul descoperit indică compromitere avansată — prioritate MARE.</p>
+    </div>
+
+    <h3>Întrebări Generale</h3>
+    <p style="font-size:0.85rem; color:var(--text-muted);">Aplică toate întrebările standard de mai sus. Mai jos sunt răspunsurile specifice acestui scenariu.</p>
+
+    <details class="q-block">
+      <summary>Câți membri ai echipei ar trebui implicați?</summary>
+      <div class="q-answer">
+        <p>Cel puțin un <strong>coordonator de răspuns la incident</strong>, un <strong>specialist în securitate cibernetică</strong> și un <strong>analist de rețea</strong>. Complexitatea (bot + criptare + exfiltrare internațională) necesită echipă extinsă.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Ce grupuri din organizație ar trebui implicate?</summary>
+      <div class="q-answer">
+        <ul>
+          <li><strong>IT</strong> — suport tehnic, izolarea stației</li>
+          <li><strong>Legal/Compliance</strong> — date sensibile posibil implicate, raportare GDPR</li>
+          <li><strong>Management + Comunicare</strong> — gestionare stakeholders</li>
+          <li><strong>Audit intern/extern</strong> — evaluare impact</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Raportare externă — cui, când, cum?</summary>
+      <div class="q-answer">
+        <p>Raportare autorităților conform <strong>GDPR</strong> și legile privind infracțiunile informatice. Dacă date personale: notificare obligatorie (72h GDPR). Raportare imediat ce incidentul e confirmat: descriere detaliată, impact, date afectate, măsuri luate.</p>
+      </div>
+    </details>
+
+    <h3>Întrebări Specifice</h3>
+
+    <details class="q-block">
+      <summary>Cum ar putea echipa determina conținutul fișierelor .RAR? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.4</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Instrumente de analiză de securitate pentru decriptare</li>
+          <li>Analiza <strong>metadatelor</strong> fișierelor (timestamps, dimensiuni, originea)</li>
+          <li>Corelarea cu fișierele originale de pe stația internă</li>
+          <li>Verificare log-uri acces fișiere pentru a identifica ce foldere au fost accesate</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă stația a fost compromisă prin stick wireless? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Identificarea și <strong>izolarea</strong> dispozitivului wireless compromis</li>
+          <li>Analiza activității dispozitivului — ce a transmis/primit</li>
+          <li>Verificarea dacă alte dispozitive din rețea sunt compromise</li>
+          <li>Scanare rețea completă pentru alte puncte de acces neautorizate</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă stația a modificat fișiere sensibile pe altă stație din rețea? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.2</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Izolarea ambelor stații (compromisă + victimă)</li>
+          <li><strong>Restaurarea fișierelor</strong> din backup-uri la versiunea originală</li>
+          <li>Analiza integrității — comparație hash-uri înainte/după</li>
+          <li>Investigare cum a fost posibil accesul lateral (privilege escalation?, credențiale furate?)</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCENARIU 2: Unauthorized Access to Payroll -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="ex-payroll">
+    <h2>🟠 Scenariu 2: Unauthorized Access to Payroll Records</h2>
+
+    <div class="scenario-desc">
+      Într-o seară de miercuri, departamentul de securitate primește un apel de la șefa sectorului financiar. Aceasta a văzut o persoană necunoscută părăsind biroul ei, alergând pe hol și ieșind din clădire. Stația de lucru era deblocată cu programul de salarizare deschis. Mouse-ul pare a fi fost mutat.
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">🧠 Contextul NIST</div>
+      <p>Incident cu componentă <strong>fizică</strong> — vector: Improper Usage sau Loss/Theft (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.1</a>). Implică posibil PII (date salarizare) → notificare obligatorie OMB M-07-16 (<a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4.4</a>). Și Physical Security & HR trebuie implicate (<a href="nist-chapter2.html#nist-2.4" target="_blank" class="nist-ref-tag">§2.4.4</a>).</p>
+    </div>
+
+    <h3>Întrebări Specifice</h3>
+
+    <details class="q-block">
+      <summary>Cum ar putea afla echipa ce acțiuni au fost efectuate? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.4</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Analiza <strong>camerelor de supraveghere</strong></li>
+          <li>Verificarea <strong>log-urilor de sistem</strong> — ce fișiere au fost accesate, ce operții s-au efectuat</li>
+          <li>Audit log-uri aplicație salarizare</li>
+          <li>Verificare dacă datele au fost copiate (USB, email, print)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă persoana e un fost angajat al financiarului? <a href="nist-chapter2.html#nist-2.4" target="_blank" class="nist-ref-tag">§2.4.4</a></summary>
+      <div class="q-answer">
+        <p>Verificare dacă avea <strong>acces activ</strong> (badge, credențiale IT). Implicare <strong>HR</strong> — credențialele ar fi trebuit revocate la plecare. Investigare <strong>social engineering</strong> — cum a intrat în clădire?</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă persoana e un angajat curent? <a href="nist-chapter2.html#nist-2.4" target="_blank" class="nist-ref-tag">§2.4.4</a></summary>
+      <div class="q-answer">
+        <p>Verificare dacă acțiunile erau <strong>autorizate</strong>. Implicare HR + Legal pentru posibile <strong>abateri disciplinare sau penale</strong>. Investigație internă mai amplă.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă s-a folosit inginerie socială pentru acces fizic? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1.2</a></summary>
+      <div class="q-answer">
+        <p>Indică o <strong>amenințare mai amplă</strong>. Măsuri suplimentare: training awareness, controale acces fizic mai stricte, politici de lock screen, re-evaluare securitate fizică completă.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă log-urile arată tentative de login la distanță cu credențialele șefei? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.2</a></summary>
+      <div class="q-answer">
+        <p>Tentativele de brute force = <strong>precursor</strong> al unui atac mai mare. Schimbare imediată parole, activare <strong>MFA</strong>, investigare sursă IP-uri, verificare dacă credențialele au fost compromise anterior.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă a fost găsit un keylogger instalat de 2 săptămâni? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.2</a> <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.4</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li><strong>Identificare & izolare</strong> keylogger (eradicare)</li>
+          <li>Determinare ce date au fost capturate în 2 săptămâni</li>
+          <li>Investigare sursă: intern vs extern, cum a fost instalat</li>
+          <li><strong>Toate parolele</strong> introduse pe acea stație trebuie schimbate</li>
+          <li>Evaluare dacă datele au ajuns la neautorizați</li>
+          <li>Revizuire politici securitate — cum a fost posibilă instalarea</li>
+          <li>Monitorizare continuă + MFA obligatoriu</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCENARIU 3: P2P File Sharing -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="ex-p2p">
+    <h2>🟡 Scenariu 3: Peer-to-Peer File Sharing</h2>
+
+    <div class="scenario-desc">
+      Organizația a interzis utilizarea serviciilor P2P. Senzorii IDS detectează utilizarea mai multor servicii P2P. Într-o seară de luni, analistul observă multiple alerte P2P în ultimele 3 ore, toate de la aceeași adresă IP internă.
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">🧠 Contextul NIST</div>
+      <p>Vector: <strong>Improper Usage</strong> (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.1</a>) — încălcare politici de utilizare de către utilizator autorizat. Indicator clar: alerte IDS repetate (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.2</a>). Prioritizare: depinde dacă sunt implicate date sensibile.</p>
+    </div>
+
+    <h3>Întrebări Specifice</h3>
+
+    <details class="q-block">
+      <summary>Ce criterii de prioritizare ar trebui folosite? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.6</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li><strong>Conținutul fișierelor</strong> distribuite — date sensibile, PII, proprietar?</li>
+          <li>Functional Impact: serviciile afectate?</li>
+          <li>Information Impact: confidențialitate compromisă?</li>
+          <li>Recoverability: cât de ușor de remediat?</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Ce aspecte privind confidențialitatea pot influența abordarea? <a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4.4</a></summary>
+      <div class="q-answer">
+        <p>Dacă fișierele partajate conțin PII sau date confidențiale → incident de confidențialitate. Notificare obligatorie, investigare ce a fost expus, evaluare dacă datele au ajuns la terți.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă computerul conține informații sensibile (PII)? <a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4.4</a> <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a></summary>
+      <div class="q-answer">
+        <p>Prioritatea crește semnificativ. <strong>Containment imediat</strong> — izolarea stației. Verificare ce fișiere au fost partajate. Dacă PII confirmat → notificare persoane afectate + autorități (GDPR 72h). Implicare Legal.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCENARIU 4: Worm & DDoS -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="ex-worm">
+    <h2>🔴 Scenariu 4: Worm and DDoS Agent Infestation</h2>
+
+    <div class="scenario-desc">
+      Într-o dimineață de marți, un nou tip de vierme se răspândește prin suporturi de memorie portabile, copiindu-se pe stații Windows, deschizând foldere personale și pornind procese. La infectare, instalează un agent DDoS. Organizația a fost infectată înainte de apariția semnăturilor antivirus.
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">🧠 Contextul NIST</div>
+      <p>Vector: <strong>External/Removable Media</strong> (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.1</a>). Incident cu impact funcțional HIGH — afectează multe hosturi. Recoverability: Extended (semnături AV încă nu existau). Necesită containment IMEDIAT la nivel de rețea.</p>
+    </div>
+
+    <h3>Întrebări Specifice</h3>
+
+    <details class="q-block">
+      <summary>Cum se identifică toate hosturile infectate? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.4</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Scanare internă pentru indicatorii de compromitere (IoCs) ai viermilui</li>
+          <li>Monitorizare trafic rețea — conexiuni către C&C servers</li>
+          <li>Verificare procese active pe fiecare stație</li>
+          <li>Utilizare NetFlow pentru identificare comunicări anormale</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Cum se prevenea intrarea viermilui fără semnături AV? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1.2</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Dezactivare autorun pentru medii portabile</li>
+          <li>Politici stricte USB (whitelisting dispozitive)</li>
+          <li>Application whitelisting (nu doar AV bazat pe semnături)</li>
+          <li>Segmentare rețea pentru limitarea răspândirii</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Cum se previne răspândirea în rețea fără semnături AV? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a></summary>
+      <div class="q-answer">
+        <p>Izolarea segmentelor de rețea infectate, dezactivarea partajării fișierelor, blocare trafic lateral (firewall intern), VLAN-uri de carantină.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Ce dacă agentul DDoS e configurat să atace altă organizație mâine? <a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4</a></summary>
+      <div class="q-answer">
+        <p><strong>Notificare imediată</strong> organizației țintă + ISP. Containment urgent — izolarea hosturilor infectate de Internet. Raportare law enforcement (§2.3.4.2). Cooperare cu CERT-uri.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă hosturi infectate conțin informații sensibile despre angajați? <a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4.4</a></summary>
+      <div class="q-answer">
+        <p>Escalare prioritate. Verificare dacă datele au fost exfiltrate. Dacă PII compromis → notificare obligatorie. Implicare HR + Legal.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Cum se informează utilizatorii rețelei despre starea incidentului? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.7</a></summary>
+      <div class="q-answer">
+        <p>Comunicare prin canal alternativ (email poate fi compromis): anunțuri telefonice, mesaje pe canale sigure. Informații clare: ce s-a întâmplat, ce să facă (să NU conecteze USB), când se estimează remediere.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Ce măsuri pentru hosturile neconectate (vacanță, externi)? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.4</a></summary>
+      <div class="q-answer">
+        <p>Notificare utilizatori înainte de reconectare. La reconectare: scanare obligatorie înainte de acces la rețea. Network Access Control (NAC) pentru verificare conformitate. Carantină pentru stații necurate.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCENARIU 5: Stolen Documents -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="ex-stolen">
+    <h2>🟣 Scenariu 5: Stolen Documents</h2>
+
+    <div class="scenario-desc">
+      Într-o dimineață de luni, departamentul juridic primește un apel de la FBI privind activități suspecte. Agentul FBI explică că documentele guvernamentale sensibile au fost publicate, iar unele aparțin organizației. FBI solicită asistență, iar conducerea cere echipei IR să obțină dovezi și să determine cum s-au realizat scurgerile.
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">🧠 Contextul NIST</div>
+      <p>Incident descoperit <strong>extern</strong> (de FBI, nu intern) — indică deficiențe în detecție (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2</a>). Vector posibil: insider threat sau compromitere externă. Law enforcement deja implicat (<a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4.2</a>). Prioritate Information Impact: <strong>Integrity Loss</strong>.</p>
+    </div>
+
+    <h3>Întrebări Specifice</h3>
+
+    <details class="q-block">
+      <summary>Din ce surse ar putea echipa aduna probe? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.2</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Log-uri acces documente (cine, când, de unde)</li>
+          <li>Log-uri DLP (Data Loss Prevention) — dacă existau</li>
+          <li>Email logs — verificare atașamente trimise extern</li>
+          <li>Log-uri proxy/firewall — trafic către destinații suspecte</li>
+          <li>Camerele de supraveghere (acces fizic)</li>
+          <li>Imagini disk ale stațiilor suspecte</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Cum se păstrează confidențialitatea anchetei? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.7</a></summary>
+      <div class="q-answer">
+        <p>Doar <strong>need-to-know</strong> basis. Comunicare pe canale securizate, nu pe sistemele posibil compromise. Nu se anunță public ancheta (pentru a nu alerta suspectul). Coordonare strânsă cu FBI.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă o stație internă e responsabilă de scurgeri? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a></summary>
+      <div class="q-answer">
+        <p>Izolarea stației fără a alerta utilizatorul. Imagine forensic completă. Verificare <strong>insider threat</strong>: cine avea acces, comportament anormal. Implicare HR + Legal. Cooperare FBI.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă se găsește un rootkit pe stația vinovată? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.4</a></summary>
+      <div class="q-answer">
+        <p>Rootkit = compromitere avansată din exterior. Stația necesită rebuild complet (nu doar cleanup). Investigare: cum a fost instalat, ce alte stații sunt afectate, ce date au fost exfiltrate. Scanare întreaga rețea pentru IoCs similare.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCENARIU 6: Compromised Database Server -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="ex-database">
+    <h2>🔴 Scenariu 6: Compromised Database Server</h2>
+
+    <div class="scenario-desc">
+      Într-o seară de marți, un administrator al bazei de date efectuează operații de administrare în afara orelor de program. Observă fișiere cu nume necunoscute pe un server. După examinare, concluzionează că serverul a fost atacat și alertează echipa IR. Investigația stabilește că atacatorul deținea acces deplin de 6 săptămâni.
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">🧠 Contextul NIST</div>
+      <p>Compromitere <strong>de lungă durată</strong> (6 săptămâni!) — totul pe acel server trebuie considerat compromis. Functional Impact: HIGH (server BD critică). Recoverability: probabil <strong>Extended</strong>. Date clienți posibil exfiltrate → PII breach posibil.</p>
+    </div>
+
+    <h3>Întrebări Specifice</h3>
+
+    <details class="q-block">
+      <summary>Ce surse pot determina momentul exact al compromiterii? <a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.4</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Log-uri sistem — timestamps fișiere suspecte, modificări configurare</li>
+          <li>Log-uri autentificare — login-uri anormale</li>
+          <li>Log-uri firewall/proxy — conexiuni externe noi</li>
+          <li>File system timestamps (created, modified, accessed)</li>
+          <li>Backup-uri — comparare cu starea cunoscută bună</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă serverul rulează un sniffer captând parole din rețea? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.1</a></summary>
+      <div class="q-answer">
+        <p>Escalare masivă — <strong>toate parolele transmise pe rețea</strong> în 6 săptămâni sunt compromise. Schimbare imediată a TUTUROR credențialelor. Verificare dacă alte sisteme au fost accesate cu parole capturate. Containment urgent al serverului.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă o aplicație copy-a bazele de date cu info clienți în fiecare noapte? <a href="nist-chapter2.html#nist-2.3" target="_blank" class="nist-ref-tag">§2.3.4.4</a> <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.2</a></summary>
+      <div class="q-answer">
+        <p>PII breach masiv — 6 săptămâni × copiere noapte = cantitate enormă de date exfiltrate. Notificare obligatorie: toate persoanele afectate + autorități. Dovezi: log-uri transfer, destinații externe, volumul datelor. Implicare Legal + Public Affairs.</p>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Dacă se găsește un rootkit pe server? <a href="nist-chapter3.html#nist-3.3" target="_blank" class="nist-ref-tag">§3.3.4</a></summary>
+      <div class="q-answer">
+        <p>Rootkit = acces persistent la nivel OS. <strong>Rebuild complet din scratch</strong> (nu se poate curăța un rootkit în mod fiabil). Restaurare date din backup-uri de dinainte de compromitere (dacă există). Toate sistemele conectate trebuie verificate.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCENARIU 7: Anonymous Threat -->
+  <!-- ============================================================ -->
+  <div class="section-block" id="ex-threat">
+    <h2>🟠 Scenariu 7: Anonymous Threat</h2>
+
+    <div class="scenario-desc">
+      Într-o seară de joi, departamentul de securitate primește un apel de la șeful sectorului IT: doi angajați au primit amenințări anonime împotriva sistemelor organizației. Departamentul de securitate consideră amenințările serioase și informează echipa IR.
+    </div>
+
+    <div class="think-box">
+      <div class="think-title">🧠 Contextul NIST</div>
+      <p>Aceasta e o situație de <strong>precursor</strong> (<a href="nist-chapter3.html#nist-3.2" target="_blank" class="nist-ref-tag">§3.2.2</a>) — un semn că un incident POATE avea loc. Permite pregătire proactivă. E important să NU se subestimeze amenințarea, dar nici să NU se supra-reacționeze.</p>
+    </div>
+
+    <h3>Întrebări Specifice</h3>
+
+    <details class="q-block">
+      <summary>Ce ar trebui să facă echipa despre amenințările anonime? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li><strong>Documentare</strong> completă a amenințărilor (conținut, mod de primire, timing)</li>
+          <li>Raportare <strong>law enforcement</strong> (§2.3.4.2)</li>
+          <li>Evaluare credibilitate: cine are motivație, ce sisteme sunt vizate</li>
+          <li>Activare <strong>monitoring intens</strong> pe sistemele menționate</li>
+          <li>Pregătire plan de containment preventiv</li>
+          <li>Informarea personalului relevant (need-to-know basis)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="q-block">
+      <summary>Ce impact ar avea accentuarea controalelor de securitate? <a href="nist-chapter3.html#nist-3.1" target="_blank" class="nist-ref-tag">§3.1.2</a></summary>
+      <div class="q-answer">
+        <ul>
+          <li>Controale mai stricte pot <strong>preveni</strong> atacul amenințat</li>
+          <li>Dar pot <strong>afecta productivitatea</strong> și frustra utilizatorii</li>
+          <li>Echilibru necesar: măsuri proporționale cu nivelul amenințării</li>
+          <li>Monitorizare intensificată fără a întrerupe operațiunile</li>
+          <li>Revizuire acces — restricționare temporară pentru conturi sensibile</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div style="display:flex; justify-content:space-between; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+    <a href="index.html" style="color:var(--primary); text-decoration:none; font-weight:500;">← Pagina principală</a>
+    <a href="nist-chapter3.html" style="color:var(--primary); text-decoration:none; font-weight:500;">Capitol 3: Handling →</a>
+  </div>
+</div>
+
+<script>
+// Scroll highlight nav
+const navLinks = document.querySelectorAll('.chapter-nav a[href^="#"]');
+const sections = [];
+navLinks.forEach(a => {
+  const id = a.getAttribute('href').slice(1);
+  const el = document.getElementById(id);
+  if (el) sections.push({ el, a });
+});
+window.addEventListener('scroll', () => {
+  let current = sections[0];
+  for (const s of sections) {
+    if (s.el.getBoundingClientRect().top <= 120) current = s;
+  }
+  navLinks.forEach(a => a.classList.remove('active'));
+  if (current) current.a.classList.add('active');
+}, { passive: true });
+</script>
+</body>
+</html>

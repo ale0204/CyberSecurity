@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIST §3 — Handling an Incident (Gestionarea Incidentelor)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 60px);
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1rem 0;
+      z-index: 100;
+    }
+    .chapter-nav a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .chapter-nav a:hover,
+    .chapter-nav a.active {
+      color: var(--primary);
+      background: rgba(74,70,200,0.05);
+      border-left-color: var(--primary);
+    }
+    .chapter-nav .nav-title {
+      padding: 8px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .chapter-nav .sub { padding-left: 36px; font-size: 0.8rem; }
+    .chapter-nav .phase-label {
+      padding: 6px 20px;
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+    .phase-prep-label { color: var(--phase-prep); }
+    .phase-detect-label { color: var(--phase-detect); }
+    .phase-contain-label { color: var(--phase-contain); }
+    .phase-recover-label { color: var(--phase-recover); }
+    .phase-lessons-label { color: var(--phase-lessons); }
+
+    html { font-size: 130%; }
+    .chapter-main {
+      margin-left: 260px;
+      padding: 2rem 2.5rem 4rem;
+      max-width: 1200px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .section-block {
+      margin-bottom: 2.5rem;
+      padding: 1.5rem 1.8rem;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .section-block h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+    }
+    .section-block.prep-block h2 { color: var(--phase-prep); border-bottom: 2px solid var(--phase-prep); }
+    .section-block.detect-block h2 { color: var(--phase-detect); border-bottom: 2px solid var(--phase-detect); }
+    .section-block.contain-block h2 { color: var(--phase-contain); border-bottom: 2px solid var(--phase-contain); }
+    .section-block.post-block h2 { color: var(--phase-lessons); border-bottom: 2px solid var(--phase-lessons); }
+    .section-block.checklist-block h2 { color: var(--primary); border-bottom: 2px solid var(--primary); }
+
+    .section-block h3 {
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      margin-top: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .section-block h4 {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-top: 1rem;
+      margin-bottom: 0.4rem;
+    }
+    .section-block ul, .section-block ol {
+      margin-left: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .section-block li { margin-bottom: 0.4rem; line-height: 1.65; }
+    .section-block p { line-height: 1.7; margin-bottom: 0.7rem; }
+    .section-block .quote {
+      border-left: 4px solid var(--primary);
+      padding: 0.8rem 1rem;
+      background: rgba(74,70,200,0.05);
+      font-style: italic;
+      margin: 0.8rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .section-block table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.9rem;
+    }
+    .section-block th, .section-block td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .section-block th {
+      background: var(--primary);
+      color: #fff;
+    }
+    .key-point {
+      background: linear-gradient(135deg, rgba(74,70,200,0.08), rgba(74,70,200,0.02));
+      border: 1px solid rgba(74,70,200,0.2);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 0;
+    }
+    .key-point strong { color: var(--primary); }
+    .key-point.exam-tip {
+      background: linear-gradient(135deg, rgba(231,76,60,0.08), rgba(231,76,60,0.02));
+      border-color: rgba(231,76,60,0.3);
+    }
+    .key-point.exam-tip strong { color: var(--phase-contain); }
+
+    .pdf-link {
+      display: inline-block;
+      margin-top: 0.3rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    .pdf-link:hover { color: var(--primary); }
+
+    .phase-banner {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .phase-banner.prep { background: var(--phase-prep); }
+    .phase-banner.detect { background: var(--phase-detect); }
+    .phase-banner.contain { background: var(--phase-contain); }
+    .phase-banner.post { background: var(--phase-lessons); }
+    .phase-banner small { font-weight: 400; font-size: 0.85rem; opacity: 0.9; display: block; margin-top: 4px; }
+
+    @media (max-width: 768px) {
+      html { font-size: 112%; }
+      .chapter-nav { display: none; }
+      .chapter-main { margin-left: 0; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <h1>📗 NIST §3 — Gestionarea Incidentelor</h1>
+</header>
+
+<!-- CHAPTER NAV -->
+<nav class="chapter-nav">
+  <div class="nav-title">📗 Capitol 3 — Cuprins</div>
+
+  <div class="phase-label phase-prep-label">🟣 Pregătire</div>
+  <a href="#nist-3.1">§3.1 Preparation</a>
+  <a href="#nist-3.1.1" class="sub">§3.1.1 Preparing to Handle</a>
+  <a href="#nist-3.1.2" class="sub">§3.1.2 Preventing Incidents</a>
+
+  <div class="phase-label phase-detect-label">🟠 Detecție & Analiză</div>
+  <a href="#nist-3.2">§3.2 Detection and Analysis</a>
+  <a href="#nist-3.2.1" class="sub">§3.2.1 Attack Vectors</a>
+  <a href="#nist-3.2.2" class="sub">§3.2.2 Signs of an Incident</a>
+  <a href="#nist-3.2.3" class="sub">§3.2.3 Sources</a>
+  <a href="#nist-3.2.4" class="sub">§3.2.4 Incident Analysis</a>
+  <a href="#nist-3.2.5" class="sub">§3.2.5 Documentation</a>
+  <a href="#nist-3.2.6" class="sub">§3.2.6 Prioritization</a>
+  <a href="#nist-3.2.7" class="sub">§3.2.7 Notification</a>
+
+  <div class="phase-label phase-contain-label">🔴 Containment & Recovery</div>
+  <a href="#nist-3.3">§3.3 Containment, Eradication, Recovery</a>
+  <a href="#nist-3.3.1" class="sub">§3.3.1 Containment Strategy</a>
+  <a href="#nist-3.3.2" class="sub">§3.3.2 Evidence Gathering</a>
+  <a href="#nist-3.3.3" class="sub">§3.3.3 Identifying Attackers</a>
+  <a href="#nist-3.3.4" class="sub">§3.3.4 Eradication & Recovery</a>
+
+  <div class="phase-label phase-lessons-label">🟢 Post-Incident</div>
+  <a href="#nist-3.4">§3.4 Post-Incident Activity</a>
+  <a href="#nist-3.4.1" class="sub">§3.4.1 Lessons Learned</a>
+  <a href="#nist-3.4.2" class="sub">§3.4.2 Collected Data & Metrics</a>
+  <a href="#nist-3.4.3" class="sub">§3.4.3 Evidence Retention</a>
+
+  <div class="phase-label" style="color:var(--primary);">✅ Checklist</div>
+  <a href="#nist-3.5">§3.5 Incident Handling Checklist</a>
+  <a href="#nist-3.6">§3.6 Recomandări</a>
+
+  <hr style="margin:8px 20px; border-color:var(--border)">
+  <a href="index.html" style="color:var(--primary);font-weight:600;padding:6px 20px;display:block;">← Înapoi la pagina principală</a>
+  <a href="nist-chapter2.html" style="color:var(--phase-prep);font-weight:600;padding:6px 20px;display:block;">← Capitol 2: Organizare</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="chapter-main">
+  <a href="index.html" class="back-link">← Înapoi la pagina principală</a>
+
+  <!-- ==================== PREPARATION ==================== -->
+  <div class="phase-banner prep">
+    🟣 FAZA 1: PREGĂTIRE (Preparation)
+    <small>§3.1 — Fundamentul oricărui răspuns eficient la incidente</small>
+  </div>
+
+  <div class="section-block prep-block" id="nist-3.1">
+    <h2>§3.1 — Preparation (Pregătire)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=31" target="_blank">PDF p.31</a></span>
+
+    <div class="quote">"Incident response methodologies typically emphasize preparation—not only establishing an incident response capability so that the organization is ready to respond to incidents, but also preventing incidents by ensuring that systems, networks, and applications are sufficiently secure."</div>
+
+    <p>Pregătirea cuprinde <strong>două componente esențiale</strong>:</p>
+    <ol>
+      <li><strong>Pregătirea pentru a gestiona incidente</strong> (instrumente, resurse, echipă, comunicații) — §3.1.1</li>
+      <li><strong>Prevenirea incidentelor</strong> (reducerea numărului de incidente prin securizare proactivă) — §3.1.2</li>
+    </ol>
+
+    <div class="key-point exam-tip">
+      <strong>Pentru examen:</strong> Fără pregătire adecvată, răspunsul va fi haotic și ineficient. Aceasta e faza în care se rezolvă „Ce am fi putut face pentru a preveni acest incident?" și „Aveam echipa și resursele pregătite?".
+    </div>
+  </div>
+
+  <div class="section-block prep-block" id="nist-3.1.1">
+    <h2>§3.1.1 — Preparing to Handle Incidents</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=31" target="_blank">PDF p.31</a></span>
+
+    <h3>1. Comunicații și facilități ale echipei IR</h3>
+    <ul>
+      <li><strong>Informații de contact</strong> — echipă, alte departamente, externe (law enforcement, alte echipe IR). Include: telefon, email, chei de criptare publice, instrucțiuni de verificare identitate.</li>
+      <li><strong>Informații on-call</strong> pentru alte echipe interne + informații de escaladare</li>
+      <li><strong>Mecanisme de raportare incidente</strong> — telefon, email, formulare online, IM securizat. Cel puțin unul să permită raportare anonimă.</li>
+      <li><strong>Issue tracking system</strong> — pentru urmărirea informațiilor, statusului incidentelor</li>
+      <li><strong>Smartphone-uri</strong> — pentru suport off-hour și comunicare onsite</li>
+      <li><strong>Software de criptare</strong> — comunicații securizate interne și externe (FIPS-validated pentru agenții federale)</li>
+      <li><strong>War room</strong> — spațiu central de comunicare și coordonare (permanent sau procedură pentru unul temporar)</li>
+      <li><strong>Stocare securizată</strong> — pentru dovezi și materiale sensibile</li>
+    </ul>
+
+    <h3>2. Hardware și software pentru analiză</h3>
+    <ul>
+      <li><strong>Workstation-uri forensice</strong> — creare disk images, preservare log-uri, salvare date relevante</li>
+      <li><strong>Laptopuri</strong> — analiză date, sniffing pachete, scriere rapoarte</li>
+      <li><strong>Echipamente spare</strong> — workstation-uri, servere, echipament de rețea (sau echivalente virtualizate) — restaurare backup, testare malware</li>
+      <li><strong>Media blank amovibil</strong></li>
+      <li><strong>Printer portabil</strong> — printare log-uri de pe sisteme ne-conectate la rețea</li>
+      <li><strong>Packet sniffers și protocol analyzers</strong> — captură și analiză trafic de rețea</li>
+      <li><strong>Software forensic digital</strong> — analiză disk images</li>
+      <li><strong>Media amovibil cu programe de încredere</strong> — pentru colectare dovezi de pe sisteme</li>
+      <li><strong>Accesorii colectare dovezi</strong> — caiete cu copertă tare, camere digitale, înregistratoare audio, formulare chain of custody, saci/etichete dovezi, bandă de dovezi</li>
+    </ul>
+
+    <h3>3. Resurse de analiză</h3>
+    <ul>
+      <li>Liste porturi (inclusiv porturi Trojan horse)</li>
+      <li>Documentație OS, aplicații, protocoale, IDS, antivirus</li>
+      <li>Diagrame rețea și liste de active critice (ex: database servers)</li>
+      <li>Baseline-uri de activitate așteptată (rețea, sistem, aplicații)</li>
+      <li>Hash-uri criptografice ale fișierelor critice (NSRL)</li>
+    </ul>
+
+    <h3>4. Jump Kit</h3>
+    <div class="key-point">
+      <strong>Jump Kit</strong> = caz portabil cu materiale necesare investigației, <strong>mereu gata de plecare</strong>. Conține: laptop cu software adecvat (packet sniffers, forensics), dispozitive backup, media blank, echipament și cabluri de rețea. <strong>Nu se împrumută articole din jump kit!</strong>
+    </div>
+
+    <p>Fiecare handler trebuie <strong>cel puțin două dispozitive</strong>: unul pentru investigare (poate fi contaminat, se curăță între incidente) și unul standard (rapoarte, email, tasks non-investigative).</p>
+
+    <p><strong>Exerciții cu incidente simulate</strong> sunt esențiale pentru pregătirea practică a echipei (vezi NIST SP 800-84 și Appendix A).</p>
+  </div>
+
+  <div class="section-block prep-block" id="nist-3.1.2">
+    <h2>§3.1.2 — Preventing Incidents</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=33" target="_blank">PDF p.33</a></span>
+
+    <div class="quote">"Keeping the number of incidents reasonably low is very important to protect the business processes of the organization. If security controls are insufficient, higher volumes of incidents may occur, overwhelming the incident response team."</div>
+
+    <p>Deși echipa IR nu este de obicei responsabilă direct de securizarea resurselor, aceasta poate <strong>identifica probleme</strong>, contribui la risk assessment și training, și <strong>identifica gaps</strong> în securitate.</p>
+
+    <h3>Practici recomandate de prevenire</h3>
+    <table>
+      <tr><th>Practică</th><th>Detalii</th></tr>
+      <tr>
+        <td><strong>Risk Assessment</strong></td>
+        <td>Evaluări periodice ale riscurilor: combinații de amenințări + vulnerabilități. Prioritizare riscuri. Identificare resurse critice → monitorizare focalizată.</td>
+      </tr>
+      <tr>
+        <td><strong>Host Security</strong></td>
+        <td>Hardening cu configurații standard. Patch-uri la zi. <strong>Principle of least privilege</strong>. Auditing activat. Monitorizare continuă cu SCAP checklists.</td>
+      </tr>
+      <tr>
+        <td><strong>Network Security</strong></td>
+        <td>Perimetrul rețelei: <strong>deny all by default</strong> — permit doar ce este explicit permis. Securizare toate punctele de conectare (VPN, conexiuni dedicate).</td>
+      </tr>
+      <tr>
+        <td><strong>Malware Prevention</strong></td>
+        <td>Deploy la <strong>trei niveluri</strong>: host (OS), application server (email, web proxy), application client (email client, IM client).</td>
+      </tr>
+      <tr>
+        <td><strong>User Awareness & Training</strong></td>
+        <td>Utilizatorii: politici + proceduri de utilizare acceptabilă + lecții din incidente anterioare. Staff IT: training pentru menținerea securității conform standardelor.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ==================== DETECTION & ANALYSIS ==================== -->
+  <div class="phase-banner detect">
+    🟠 FAZA 2: DETECȚIE ȘI ANALIZĂ (Detection & Analysis)
+    <small>§3.2 — Cea mai provocatoare fază: identificarea și evaluarea incidentelor</small>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2">
+    <h2>§3.2 — Detection and Analysis</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=35" target="_blank">PDF p.35</a></span>
+
+    <p>Detecția și analiza sunt <strong>cele mai provocatoare faze</strong> ale răspunsului la incidente. Provocările principale:</p>
+    <ul>
+      <li>Incidentele pot fi detectate prin diverse mijloace, cu niveluri variate de detaliu și fidelitate</li>
+      <li>Volumul de semnale potențiale este tipic foarte mare (mii/milioane de alerte IDS pe zi)</li>
+      <li>E nevoie de cunoștințe tehnice profunde și experiență vastă pentru analiză eficientă</li>
+    </ul>
+
+    <p>Faza include: vectori de atac (§3.2.1), semne ale incidentelor (§3.2.2), surse (§3.2.3), analiza propriu-zisă (§3.2.4), documentare (§3.2.5), prioritizare (§3.2.6) și notificare (§3.2.7).</p>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2.1">
+    <h2>§3.2.1 — Attack Vectors (Vectori de atac)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=35" target="_blank">PDF p.35</a></span>
+
+    <p>Categorii de vectori de atac (nu clasificare definitivă, ci bază pentru proceduri specifice):</p>
+    <table>
+      <tr><th>Vector</th><th>Descriere</th><th>Exemple</th></tr>
+      <tr>
+        <td><strong>External/Removable Media</strong></td>
+        <td>Atac executat de pe media amovibil sau periferic</td>
+        <td>USB flash drive infectat, CD cu malware</td>
+      </tr>
+      <tr>
+        <td><strong>Attrition</strong></td>
+        <td>Brute force pentru compromitere, degradare sau distrugere</td>
+        <td>DDoS, brute force autentificare, CAPTCHA bypass</td>
+      </tr>
+      <tr>
+        <td><strong>Web</strong></td>
+        <td>Atac executat de pe website sau aplicație web</td>
+        <td>XSS pentru furt credențiale, redirect la site ce exploatează browser, malware install</td>
+      </tr>
+      <tr>
+        <td><strong>Email</strong></td>
+        <td>Atac executat via email</td>
+        <td>Exploit code în atașament, link la site-malicious, phishing</td>
+      </tr>
+      <tr>
+        <td><strong>Impersonation</strong></td>
+        <td>Înlocuirea a ceva benign cu ceva malicious</td>
+        <td>Spoofing, MITM, rogue wireless AP, SQL injection</td>
+      </tr>
+      <tr>
+        <td><strong>Improper Usage</strong></td>
+        <td>Încălcare politici de utilizare de către user autorizat</td>
+        <td>Instalare file sharing → pierdere date; activități ilegale pe sisteme</td>
+      </tr>
+      <tr>
+        <td><strong>Loss/Theft of Equipment</strong></td>
+        <td>Pierderea sau furtul unui dispozitiv</td>
+        <td>Laptop, smartphone, token autentificare</td>
+      </tr>
+      <tr>
+        <td><strong>Other</strong></td>
+        <td>Orice atac care nu se încadrează în celelalte categorii</td>
+        <td>—</td>
+      </tr>
+    </table>
+
+    <div class="key-point exam-tip">
+      <strong>Pentru examen:</strong> Diferite tipuri de incidente necesită <strong>strategii de răspuns diferite</strong>. Identificarea corectă a vectorului de atac determină ce proceduri specifice se aplică.
+    </div>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2.2">
+    <h2>§3.2.2 — Signs of an Incident (Precursori și Indicatori)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=36" target="_blank">PDF p.36</a></span>
+
+    <p>Semnele unui incident se împart în <strong>două categorii</strong>:</p>
+
+    <h3>Precursori</h3>
+    <p><strong>Definiție:</strong> Un semn că un incident <em>ar putea avea loc în viitor</em>. Sunt relativ <strong>rari</strong>, dar când sunt detectați, permit acțiune preventivă.</p>
+    <p>Exemple de precursori:</p>
+    <ul>
+      <li>Log-uri web server ce arată folosirea unui vulnerability scanner</li>
+      <li>Anunț public al unui nou exploit ce vizează o vulnerabilitate a mail server-ului organizației</li>
+      <li>Amenințare directă de la un grup că va ataca organizația</li>
+    </ul>
+
+    <h3>Indicatori</h3>
+    <p><strong>Definiție:</strong> Un semn că un incident <em>a avut loc sau are loc acum</em>. Sunt <strong>mult mai comuni</strong> decât precursorii.</p>
+    <p>Exemple de indicatori:</p>
+    <ul>
+      <li>Alertă IDS pentru tentativă de buffer overflow contra unui database server</li>
+      <li>Antivirus detectează infecție malware pe un host</li>
+      <li>Sysadmin vede un filename cu caractere neobișnuite</li>
+      <li>Host înregistrează modificare configurație auditing în log</li>
+      <li>Aplicație logează login-uri eșuate multiple de pe un sistem remote necunoscut</li>
+      <li>Email admin vede un număr mare de email-uri bounce cu conținut suspect</li>
+      <li>Network admin observă deviație neobișnuită de la traficul tipic</li>
+    </ul>
+
+    <div class="key-point">
+      <strong>Provocarea:</strong> Detectarea precisă a incidentelor: multe semne au niveluri variate de fidelitate, volumul este foarte mare, și sunt necesare cunoștințe tehnice profunde. Cea mai bună soluție: o echipă experimentată și bine antrenată.
+    </div>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2.3">
+    <h2>§3.2.3 — Sources of Precursors and Indicators</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=37" target="_blank">PDF p.37</a></span>
+
+    <h3>Surse tip Alerte</h3>
+    <table>
+      <tr><th>Sursă</th><th>Descriere</th></tr>
+      <tr>
+        <td><strong>IDPS</strong></td>
+        <td>Identifică evenimente suspecte prin attack signatures. Produc adesea <strong>false positives</strong>. Analiștii trebuie să valideze manual alertele.</td>
+      </tr>
+      <tr>
+        <td><strong>SIEM</strong></td>
+        <td>Generează alerte bazate pe analiza datelor din log-uri (similar IDPS dar focalizat pe log correlation).</td>
+      </tr>
+      <tr>
+        <td><strong>Antivirus / Antispam</strong></td>
+        <td>AV detectează malware și generează alerte. Antispam detectează spam care poate conține malware, phishing sau alt conținut malware.</td>
+      </tr>
+      <tr>
+        <td><strong>File integrity checking</strong></td>
+        <td>Detectează modificări ale fișierelor importante prin hashing. Recalcularea regulată a checksum-urilor identifică changes.</td>
+      </tr>
+      <tr>
+        <td><strong>Third-party monitoring</strong></td>
+        <td>Servicii subscription sau gratuite: fraud detection, CSIRC notification lists, real-time blacklists.</td>
+      </tr>
+    </table>
+
+    <h3>Surse tip Log-uri</h3>
+    <table>
+      <tr><th>Sursă</th><th>Descriere</th></tr>
+      <tr>
+        <td><strong>OS / Service / App logs</strong></td>
+        <td>Extrem de valoroase: ce conturi au fost accesate, ce acțiuni au fost efectuate. Nivel baseline de logging obligatoriu.</td>
+      </tr>
+      <tr>
+        <td><strong>Network device logs</strong></td>
+        <td>Firewall, routere — loghează conexiuni blocate. Oferă puțin detaliu, dar sunt valoroase pentru tendințe și corelație.</td>
+      </tr>
+      <tr>
+        <td><strong>Network flows</strong></td>
+        <td>NetFlow, sFlow, IPFIX — identifică anomalii cauzate de malware, data exfiltration, alte acte malițioase.</td>
+      </tr>
+    </table>
+
+    <h3>Informații publice</h3>
+    <ul>
+      <li><strong>NVD</strong> (National Vulnerability Database) — informații despre vulnerabilități noi</li>
+      <li><strong>US-CERT, CERT/CC</strong> — briefings, web postings, mailing lists despre amenințări</li>
+    </ul>
+
+    <h3>Oameni</h3>
+    <ul>
+      <li><strong>Interni</strong> — useri, sysadmins, network admins, security staff. Important: validați rapoartele și cereti nivel de încredere.</li>
+      <li><strong>Externi</strong> — organizații care raportează atacuri de la IP-urile organizației, defacement web pages, servicii indisponibile, alte echipe IR.</li>
+    </ul>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2.4">
+    <h2>§3.2.4 — Incident Analysis (Analiză Incidente)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=38" target="_blank">PDF p.38</a></span>
+
+    <div class="quote">"Making incident analysis easier and more effective requires tools, techniques, and a well-trained team."</div>
+
+    <p>Analiza este dificilă: indicatorii nu sunt întotdeauna corecți (false positives), chiar și indicatorii corecți nu înseamnă neapărat un incident. Determinarea dacă un eveniment este sau nu un incident necesită adesea <strong>judecată și colaborare</strong>.</p>
+
+    <h3>Recomandări practice pentru analiză eficientă</h3>
+    <ol>
+      <li><strong>Profilează rețele și sisteme</strong> — măsoară caracteristicile activității normale (file integrity checksums, bandwidth usage) pentru a detecta mai ușor anomalii. Automatizarea ajută.</li>
+      <li><strong>Înțelege comportamentul normal</strong> — revizuiește regulat log-uri și alerte. Familiarizează-te cu datele tipice; concentrează-te pe entries inexplicabile. Tendințele devin vizibile în timp.</li>
+      <li><strong>Politică de retenție log-uri</strong> — log-uri vechi pot arăta activitate de recunoaștere sau instanțe anterioare similare. Incidentele pot fi descoperite la zile/săptămâni/luni după apariție.</li>
+      <li><strong>Corelarea evenimentelor</strong> — evidența poate fi în mai multe log-uri cu tipuri diferite de date (firewall = IP sursă, app = username). Corelarea între surse multiple este <strong>esențială</strong> pentru validare.</li>
+      <li><strong>Sincronizarea ceasurilor</strong> — NTP. Fără sincronizare, corelarea este mult mai complicată. Din perspectivă probatorie, timestamps consistente sunt preferate.</li>
+      <li><strong>Bază de cunoștințe (Knowledge base)</strong> — informații de referință rapidă: explicații pentru alerte IDPS, log entries OS, coduri de eroare. Poate fi simplă: documente text, spreadsheets, baze de date.</li>
+      <li><strong>Search engines pentru cercetare</strong> — porturi neobișnuite, patterns de atac pot fi căutate online. <strong>Fă research de pe workstation-uri separate</strong> pentru a minimiza riscul.</li>
+      <li><strong>Packet sniffers pentru date suplimentare</strong> — când indicatorii nu oferă suficient detaliu, captură de trafic configurată cu criterii specifice. Atenție la privacy — unele organizații cer aprobare.</li>
+      <li><strong>Filtrarea datelor</strong> — nu e timp suficient pentru toți indicatorii. Două strategii: (a) exclude categorii insignificante, (b) arată doar categoriile de cea mai mare importanță (risc de a rata atacuri noi).</li>
+      <li><strong>Cere asistență</strong> — când echipa nu poate determina cauza: resurse interne (information security staff) sau externe (US-CERT, alte CSIRTs, contractori). Important: determinarea exactă a cauzei previne incidente similare viitoare.</li>
+    </ol>
+
+    <div class="key-point exam-tip">
+      <strong>Pentru examen:</strong> Analiza inițială trebuie să determine: (1) scopul incidentului (ce rețele/sisteme/aplicații sunt afectate), (2) cine/ce a originat incidentul, (3) cum are loc (instrumente, metode, vulnerabilități exploatate). Această analiză informează prioritizarea acțiunilor ulterioare.
+    </div>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2.5">
+    <h2>§3.2.5 — Incident Documentation</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=40" target="_blank">PDF p.40</a></span>
+
+    <div class="quote">"Every step taken from the time the incident was detected to its final resolution should be documented and timestamped."</div>
+
+    <h3>Principii de documentare</h3>
+    <ul>
+      <li>Începe documentarea <strong>imediat</strong> ce se suspectează un incident</li>
+      <li>Fiecare pas: <strong>timestamped</strong> și <strong>semnat</strong> de handler</li>
+      <li>Înregistrează doar <strong>fapte</strong>, nu opinii (opiniile merg în rapoarte)</li>
+      <li>Medii: logbook (preferable legate, pagini numerotate, scris cu cerneală), laptopuri, camere, înregistratoare audio</li>
+      <li>Lucreaza în echipe de cel puțin doi: unul documentează, celălalt execută</li>
+    </ul>
+
+    <h3>Informații în issue tracking system</h3>
+    <ul>
+      <li><strong>Status curent</strong> — new, in progress, forwarded for investigation, resolved</li>
+      <li><strong>Sumar</strong> al incidentului</li>
+      <li><strong>Indicatori</strong> relevanți</li>
+      <li><strong>Incidente înrudite</strong></li>
+      <li><strong>Acțiuni</strong> luate de toți handlerii</li>
+      <li><strong>Chain of custody</strong> (dacă e cazul)</li>
+      <li><strong>Evaluări de impact</strong></li>
+      <li><strong>Contact</strong> alte părți implicate (system owners, sysadmins)</li>
+      <li><strong>Lista dovezilor</strong> colectate</li>
+      <li><strong>Comentarii</strong> ale handlerilor</li>
+      <li><strong>Pași următori</strong> (rebuild host, upgrade app, etc.)</li>
+    </ul>
+
+    <div class="key-point">
+      <strong>Securitate date incident:</strong> Restricționați accesul — datele conțin informații sensibile (vulnerabilități exploatate, breșe, acțiuni neadecvate ale utilizatorilor). Criptați comunicațiile și documentele despre incident.
+    </div>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2.6">
+    <h2>§3.2.6 — Incident Prioritization (Prioritizare)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=42" target="_blank">PDF p.42</a></span>
+
+    <div class="quote">"Prioritizing the handling of the incident is perhaps the most critical decision point in the incident handling process."</div>
+
+    <p>Incidentele <strong>NU trebuie gestionate pe baza first-come, first-served</strong>. Prioritizarea se bazează pe <strong>trei factori</strong>:</p>
+
+    <h3>1. Functional Impact (Impactul funcțional)</h3>
+    <table>
+      <tr><th>Nivel</th><th>Definiție</th></tr>
+      <tr><td><strong>None</strong></td><td>Niciun efect asupra abilității organizației de a furniza servicii</td></tr>
+      <tr><td><strong>Low</strong></td><td>Efect minim; toate serviciile critice disponibile, dar eficiență redusă</td></tr>
+      <tr><td><strong>Medium</strong></td><td>Organizația a pierdut abilitatea de a furniza un serviciu critic unui <em>subset</em> de utilizatori</td></tr>
+      <tr><td><strong>High</strong></td><td>Organizația <em>nu mai poate furniza unele servicii critice</em> niciunui utilizator</td></tr>
+    </table>
+
+    <h3>2. Information Impact (Impactul asupra informațiilor)</h3>
+    <table>
+      <tr><th>Nivel</th><th>Definiție</th></tr>
+      <tr><td><strong>None</strong></td><td>Nicio informație exfiltrată, modificată, ștearsă sau compromisă</td></tr>
+      <tr><td><strong>Privacy Breach</strong></td><td>PII sensibil accesat sau exfiltrat</td></tr>
+      <tr><td><strong>Proprietary Breach</strong></td><td>Informație proprietară neclasificată accesată/exfiltrată (ex: PCII)</td></tr>
+      <tr><td><strong>Integrity Loss</strong></td><td>Informație sensibilă sau proprietară modificată sau ștearsă</td></tr>
+    </table>
+
+    <h3>3. Recoverability (Recuperabilitate)</h3>
+    <table>
+      <tr><th>Nivel</th><th>Definiție</th></tr>
+      <tr><td><strong>Regular</strong></td><td>Timp de recuperare predictibil cu resurse existente</td></tr>
+      <tr><td><strong>Supplemented</strong></td><td>Timp predictibil dar cu resurse suplimentare</td></tr>
+      <tr><td><strong>Extended</strong></td><td>Timp impredictibil; resurse suplimentare și ajutor extern necesar</td></tr>
+      <tr><td><strong>Not Recoverable</strong></td><td>Recuperare imposibilă (ex: date sensibile publicate); se lansează investigație</td></tr>
+    </table>
+
+    <div class="key-point exam-tip">
+      <strong>Pentru examen:</strong> Impactul funcțional + impactul informațional = <strong>business impact</strong>. Un DDoS pe web server public (functional impact) are business impact diferit de acces neautorizat root cu exfiltrare PII (information impact cu consecințe pe termen lung). <strong>Nu prioritiza doar pe tipul de atac!</strong>
+    </div>
+
+    <h3>Proces de escaladare</h3>
+    <p>Dacă echipa nu răspunde în timpul desemnat: (1) duplică contactul inițial, (2) după ~15 minute, escalează la team manager, (3) dacă nici acesta nu răspunde, escalează la management superior. Repetă până primești răspuns.</p>
+  </div>
+
+  <div class="section-block detect-block" id="nist-3.2.7">
+    <h2>§3.2.7 — Incident Notification (Notificare)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=43" target="_blank">PDF p.43</a></span>
+
+    <p>Când un incident este analizat și prioritizat, echipa IR trebuie să notifice persoanele potrivite:</p>
+
+    <h3>Cine trebuie notificat?</h3>
+    <ul>
+      <li><strong>CIO</strong> (Chief Information Officer)</li>
+      <li><strong>Head of Information Security</strong></li>
+      <li><strong>Local Information Security Officer</strong></li>
+      <li>Alte <strong>echipe IR din organizație</strong></li>
+      <li><strong>Echipe IR externe</strong> (dacă e cazul)</li>
+      <li><strong>System owner</strong></li>
+      <li><strong>HR</strong> — dacă angajat implicat (ex: hărțuire prin email)</li>
+      <li><strong>Public Affairs</strong> — dacă potențial media attention</li>
+      <li><strong>Legal Department</strong> — dacă implicații juridice potențiale</li>
+      <li><strong>US-CERT</strong> — obligatoriu pentru agenții federale (§2.3.4.3)</li>
+      <li><strong>Law enforcement</strong> — dacă activitate criminală</li>
+    </ul>
+
+    <h3>Metode de comunicare</h3>
+    <ul>
+      <li>Email (standard)</li>
+      <li>Website (intern, extern, portal)</li>
+      <li>Telefon</li>
+      <li>In person (briefings zilnice)</li>
+      <li>Voice mailbox (mesaj actualizat cu status)</li>
+      <li>Paper (avize pe uși, la intrări)</li>
+      <li><strong>Out-of-band</strong> (in person, paper) — important dacă rețeaua e compromisă!</li>
+    </ul>
+
+    <div class="key-point">
+      <strong>Atenție:</strong> Comunicarea trebuie securizată — atacatorul ar putea monitoriza rețeaua. Folosiți mecanisme <strong>pre-definite</strong> și <strong>out-of-band</strong> când este necesar.
+    </div>
+  </div>
+
+  <!-- ==================== CONTAINMENT, ERADICATION, RECOVERY ==================== -->
+  <div class="phase-banner contain">
+    🔴 FAZA 3: CONTAINMENT, ERADICATION & RECOVERY
+    <small>§3.3 — Oprirea răspândirii, eliminarea cauzei, restaurarea operațiunilor</small>
+  </div>
+
+  <div class="section-block contain-block" id="nist-3.3">
+    <h2>§3.3 — Containment, Eradication, and Recovery</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=45" target="_blank">PDF p.45</a></span>
+
+    <p>Trei sub-faze strâns interconectate, adesea iterative:</p>
+    <ul>
+      <li><strong>Containment</strong> — oprirea răspândirii și limitarea impactului. Oferă timp pentru strategia de remediere.</li>
+      <li><strong>Eradication</strong> — eliminarea completă a cauzei (malware, conturi compromise, vulnerabilități)</li>
+      <li><strong>Recovery</strong> — restaurarea sistemelor la starea operațională normală</li>
+    </ul>
+
+    <div class="key-point exam-tip">
+      <strong>Ciclul iterativ:</strong> Eradicarea poate revela noi hosturi infectate, ceea ce necesită revenirea la Detection & Analysis (pentru identificare) și apoi un nou ciclu de Containment → Eradication → Recovery.
+    </div>
+  </div>
+
+  <div class="section-block contain-block" id="nist-3.3.1">
+    <h2>§3.3.1 — Choosing a Containment Strategy</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=45" target="_blank">PDF p.45</a></span>
+
+    <div class="quote">"Containment provides time for developing a tailored remediation strategy. An essential part of containment is decision-making (e.g., shut down a system, disconnect it from a network, disable certain functions)."</div>
+
+    <h3>Criterii pentru alegerea strategiei de containment</h3>
+    <ul>
+      <li><strong>Potențial de daune și furt de resurse</strong></li>
+      <li><strong>Necesitatea preservării dovezilor</strong></li>
+      <li><strong>Disponibilitatea serviciilor</strong> (conectivitate rețea, servicii pentru terți)</li>
+      <li><strong>Timp și resurse</strong> pentru implementare</li>
+      <li><strong>Eficacitatea strategiei</strong> (containment parțial vs complet)</li>
+      <li><strong>Durata soluției</strong> (workaround de urgență 4h, temporar 2 săptămâni, permanent)</li>
+    </ul>
+
+    <p>Organizațiile trebuie să creeze <strong>strategii separate de containment</strong> pentru fiecare tip major de incident, cu criterii documentate clar.</p>
+
+    <h3>Sandboxing</h3>
+    <p>Unele organizații redirecționează atacatorul într-un sandbox pentru a-i monitoriza activitatea și a colecta dovezi suplimentare. <strong>Trebuie discutat cu departamentul juridic</strong> pentru a determina fezabilitatea.</p>
+
+    <h3>Pericole ale containment-ului</h3>
+    <div class="key-point exam-tip">
+      <strong>Atenție — Containment întârziat:</strong> Strategia de containment întârziat este <strong>periculoasă</strong>: atacatorul poate escalada accesul neautorizat sau compromite alte sisteme. Organizația poate fi <strong>responsabilă juridic</strong> dacă știe de compromitere dar o permite să continue.
+    </div>
+    <div class="key-point exam-tip">
+      <strong>Atenție — Daune la containment:</strong> Unele atacuri pot cauza daune suplimentare la containment. Exemplu: un proces malware face ping periodic la alt host; la deconectarea de la rețea, ping-ul eșuează și procesul suprascrie/criptează toate datele de pe disk. <strong>Nu presupune că deconectarea de la rețea previne automat daunele!</strong>
+    </div>
+  </div>
+
+  <div class="section-block contain-block" id="nist-3.3.2">
+    <h2>§3.3.2 — Evidence Gathering and Handling</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=46" target="_blank">PDF p.46</a></span>
+
+    <p>Dovezile se colectează pentru a rezolva incidentul, dar pot fi necesare și în <strong>proceduri legale</strong>.</p>
+
+    <h3>Reguli de colectare a dovezilor</h3>
+    <ul>
+      <li>Colectare conform <strong>procedurilor ce respectă toate legile și regulamentele</strong> aplicabile — pentru admisibilitate în instanță</li>
+      <li>Procedurile trebuie dezvoltate din <strong>discuții prealabile cu legal și law enforcement</strong></li>
+      <li>Dovezile trebuie <strong>contabilizate permanent</strong></li>
+    </ul>
+
+    <h3>Chain of custody — documentare obligatorie</h3>
+    <ul>
+      <li><strong>Identificare</strong>: locație, serial number, model, hostname, MAC, IP</li>
+      <li><strong>Colectori</strong>: nume, titlu, telefon fiecărei persoane care a colectat/gestionat dovada</li>
+      <li><strong>Timestamp</strong>: data, ora (cu timezone) fiecărei gestionări</li>
+      <li><strong>Locație stocare</strong>: unde au fost stocate dovezile</li>
+      <li>La <strong>fiecare transfer</strong> între persoane: formulare chain of custody cu semnătura ambelor părți</li>
+    </ul>
+
+    <h3>Snapshot-uri de sistem</h3>
+    <div class="key-point">
+      <strong>Snapshot cât mai devreme posibil!</strong> Este preferabil să obții o imagine a sistemului „as-is" decât după ce handlerii, sysadminii și alții au modificat inadvertent starea mașinii. Un snapshot inițial poate identifica problema și sursa mai bine decât oricare altă acțiune.
+    </div>
+
+    <h3>Date volatile de capturat</h3>
+    <ul>
+      <li>Lista conexiunilor de rețea active</li>
+      <li>Lista proceselor în execuție</li>
+      <li>Sesiuni de login</li>
+      <li>Fișiere deschise</li>
+      <li>Configurația interfețelor de rețea</li>
+      <li>Conținutul memoriei (RAM)</li>
+    </ul>
+    <p>Se rulează comenzi selectate cu grijă <strong>de pe media de încredere</strong> (trusted media) pentru a colecta informații fără a deteriora dovezile.</p>
+
+    <h3>Disk image vs File system backup</h3>
+    <div class="key-point">
+      <strong>Full forensic disk image > file system backup</strong> (pentru scopuri investigative și probatorii). Disk images pe <strong>media write-protectable sau write-once</strong>. Analiza pe imagine (nu pe originalul!), pentru a nu altera dovezile.
+    </div>
+  </div>
+
+  <div class="section-block contain-block" id="nist-3.3.3">
+    <h2>§3.3.3 — Identifying the Attacking Hosts</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=47" target="_blank">PDF p.47</a></span>
+
+    <div class="quote">"Identifying an attacking host can be a time-consuming and futile process that can prevent a team from achieving its primary goal—minimizing the business impact."</div>
+
+    <p>Prioritatea echipei: <strong>containment, eradication, recovery</strong> — nu identificarea atacatorului. Totuși, când e necesar:</p>
+
+    <h3>Metode de identificare</h3>
+    <ol>
+      <li><strong>Validare IP atacator</strong> — verificare conectivitate (dar: poate fi spoofed, adresa dinamică realocată, host ce nu răspunde la ping/traceroute)</li>
+      <li><strong>Cercetare search engines</strong> — IP-ul sursă al atacului poate apărea în mailing lists sau rapoarte de incidente similare</li>
+      <li><strong>Baze de date de incidente</strong> — trackers, real-time blacklists, knowledge base propriu, issue tracking system intern</li>
+      <li><strong>Monitorizare canale atacator</strong> — IRC channels frecventate de botnet, atacatori care se laudă cu compromisuri. <strong>Tratați orice informație ca lead potențial, nu ca fapt!</strong></li>
+    </ol>
+
+    <div class="key-point exam-tip">
+      <strong>Pentru examen:</strong> IP-ul vizibil este adesea un intermediar (proxy, botnet, IP spoofed). <strong>Nu acționa contra unui IP fără dovezi solide.</strong> Lasă investigarea atacatorului pe seama law enforcement. Echipa se concentrează pe minimizarea impactului business.
+    </div>
+  </div>
+
+  <div class="section-block contain-block" id="nist-3.3.4">
+    <h2>§3.3.4 — Eradication and Recovery</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=47" target="_blank">PDF p.47</a></span>
+
+    <h3>Eradication (Eliminare)</h3>
+    <p>Eliminarea tuturor componentelor incidentului:</p>
+    <ul>
+      <li>Ștergere malware</li>
+      <li>Dezactivare conturi compromise (breached user accounts)</li>
+      <li>Identificare și <strong>remedierea tuturor vulnerabilităților</strong> exploatate</li>
+      <li>Identificare <strong>toate hosturile afectate</strong> din organizație pentru remediere</li>
+    </ul>
+    <p>Pentru unele incidente, eradication nu este necesară sau se face în timpul recovery.</p>
+
+    <h3>Recovery (Recuperare)</h3>
+    <p>Restaurarea sistemelor la operarea normală. Acțiuni tipice:</p>
+    <ul>
+      <li><strong>Restaurare din backup-uri curate</strong></li>
+      <li><strong>Rebuild sisteme de la zero</strong> (fresh install)</li>
+      <li><strong>Înlocuire fișiere compromise</strong> cu versiuni curate</li>
+      <li><strong>Instalare patch-uri</strong></li>
+      <li><strong>Schimbare parole</strong></li>
+      <li><strong>Tightening perimeter security</strong> (firewall rulesets, ACL-uri pe routere de frontieră)</li>
+      <li><strong>Monitoring suplimentar</strong> — o resursă atacată cu succes este adesea atacată din nou</li>
+      <li><strong>Confirmare</strong> că sistemele funcționează normal</li>
+    </ul>
+
+    <h3>Abordare fazată</h3>
+    <div class="key-point">
+      <strong>Eradication & Recovery = faze de abordare!</strong>
+      <ul style="margin-top:0.5rem;">
+        <li><strong>Faze inițiale</strong> (zile → săptămâni): schimbări rapide cu valoare mare pentru a preveni incidente viitoare</li>
+        <li><strong>Faze ulterioare</strong> (săptămâni → luni): schimbări pe termen lung (infrastructură) și muncă continuă de securizare</li>
+      </ul>
+      Pentru incidente la scară mare, recuperarea poate dura <strong>luni de zile</strong>.
+    </div>
+  </div>
+
+  <!-- ==================== POST-INCIDENT ==================== -->
+  <div class="phase-banner post">
+    🟢 FAZA 4: POST-INCIDENT ACTIVITY (Activitate Post-Incident)
+    <small>§3.4 — Cea mai importantă fază, dar cea mai des neglijată</small>
+  </div>
+
+  <div class="section-block post-block" id="nist-3.4">
+    <h2>§3.4 — Post-Incident Activity</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=48" target="_blank">PDF p.48</a></span>
+
+    <div class="quote">"One of the most important parts of incident response is also the most often omitted: learning and improving."</div>
+
+    <p>Una din cele mai importante faze, dar <strong>adesea neglijată</strong>. Include:</p>
+    <ul>
+      <li><strong>Lessons Learned</strong> (§3.4.1) — ședințe post-incident, rapoarte follow-up</li>
+      <li><strong>Utilizarea datelor colectate</strong> (§3.4.2) — metrici, tendințe, audit</li>
+      <li><strong>Retenția dovezilor</strong> (§3.4.3) — cât timp se păstrează</li>
+    </ul>
+
+    <div class="key-point exam-tip">
+      <strong>Pentru examen:</strong> Fără această fază, organizația nu învață din greșeli și repetă aceleași erori. Fiecare echipă IR trebuie să evolueze pentru a reflecta amenințări noi, tehnologie îmbunătățită și lecțiile învățate.
+    </div>
+  </div>
+
+  <div class="section-block post-block" id="nist-3.4.1">
+    <h2>§3.4.1 — Lessons Learned</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=48" target="_blank">PDF p.48</a></span>
+
+    <p>Ședință „Lessons Learned" = <strong>obligatorie pentru incidente majore</strong>, opțională (dar recomandată) pentru cele minore. Se ține în decurs de <strong>câteva zile</strong> de la terminarea incidentului. Mai multe incidente pot fi acoperite într-o singură ședință.</p>
+
+    <h3>Întrebări obligatorii din ședință</h3>
+    <ol>
+      <li><strong>Ce s-a întâmplat exact și când?</strong> — cronologie detaliată</li>
+      <li><strong>Cât de bine a funcționat staff-ul și managementul?</strong> Au fost urmate procedurile documentate? Au fost adecvate?</li>
+      <li><strong>Ce informații au fost necesare mai devreme?</strong></li>
+      <li><strong>Au fost luate acțiuni care ar fi putut inhiba recuperarea?</strong></li>
+      <li><strong>Ce ar face staff-ul și managementul diferit</strong> la un incident similar viitor?</li>
+      <li><strong>Cum se poate îmbunătăți partajarea informațiilor</strong> cu alte organizații?</li>
+      <li><strong>Ce acțiuni corective pot preveni incidente similare</strong> în viitor?</li>
+      <li><strong>Ce precursori/indicatori</strong> trebuie monitorizați pe viitor pentru a detecta incidente similare?</li>
+      <li><strong>Ce instrumente/resurse suplimentare</strong> sunt necesare pentru detectare, analiză și mitigare?</li>
+    </ol>
+
+    <h3>Factori de succes pentru ședințe</h3>
+    <ul>
+      <li>Invită <strong>oamenii potriviți</strong> — nu doar cei implicați direct, ci și cei care pot facilita cooperarea viitoare</li>
+      <li><strong>Colectează input</strong> de la participanți înainte de ședință (așteptări, topicuri sugerate)</li>
+      <li>Stabilește <strong>reguli de ordine</strong> la început</li>
+      <li>Folosește <strong>moderatori</strong> cu experiență în facilitare de grup</li>
+      <li><strong>Documentează</strong> punctele de acord și acțiunile și comunică-le celor absenți</li>
+    </ul>
+
+    <h3>Follow-up Report</h3>
+    <p>Pentru fiecare incident: raport formal cu:</p>
+    <ul>
+      <li><strong>Cronologie formală</strong> a evenimentelor (cu timestamps din log-uri)</li>
+      <li><strong>Estimare monetară</strong> a daunelor — poate deveni baza pentru prosecution</li>
+      <li>Vulnerabilități exploatate, vector de atac, sisteme afectate</li>
+      <li>Acțiuni luate și eficacitatea lor</li>
+    </ul>
+    <p>Rapoartele sunt valoroase pentru: <strong>training</strong> membri noi, <strong>referință</strong> pentru incidente viitoare similare, <strong>actualizare</strong> politici și proceduri.</p>
+  </div>
+
+  <div class="section-block post-block" id="nist-3.4.2">
+    <h2>§3.4.2 — Using Collected Incident Data (Metrici)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=49" target="_blank">PDF p.49</a></span>
+
+    <p>Datele colectate din incidente sunt valoroase pentru multiple scopuri: justificarea bugetului, identificarea tendințelor, măsurarea succesului echipei, evaluarea schimbărilor de capabilitate.</p>
+
+    <h3>Metrici recomandate</h3>
+    <table>
+      <tr><th>Metrică</th><th>Descriere</th></tr>
+      <tr>
+        <td><strong>Număr de incidente gestionate</strong></td>
+        <td>Masură relativă a volumului de muncă (nu a calității!). Mai util pe categorii/subcategorii. Ex: creșterea incidentelor insider → politici mai stricte.</td>
+      </tr>
+      <tr>
+        <td><strong>Timp per incident</strong></td>
+        <td>
+          <ul>
+            <li>Total ore de muncă</li>
+            <li>Timp scurs de la început la descoperire</li>
+            <li>Timp scurs la fiecare etapă (containment, recovery)</li>
+            <li>Timp de răspuns la raportul inițial</li>
+            <li>Timp de raportare către management/entități externe</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Evaluare obiectivă</strong></td>
+        <td>
+          <ul>
+            <li>Revizuire log-uri, formulare, rapoarte — aderență la politici și proceduri</li>
+            <li>Ce precursori/indicatori au fost înregistrați — eficiența logging-ului</li>
+            <li>A cauzat incidentul daune înainte de detecție?</li>
+            <li>A fost identificată cauza reală?</li>
+            <li>Este o recurență a unui incident anterior?</li>
+            <li>Estimare daune monetare</li>
+            <li>Ce măsuri ar fi putut preveni incidentul?</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Evaluare subiectivă</strong></td>
+        <td>Auto-evaluare membri echipă, feedback de la proprietarii resurselor atacate — eficiență și satisfacție cu rezultatul.</td>
+      </tr>
+    </table>
+
+    <h3>Audit program IR</h3>
+    <p>Periodic, programul IR trebuie auditat. Evaluează: politici/planuri/proceduri, instrumente/resurse, model echipă, training, documentare, și măsuri de succes — contra regulamentelor și practicilor acceptate.</p>
+
+    <div class="key-point">
+      <strong>Focus pe date acționabile:</strong> Colectează date care duc la <strong>acțiuni concrete</strong>, nu doar numere. Numere absolute fără context nu sunt informative. Înțelegerea modului în care datele reprezintă amenințări la procesele business este ceea ce contează.
+    </div>
+  </div>
+
+  <div class="section-block post-block" id="nist-3.4.3">
+    <h2>§3.4.3 — Evidence Retention (Retenție dovezi)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=51" target="_blank">PDF p.51</a></span>
+
+    <p>Organizațiile trebuie să stabilească o <strong>politică de retenție a dovezilor</strong>. Majoritatea aleg să rețină toate dovezile <strong>luni sau ani</strong> după terminarea incidentului.</p>
+
+    <h3>Factori pentru politica de retenție</h3>
+    <table>
+      <tr><th>Factor</th><th>Considerații</th></tr>
+      <tr>
+        <td><strong>Prosecution</strong></td>
+        <td>Dacă atacatorul poate fi judecat, dovezile trebuie păstrate până la finalizarea tuturor acțiunilor legale (poate fi <strong>mai mulți ani</strong>). Dovezi aparent nesemnificative acum pot deveni critice ulterior (ex: cunoștințe din primul atac folosite pentru al doilea).</td>
+      </tr>
+      <tr>
+        <td><strong>Data Retention Policy</strong></td>
+        <td>Cerințe organizaționale existente (ex: email-uri păstrate max 180 zile). Dacă disk image conține mii de email-uri, organizația poate prefera să nu rețină imaginea mai mult de 180 zile. <strong>GRS 24:</strong> incident handling records = 3 ani.</td>
+      </tr>
+      <tr>
+        <td><strong>Cost</strong></td>
+        <td>Hardware original (hard drives, sisteme compromise), hard drives și media amovibil cu disk images — individual ieftini, dar <strong>cumulativ costisitor</strong> pe mai mulți ani. Trebuie menținute și computere funcționale compatibile.</td>
+      </tr>
+    </table>
+
+    <div class="key-point">
+      <strong>Recomandare generală:</strong> Păstrează dovezile <strong>cel puțin 2-3 ani</strong>. Pentru incidente cu implicații legale, <strong>indefinit</strong> până la închiderea cazului.
+    </div>
+  </div>
+
+  <!-- ==================== CHECKLIST ==================== -->
+  <div class="section-block checklist-block" id="nist-3.5">
+    <h2>§3.5 — Incident Handling Checklist (Table 3-5)</h2>
+    <span class="pdf-link">📄 <a href="NIST.SP.800-61r2.pdf#page=52" target="_blank">PDF p.52</a></span>
+
+    <p>Pășii majori de urmat. <strong>Nu dictează ordinea exactă</strong> — servesc ca ghid. Secvența poate varia în funcție de tipul și natura incidentului.</p>
+
+    <h3>Detection and Analysis</h3>
+    <table>
+      <tr><th>#</th><th>Acțiune</th><th>✓</th></tr>
+      <tr><td>1</td><td colspan="2"><strong>Determină dacă a apărut un incident</strong></td></tr>
+      <tr><td>1.1</td><td>Analizează precursorii și indicatorii</td><td>☐</td></tr>
+      <tr><td>1.2</td><td>Caută informații de corelație</td><td>☐</td></tr>
+      <tr><td>1.3</td><td>Efectuează cercetare (search engines, knowledge base)</td><td>☐</td></tr>
+      <tr><td>1.4</td><td>De îndată ce handler-ul crede că a apărut un incident, începe documentarea și colectarea de dovezi</td><td>☐</td></tr>
+      <tr><td>2</td><td>Prioritizează gestionarea pe baza factorilor relevanți (functional impact, information impact, recoverability, etc.)</td><td>☐</td></tr>
+      <tr><td>3</td><td>Raportează incidentul personalului intern și organizațiilor externe corespunzătoare</td><td>☐</td></tr>
+    </table>
+
+    <h3>Containment, Eradication, and Recovery</h3>
+    <table>
+      <tr><th>#</th><th>Acțiune</th><th>✓</th></tr>
+      <tr><td>4</td><td>Achiziționează, preservă, securizează și documentează dovezile</td><td>☐</td></tr>
+      <tr><td>5</td><td>Conține incidentul</td><td>☐</td></tr>
+      <tr><td>6</td><td colspan="2"><strong>Eradică incidentul</strong></td></tr>
+      <tr><td>6.1</td><td>Identifică și remediază toate vulnerabilitățile exploatate</td><td>☐</td></tr>
+      <tr><td>6.2</td><td>Elimină malware, materiale inadecvate și alte componente</td><td>☐</td></tr>
+      <tr><td>6.3</td><td>Dacă se descoperă alte hosturi afectate, repetă pașii 1.1-1.2 pentru identificare, apoi 5-6 pentru containment și eradication</td><td>☐</td></tr>
+      <tr><td>7</td><td colspan="2"><strong>Recuperează din incident</strong></td></tr>
+      <tr><td>7.1</td><td>Readuce sistemele afectate la starea operațională</td><td>☐</td></tr>
+      <tr><td>7.2</td><td>Confirmă că funcționează normal</td><td>☐</td></tr>
+      <tr><td>7.3</td><td>Dacă e necesar, implementează monitoring suplimentar</td><td>☐</td></tr>
+    </table>
+
+    <h3>Post-Incident Activity</h3>
+    <table>
+      <tr><th>#</th><th>Acțiune</th><th>✓</th></tr>
+      <tr><td>8</td><td>Creează raport follow-up</td><td>☐</td></tr>
+      <tr><td>9</td><td>Ține ședință lessons learned (obligatorie pt incidente majore, opțională altfel)</td><td>☐</td></tr>
+    </table>
+  </div>
+
+  <div class="section-block" id="nist-3.6">
+    <h2>§3.6 — Recomandări Cheie Capitol 3</h2>
+
+    <ol>
+      <li><strong>Pregătește instrumente și resurse</strong> dinainte (contact lists, encryption, network diagrams, forensic software, port lists)</li>
+      <li><strong>Previne incidentele</strong> prin securizare suficientă (risk assessment, reduce riscuri, awareness training)</li>
+      <li><strong>Identifică precursori și indicatori</strong> prin alerte de la IDPS, AV, file integrity checking, third-party monitoring</li>
+      <li><strong>Stabilește mecanisme</strong> pentru ca părțile externe să raporteze incidente (telefon, email)</li>
+      <li><strong>Nivel baseline de logging</strong> pe toate sistemele; nivel superior pe sisteme critice</li>
+      <li><strong>Profilează rețele și sisteme</strong> pentru detecție automată a deviațiilor</li>
+      <li><strong>Înțelege comportamentul normal</strong> — revizuiri regulate de log-uri</li>
+      <li><strong>Politica de retenție log-uri</strong> — log-uri vechi pot dezvălui activitate de recunoaștere</li>
+      <li><strong>Corelarea evenimentelor</strong> — combinarea dovezilor din surse multiple este esențială</li>
+      <li><strong>Sincronizarea ceasurilor</strong> — NTP pe toate dispozitivele</li>
+      <li><strong>Knowledge base</strong> — referință rapidă pentru analiză</li>
+      <li><strong>Începe documentarea imediat</strong> — timestamped, semnat</li>
+      <li><strong>Securizează datele incident-ului</strong> — acces restricționat</li>
+      <li><strong>Prioritizare pe factori relevanți</strong> (functional impact, information impact, recoverability) — NU first-come-first-served</li>
+      <li><strong>Prevederi pentru raportare</strong> — cine, ce, quando</li>
+      <li><strong>Strategii de containment</strong> — variate pe tip de incident</li>
+      <li><strong>Proceduri de colectare dovezi</strong> — chain of custody, conformitate legală</li>
+      <li><strong>Capturează date volatile</strong> — conexiuni, procese, logins, fișiere deschise, memorie</li>
+      <li><strong>Full forensic disk images</strong> > file system backups (pe media write-once/protected)</li>
+      <li><strong>Ședințe lessons learned</strong> după incidente majore</li>
+    </ol>
+  </div>
+
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="nist-chapter2.html" class="back-link" style="font-size:1rem;">← Capitol 2: Organizare</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="index.html" class="back-link" style="font-size:1rem;">🏠 Pagina principală</a>
+  </div>
+</div>
+
+<script>
+// Active nav highlight
+const sections = document.querySelectorAll('.section-block[id], .phase-banner');
+const navLinksC = document.querySelectorAll('.chapter-nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('[id]').forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinksC.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
