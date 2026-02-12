@@ -2,7 +2,7 @@
 
 Site interactiv pentru pregătirea examenului de **Cyber Security**, bazat pe documentul **NIST SP 800-61r2** (Computer Security Incident Handling Guide).
 
-## Accesare online (de oriunde)
+## Accesare online 
 
 Site-ul este live pe GitHub Pages:
 
@@ -22,17 +22,17 @@ Site-ul este live pe GitHub Pages:
 Dacă vrei să rulezi site-ul local pe calculatorul tău:
 
 ```bash
-# 1. Clonează repo-ul
+# 1. Cloneaza repo-ul
 git clone https://github.com/ale0204/CyberSecurity.git
 
-# 2. Intră în folder
+# 2. Intra in folder
 cd CyberSecurity
 
-# 3. Pornește un server local cu Python
+# 3. Porneste un server local cu Python
 python -m http.server 8080
 
-# 4. Deschide în browser
+# 4. Deschide in browser
 # http://localhost:8080
 ```
 
-Sau simplu: deschide fișierul `index.html` direct în browser (dublu-click pe el).
+Sau simplu: deschide fișierul `index.html` direct în browser.
